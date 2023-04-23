@@ -189,7 +189,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
-        drawer: Container(
+        drawer: SizedBox(
           width: double.infinity,
           child: Drawer(
             child: ListView(
@@ -263,7 +263,7 @@ class MyApp extends StatelessWidget {
           ),
           child: Stack(
             children: [
-              Container(
+              SizedBox(
                 height: 800,
                 // color: Colors.white,
                 child: SingleChildScrollView(
@@ -280,7 +280,7 @@ class MyApp extends StatelessWidget {
                               height: 320,
                               fit: BoxFit.fill,
                             ),
-                            Positioned(
+                            const Positioned(
                               top: 30,
                               child: Text(
                                 "Stunning free images &\nroyalty free stock",
@@ -293,7 +293,7 @@ class MyApp extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Positioned(
+                            const Positioned(
                               top: 100,
                               child: Text(
                                 "Over 2.7 million+ high quality stock images,\nvideos and music shared by our talented\ncommunity",
@@ -306,7 +306,7 @@ class MyApp extends StatelessWidget {
                             ),
                             Positioned(
                               top: 170,
-                              child: Container(
+                              child: SizedBox(
                                 width: 361,
                                 height: 50,
                                 child: Row(
@@ -355,7 +355,7 @@ class MyApp extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Positioned(
+                            const Positioned(
                               top: 250,
                               child: Text(
                                 "Popular Images: new year, wallpaper, nature, background,\nsky, money, love, cat car, dog, food, flowers, ipone\nwallpaper",
@@ -369,47 +369,43 @@ class MyApp extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Container(
+                      SizedBox(
                           height: 700,
-                          child: GridView.count(
-                            // scrollDirection: Axis.vertical,
-                            physics: NeverScrollableScrollPhysics(),
-                            // primary: true,
-                            shrinkWrap: true,
-                            crossAxisCount: 3,
-                            children: List.generate(24, (index) {
-                              return Container(
-                                  // color: Colors.red,
-                                  child: Card(
-                                child: Stack(
-                                  alignment: Alignment.topRight,
-                                  children: [
-                                    Image.network(
-                                      imageList[index],
-                                    ),
-                                    Container(
-                                        child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: const [
-                                        Icon(
-                                          Icons.favorite,
-                                          color: Colors.white,
+                          child: MasonryGridView.builder(
+                              itemCount: imageList.length,
+                              shrinkWrap: true,
+                              // physics: NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2),
+                              itemBuilder: ((context, index) => Card(
+                                    child: Stack(
+                                      alignment: Alignment.topRight,
+                                      children: [
+                                        Image.network(
+                                          imageList[index],
                                         ),
-                                        Icon(
-                                          Icons.bookmark_add,
-                                          color: Colors.white,
-                                        ),
-                                        Icon(
-                                          Icons.share,
-                                          color: Colors.white,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: const [
+                                            Icon(
+                                              Icons.favorite,
+                                              color: Colors.white,
+                                            ),
+                                            Icon(
+                                              Icons.bookmark_add,
+                                              color: Colors.white,
+                                            ),
+                                            Icon(
+                                              Icons.share,
+                                              color: Colors.white,
+                                            ),
+                                          ],
                                         ),
                                       ],
-                                    )),
-                                  ],
-                                ),
-                              ));
-                            }),
-                          )),
+                                    ),
+                                  ))))
                     ],
                   ),
                 ),
@@ -418,7 +414,7 @@ class MyApp extends StatelessWidget {
                 alignment: Alignment.bottomLeft,
                 child: Container(
                   width: double.infinity,
-                  height: 40,
+                  height: 20,
                   decoration: const BoxDecoration(
                     // borderRadius: BorderRadius.circular(20),
                     gradient: LinearGradient(
