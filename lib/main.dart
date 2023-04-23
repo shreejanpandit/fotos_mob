@@ -264,152 +264,298 @@ class MyApp extends StatelessWidget {
           child: Stack(
             children: [
               SizedBox(
-                height: 800,
-                // color: Colors.white,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 320,
-                        color: Colors.white,
-                        child: Stack(
-                          alignment: Alignment.topCenter,
-                          children: [
-                            Image.asset(
-                              'assets/images/tree.jpg',
-                              height: 320,
-                              fit: BoxFit.fill,
-                            ),
-                            const Positioned(
-                              top: 30,
-                              child: Text(
-                                "Stunning free images &\nroyalty free stock",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w700,
+                  height: 800,
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Container(
+                          height: 320,
+                          color: Colors.white,
+                          child: Stack(
+                            alignment: Alignment.topCenter,
+                            children: [
+                              Image.asset(
+                                'assets/images/tree.jpg',
+                                height: 320,
+                                fit: BoxFit.fill,
+                              ),
+                              const Positioned(
+                                top: 30,
+                                child: Text(
+                                  "Stunning free images &\nroyalty free stock",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const Positioned(
-                              top: 100,
-                              child: Text(
-                                "Over 2.7 million+ high quality stock images,\nvideos and music shared by our talented\ncommunity",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
+                              const Positioned(
+                                top: 100,
+                                child: Text(
+                                  "Over 2.7 million+ high quality stock images,\nvideos and music shared by our talented\ncommunity",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Positioned(
-                              top: 170,
-                              child: SizedBox(
-                                width: 361,
-                                height: 50,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 361,
-                                      height: 50,
-                                      child: Material(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            left: 92,
-                                            right: 19,
-                                          ),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: const [
-                                              Text(
-                                                "Find your imagination",
-                                                style: TextStyle(
-                                                  color: Color(0x7f050505),
-                                                  fontSize: 16,
-                                                  fontFamily: "Poppins",
-                                                  fontWeight: FontWeight.w500,
+                              Positioned(
+                                top: 170,
+                                child: SizedBox(
+                                  width: 361,
+                                  height: 50,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: 361,
+                                        height: 50,
+                                        child: Material(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 92,
+                                              right: 19,
+                                            ),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: const [
+                                                Text(
+                                                  "Find your imagination",
+                                                  style: TextStyle(
+                                                    color: Color(0x7f050505),
+                                                    fontSize: 16,
+                                                    fontFamily: "Poppins",
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
-                                              ),
-                                              SizedBox(width: 43),
-                                              SizedBox(
-                                                  width: 30,
-                                                  height: 30,
-                                                  child: Icon(Icons.search)),
-                                            ],
+                                                SizedBox(width: 43),
+                                                SizedBox(
+                                                    width: 30,
+                                                    height: 30,
+                                                    child: Icon(Icons.search)),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const Positioned(
+                                top: 250,
+                                child: Text(
+                                  "Popular Images: new year, wallpaper, nature, background,\nsky, money, love, cat car, dog, food, flowers, ipone\nwallpaper",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SliverPadding(
+                        padding: const EdgeInsets.all(5),
+                        sliver: SliverMasonryGrid(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) => Card(
+                                child: Stack(
+                                  alignment: Alignment.topRight,
+                                  children: [
+                                    Image.network(
+                                      imageList[index],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: const [
+                                        Icon(
+                                          Icons.favorite,
+                                          color: Colors.white,
+                                        ),
+                                        Icon(
+                                          Icons.bookmark_add,
+                                          color: Colors.white,
+                                        ),
+                                        Icon(
+                                          Icons.share,
+                                          color: Colors.white,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
                               ),
+                              childCount: imageList.length,
                             ),
-                            const Positioned(
-                              top: 250,
-                              child: Text(
-                                "Popular Images: new year, wallpaper, nature, background,\nsky, money, love, cat car, dog, food, flowers, ipone\nwallpaper",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                            gridDelegate:
+                                const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2)),
                       ),
-                      SizedBox(
-                          height: 700,
-                          child: MasonryGridView.builder(
-                              itemCount: imageList.length,
-                              shrinkWrap: true,
-                              // physics: NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2),
-                              itemBuilder: ((context, index) => Card(
-                                    child: Stack(
-                                      alignment: Alignment.topRight,
-                                      children: [
-                                        Image.network(
-                                          imageList[index],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: const [
-                                            Icon(
-                                              Icons.favorite,
-                                              color: Colors.white,
-                                            ),
-                                            Icon(
-                                              Icons.bookmark_add,
-                                              color: Colors.white,
-                                            ),
-                                            Icon(
-                                              Icons.share,
-                                              color: Colors.white,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ))))
                     ],
+                  )
+
+                  // SingleChildScrollView(
+                  //   child: Column(
+                  //     children: [
+                  //       Container(
+                  //         height: 320,
+                  //         color: Colors.white,
+                  //         child: Stack(
+                  //           alignment: Alignment.topCenter,
+                  //           children: [
+                  //             Image.asset(
+                  //               'assets/images/tree.jpg',
+                  //               height: 320,
+                  //               fit: BoxFit.fill,
+                  //             ),
+                  //             const Positioned(
+                  //               top: 30,
+                  //               child: Text(
+                  //                 "Stunning free images &\nroyalty free stock",
+                  //                 textAlign: TextAlign.center,
+                  //                 style: TextStyle(
+                  //                   color: Colors.white,
+                  //                   fontSize: 24,
+                  //                   fontFamily: "Poppins",
+                  //                   fontWeight: FontWeight.w700,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             const Positioned(
+                  //               top: 100,
+                  //               child: Text(
+                  //                 "Over 2.7 million+ high quality stock images,\nvideos and music shared by our talented\ncommunity",
+                  //                 textAlign: TextAlign.center,
+                  //                 style: TextStyle(
+                  //                   color: Colors.white,
+                  //                   fontSize: 15,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             Positioned(
+                  //               top: 170,
+                  //               child: SizedBox(
+                  //                 width: 361,
+                  //                 height: 50,
+                  //                 child: Row(
+                  //                   mainAxisSize: MainAxisSize.min,
+                  //                   mainAxisAlignment: MainAxisAlignment.center,
+                  //                   crossAxisAlignment: CrossAxisAlignment.center,
+                  //                   children: [
+                  //                     SizedBox(
+                  //                       width: 361,
+                  //                       height: 50,
+                  //                       child: Material(
+                  //                         color: Colors.white,
+                  //                         borderRadius: BorderRadius.circular(20),
+                  //                         child: Padding(
+                  //                           padding: const EdgeInsets.only(
+                  //                             left: 92,
+                  //                             right: 19,
+                  //                           ),
+                  //                           child: Row(
+                  //                             mainAxisSize: MainAxisSize.min,
+                  //                             mainAxisAlignment:
+                  //                                 MainAxisAlignment.end,
+                  //                             crossAxisAlignment:
+                  //                                 CrossAxisAlignment.center,
+                  //                             children: const [
+                  //                               Text(
+                  //                                 "Find your imagination",
+                  //                                 style: TextStyle(
+                  //                                   color: Color(0x7f050505),
+                  //                                   fontSize: 16,
+                  //                                   fontFamily: "Poppins",
+                  //                                   fontWeight: FontWeight.w500,
+                  //                                 ),
+                  //                               ),
+                  //                               SizedBox(width: 43),
+                  //                               SizedBox(
+                  //                                   width: 30,
+                  //                                   height: 30,
+                  //                                   child: Icon(Icons.search)),
+                  //                             ],
+                  //                           ),
+                  //                         ),
+                  //                       ),
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             const Positioned(
+                  //               top: 250,
+                  //               child: Text(
+                  //                 "Popular Images: new year, wallpaper, nature, background,\nsky, money, love, cat car, dog, food, flowers, ipone\nwallpaper",
+                  //                 textAlign: TextAlign.center,
+                  //                 style: TextStyle(
+                  //                   color: Colors.white,
+                  //                   fontSize: 12,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //       SizedBox(
+                  //           height: 700,
+                  //           child: MasonryGridView.builder(
+                  //               itemCount: imageList.length,
+                  //               shrinkWrap: true,
+                  //               // physics: NeverScrollableScrollPhysics(),
+                  // gridDelegate:
+                  //     const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                  //         crossAxisCount: 2),
+                  //               itemBuilder: ((context, index) => Card(
+                  //                     child: Stack(
+                  //                       alignment: Alignment.topRight,
+                  //                       children: [
+                  //                         Image.network(
+                  //                           imageList[index],
+                  //                         ),
+                  //                         Row(
+                  //                           mainAxisAlignment:
+                  //                               MainAxisAlignment.end,
+                  //                           children: const [
+                  //                             Icon(
+                  //                               Icons.favorite,
+                  //                               color: Colors.white,
+                  //                             ),
+                  //                             Icon(
+                  //                               Icons.bookmark_add,
+                  //                                color: Colors.white,
+                  //                             ),
+                  //                             Icon(
+                  //                               Icons.share,
+                  //                               color: Colors.white,
+                  //                             ),
+                  //                           ],
+                  //                         ),
+                  //                       ],
+                  //                     ),
+                  //                   ))))
+                  //     ],
+                  //   ),
+                  // ),
+
                   ),
-                ),
-              ),
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Container(
