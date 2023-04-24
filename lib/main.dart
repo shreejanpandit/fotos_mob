@@ -1,88 +1,93 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'dart:ui';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/utils.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   List<String> imageList = [
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/15/16/25/clock-5834193__340.jpg',
-    'https://cdn.pixabay.com/photo/2020/09/18/19/31/laptop-5582775_960_720.jpg',
-    'https://media.istockphoto.com/photos/woman-kayaking-in-fjord-in-norway-picture-id1059380230?b=1&k=6&m=1059380230&s=170667a&w=0&h=kA_A_XrhZJjw2bo5jIJ7089-VktFK0h0I4OWDqaac0c=',
-    'https://cdn.pixabay.com/photo/2019/11/05/00/53/cellular-4602489_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2017/02/12/10/29/christmas-2059698_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/01/29/17/09/snowboard-4803050_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/02/06/20/01/university-library-4825366_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/11/22/17/28/cat-5767334_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/13/16/22/snow-5828736_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/09/09/27/women-5816861_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/15/16/25/clock-5834193__340.jpg',
-    'https://cdn.pixabay.com/photo/2020/09/18/19/31/laptop-5582775_960_720.jpg',
-    'https://media.istockphoto.com/photos/woman-kayaking-in-fjord-in-norway-picture-id1059380230?b=1&k=6&m=1059380230&s=170667a&w=0&h=kA_A_XrhZJjw2bo5jIJ7089-VktFK0h0I4OWDqaac0c=',
-    'https://cdn.pixabay.com/photo/2019/11/05/00/53/cellular-4602489_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2017/02/12/10/29/christmas-2059698_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/01/29/17/09/snowboard-4803050_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/02/06/20/01/university-library-4825366_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/11/22/17/28/cat-5767334_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/13/16/22/snow-5828736_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/09/09/27/women-5816861_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/15/16/25/clock-5834193__340.jpg',
-    'https://cdn.pixabay.com/photo/2020/09/18/19/31/laptop-5582775_960_720.jpg',
-    'https://media.istockphoto.com/photos/woman-kayaking-in-fjord-in-norway-picture-id1059380230?b=1&k=6&m=1059380230&s=170667a&w=0&h=kA_A_XrhZJjw2bo5jIJ7089-VktFK0h0I4OWDqaac0c=',
-    'https://cdn.pixabay.com/photo/2019/11/05/00/53/cellular-4602489_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2017/02/12/10/29/christmas-2059698_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/01/29/17/09/snowboard-4803050_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/02/06/20/01/university-library-4825366_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/11/22/17/28/cat-5767334_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/13/16/22/snow-5828736_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/09/09/27/women-5816861_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/15/16/25/clock-5834193__340.jpg',
-    'https://cdn.pixabay.com/photo/2020/09/18/19/31/laptop-5582775_960_720.jpg',
-    'https://media.istockphoto.com/photos/woman-kayaking-in-fjord-in-norway-picture-id1059380230?b=1&k=6&m=1059380230&s=170667a&w=0&h=kA_A_XrhZJjw2bo5jIJ7089-VktFK0h0I4OWDqaac0c=',
-    'https://cdn.pixabay.com/photo/2019/11/05/00/53/cellular-4602489_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2017/02/12/10/29/christmas-2059698_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/01/29/17/09/snowboard-4803050_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/02/06/20/01/university-library-4825366_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/11/22/17/28/cat-5767334_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/13/16/22/snow-5828736_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/09/09/27/women-5816861_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/15/16/25/clock-5834193__340.jpg',
-    'https://cdn.pixabay.com/photo/2020/09/18/19/31/laptop-5582775_960_720.jpg',
-    'https://media.istockphoto.com/photos/woman-kayaking-in-fjord-in-norway-picture-id1059380230?b=1&k=6&m=1059380230&s=170667a&w=0&h=kA_A_XrhZJjw2bo5jIJ7089-VktFK0h0I4OWDqaac0c=',
-    'https://cdn.pixabay.com/photo/2019/11/05/00/53/cellular-4602489_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2017/02/12/10/29/christmas-2059698_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/01/29/17/09/snowboard-4803050_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/02/06/20/01/university-library-4825366_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/11/22/17/28/cat-5767334_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/13/16/22/snow-5828736_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/09/09/27/women-5816861_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2019/03/15/09/49/girl-4056684_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/15/16/25/clock-5834193__340.jpg',
-    'https://cdn.pixabay.com/photo/2020/09/18/19/31/laptop-5582775_960_720.jpg',
-    'https://media.istockphoto.com/photos/woman-kayaking-in-fjord-in-norway-picture-id1059380230?b=1&k=6&m=1059380230&s=170667a&w=0&h=kA_A_XrhZJjw2bo5jIJ7089-VktFK0h0I4OWDqaac0c=',
-    'https://cdn.pixabay.com/photo/2019/11/05/00/53/cellular-4602489_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2017/02/12/10/29/christmas-2059698_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/01/29/17/09/snowboard-4803050_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/02/06/20/01/university-library-4825366_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/11/22/17/28/cat-5767334_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/13/16/22/snow-5828736_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2020/12/09/09/27/women-5816861_960_720.jpg',
+    'assets/photos/seagull.png',
+    'assets/photos/phone-wallpaper.png',
+    'assets/photos/saturn.png',
+    'assets/photos/space.png',
+    'assets/photos/tree.jpg',
+    'assets/photos/seagull.png',
+    'assets/photos/phone-wallpaper.png',
+    'assets/photos/saturn.png',
+    'assets/photos/space.png',
+    'assets/photos/tree.jpg',
+    'assets/photos/seagull.png',
+    'assets/photos/phone-wallpaper.png',
+    'assets/photos/saturn.png',
+    'assets/photos/space.png',
+    'assets/photos/tree.jpg',
+    'assets/photos/seagull.png',
+    'assets/photos/phone-wallpaper.png',
+    'assets/photos/saturn.png',
+    'assets/photos/space.png',
+    'assets/photos/tree.jpg',
+    'assets/photos/seagull.png',
+    'assets/photos/phone-wallpaper.png',
+    'assets/photos/saturn.png',
+    'assets/photos/space.png',
+    'assets/photos/tree.jpg',
+    'assets/photos/seagull.png',
+    'assets/photos/phone-wallpaper.png',
+    'assets/photos/saturn.png',
+    'assets/photos/space.png',
+    'assets/photos/tree.jpg',
+    'assets/photos/seagull.png',
+    'assets/photos/phone-wallpaper.png',
+    'assets/photos/saturn.png',
+    'assets/photos/space.png',
+    'assets/photos/tree.jpg',
+    'assets/photos/seagull.png',
+    'assets/photos/phone-wallpaper.png',
+    'assets/photos/saturn.png',
+    'assets/photos/space.png',
+    'assets/photos/tree.jpg',
+    'assets/photos/seagull.png',
+    'assets/photos/phone-wallpaper.png',
+    'assets/photos/saturn.png',
+    'assets/photos/space.png',
+    'assets/photos/tree.jpg',
+    'assets/photos/seagull.png',
+    'assets/photos/phone-wallpaper.png',
+    'assets/photos/saturn.png',
+    'assets/photos/space.png',
+    'assets/photos/tree.jpg',
+    'assets/photos/seagull.png',
+    'assets/photos/phone-wallpaper.png',
+    'assets/photos/saturn.png',
+    'assets/photos/space.png',
+    'assets/photos/tree.jpg',
+    'assets/photos/seagull.png',
+    'assets/photos/phone-wallpaper.png',
+    'assets/photos/saturn.png',
+    'assets/photos/space.png',
+    'assets/photos/tree.jpg',
+    'assets/photos/seagull.png',
+    'assets/photos/phone-wallpaper.png',
+    'assets/photos/saturn.png',
+    'assets/photos/space.png',
+    'assets/photos/tree.jpg',
+    'assets/photos/seagull.png',
+    'assets/photos/phone-wallpaper.png',
+    'assets/photos/saturn.png',
+    'assets/photos/space.png',
+    'assets/photos/tree.jpg',
+    'assets/photos/seagull.png',
+    'assets/photos/phone-wallpaper.png',
+    'assets/photos/saturn.png',
+    'assets/photos/space.png',
+    'assets/photos/tree.jpg',
   ];
+
+  MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    // double baseWidth = 390;
-    // double fem = 1;
-    // double ffem = fem * 0.97;
     return MaterialApp(
-      title: 'Flutter',
+      title: 'FOTOS',
       debugShowCheckedModeBanner: false,
       scrollBehavior: MyCustomScrollBehavior(),
       theme: ThemeData(
@@ -107,77 +112,15 @@ class MyApp extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              Icon(
-                Icons.favorite,
-                color: Colors.pink,
-                size: 24.0,
-                semanticLabel: 'Text to announce in accessibility modes',
+            children: [
+              SizedBox(
+                height: 50.0,
+                child: Image.asset(
+                  'assets/branding/images/logo.png',
+                ),
               ),
-              // Container(
-              //   width: 25.11,
-              //   height: 28.25,
-              //   child: Stack(
-              //     children: [
-              //       Positioned(
-              //         left: 12.56,
-              //         top: 13.81,
-              //         child: Container(
-              //           width: 10.67,
-              //           height: 10.67,
-              //           decoration: const BoxDecoration(
-              //             shape: BoxShape.circle,
-              //             color: Colors.white,
-              //           ),
-              //         ),
-              //       ),
-              //       Positioned.fill(
-              //         child: Align(
-              //           alignment: Alignment.topLeft,
-              //           child: Container(
-              //             width: 15.69,
-              //             height: 15.69,
-              //             decoration: BoxDecoration(
-              //               shape: BoxShape.circle,
-              //               border: Border.all(
-              //                 color: Colors.white,
-              //                 width: 1,
-              //               ),
-              //               color: const Color(0xff239de9),
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //       Positioned(
-              //         left: 3.14,
-              //         top: 3.14,
-              //         child: Container(
-              //           width: 4.39,
-              //           height: 4.39,
-              //           decoration: const BoxDecoration(
-              //             shape: BoxShape.circle,
-              //             color: Colors.white,
-              //           ),
-              //         ),
-              //       ),
-              //       Positioned.fill(
-              //         child: Align(
-              //           alignment: Alignment.bottomRight,
-              //           child: Container(
-              //             width: 3.77,
-              //             height: 3.77,
-              //             decoration: const BoxDecoration(
-              //               shape: BoxShape.circle,
-              //               color: Colors.white,
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              SizedBox(width: 10),
-              Text(
+              const SizedBox(width: 10),
+              const Text(
                 "Fotos",
                 style: TextStyle(
                   color: Colors.white,
@@ -246,9 +189,6 @@ class MyApp extends StatelessWidget {
           ),
         ),
         body: Container(
-          // width: MediaQuery.of(context).size.width,
-          // constraints: const BoxConstraints.expand(),
-          // height: 844,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -275,7 +215,7 @@ class MyApp extends StatelessWidget {
                             alignment: Alignment.topCenter,
                             children: [
                               Image.asset(
-                                'assets/images/tree.jpg',
+                                'assets/photos/space.png',
                                 height: 320,
                                 fit: BoxFit.fill,
                               ),
@@ -379,7 +319,7 @@ class MyApp extends StatelessWidget {
                                 child: Stack(
                                   alignment: Alignment.topRight,
                                   children: [
-                                    Image.network(
+                                    Image.asset(
                                       imageList[index],
                                     ),
                                     Row(
@@ -409,153 +349,7 @@ class MyApp extends StatelessWidget {
                                     crossAxisCount: 2)),
                       ),
                     ],
-                  )
-
-                  // SingleChildScrollView(
-                  //   child: Column(
-                  //     children: [
-                  //       Container(
-                  //         height: 320,
-                  //         color: Colors.white,
-                  //         child: Stack(
-                  //           alignment: Alignment.topCenter,
-                  //           children: [
-                  //             Image.asset(
-                  //               'assets/images/tree.jpg',
-                  //               height: 320,
-                  //               fit: BoxFit.fill,
-                  //             ),
-                  //             const Positioned(
-                  //               top: 30,
-                  //               child: Text(
-                  //                 "Stunning free images &\nroyalty free stock",
-                  //                 textAlign: TextAlign.center,
-                  //                 style: TextStyle(
-                  //                   color: Colors.white,
-                  //                   fontSize: 24,
-                  //                   fontFamily: "Poppins",
-                  //                   fontWeight: FontWeight.w700,
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //             const Positioned(
-                  //               top: 100,
-                  //               child: Text(
-                  //                 "Over 2.7 million+ high quality stock images,\nvideos and music shared by our talented\ncommunity",
-                  //                 textAlign: TextAlign.center,
-                  //                 style: TextStyle(
-                  //                   color: Colors.white,
-                  //                   fontSize: 15,
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //             Positioned(
-                  //               top: 170,
-                  //               child: SizedBox(
-                  //                 width: 361,
-                  //                 height: 50,
-                  //                 child: Row(
-                  //                   mainAxisSize: MainAxisSize.min,
-                  //                   mainAxisAlignment: MainAxisAlignment.center,
-                  //                   crossAxisAlignment: CrossAxisAlignment.center,
-                  //                   children: [
-                  //                     SizedBox(
-                  //                       width: 361,
-                  //                       height: 50,
-                  //                       child: Material(
-                  //                         color: Colors.white,
-                  //                         borderRadius: BorderRadius.circular(20),
-                  //                         child: Padding(
-                  //                           padding: const EdgeInsets.only(
-                  //                             left: 92,
-                  //                             right: 19,
-                  //                           ),
-                  //                           child: Row(
-                  //                             mainAxisSize: MainAxisSize.min,
-                  //                             mainAxisAlignment:
-                  //                                 MainAxisAlignment.end,
-                  //                             crossAxisAlignment:
-                  //                                 CrossAxisAlignment.center,
-                  //                             children: const [
-                  //                               Text(
-                  //                                 "Find your imagination",
-                  //                                 style: TextStyle(
-                  //                                   color: Color(0x7f050505),
-                  //                                   fontSize: 16,
-                  //                                   fontFamily: "Poppins",
-                  //                                   fontWeight: FontWeight.w500,
-                  //                                 ),
-                  //                               ),
-                  //                               SizedBox(width: 43),
-                  //                               SizedBox(
-                  //                                   width: 30,
-                  //                                   height: 30,
-                  //                                   child: Icon(Icons.search)),
-                  //                             ],
-                  //                           ),
-                  //                         ),
-                  //                       ),
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //             const Positioned(
-                  //               top: 250,
-                  //               child: Text(
-                  //                 "Popular Images: new year, wallpaper, nature, background,\nsky, money, love, cat car, dog, food, flowers, ipone\nwallpaper",
-                  //                 textAlign: TextAlign.center,
-                  //                 style: TextStyle(
-                  //                   color: Colors.white,
-                  //                   fontSize: 12,
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //       SizedBox(
-                  //           height: 700,
-                  //           child: MasonryGridView.builder(
-                  //               itemCount: imageList.length,
-                  //               shrinkWrap: true,
-                  //               // physics: NeverScrollableScrollPhysics(),
-                  // gridDelegate:
-                  //     const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                  //         crossAxisCount: 2),
-                  //               itemBuilder: ((context, index) => Card(
-                  //                     child: Stack(
-                  //                       alignment: Alignment.topRight,
-                  //                       children: [
-                  //                         Image.network(
-                  //                           imageList[index],
-                  //                         ),
-                  //                         Row(
-                  //                           mainAxisAlignment:
-                  //                               MainAxisAlignment.end,
-                  //                           children: const [
-                  //                             Icon(
-                  //                               Icons.favorite,
-                  //                               color: Colors.white,
-                  //                             ),
-                  //                             Icon(
-                  //                               Icons.bookmark_add,
-                  //                                color: Colors.white,
-                  //                             ),
-                  //                             Icon(
-                  //                               Icons.share,
-                  //                               color: Colors.white,
-                  //                             ),
-                  //                           ],
-                  //                         ),
-                  //                       ],
-                  //                     ),
-                  //                   ))))
-                  //     ],
-                  //   ),
-                  // ),
-
-                  ),
+                  )),
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Container(
