@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fotos_mobile/res/safe_google_font.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
@@ -47,6 +48,7 @@ class _LogInViewState extends State<LogInView> {
     bool loading = authViewModel.loading;
     return Scaffold(
         appBar: AppBar(
+          toolbarHeight: 10,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -283,7 +285,7 @@ class _LogInViewState extends State<LogInView> {
                     child: Container(
                         // group3ECF (268:87)
                         margin: EdgeInsets.fromLTRB(
-                            45 * fem, 0 * fem, 39 * fem, 0 * fem),
+                            45 * fem, 0 * fem, 39 * fem, 10 * fem),
                         width: double.infinity,
                         height: 48 * fem,
                         decoration: BoxDecoration(
@@ -304,13 +306,52 @@ class _LogInViewState extends State<LogInView> {
                                   )
                                 : Text('Login',
                                     style: GoogleFonts.inter().copyWith(
-                                      fontSize: 15 * ffem,
+                                      fontSize: 20 * ffem,
                                       fontWeight: FontWeight.w600,
                                       height: 1.2125 * ffem / fem,
                                       letterSpacing: 2.25 * fem,
                                       color: const Color(0xff239de9),
                                     ) // Center(
                                     ))),
+                  ),
+                  Text(
+                    'OR',
+                    style: CustomTheme.base.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: CustomTheme.whiteTextColor),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      print('Login with google');
+                    },
+                    child: Container(
+                        // group3ECF (268:87)
+                        margin: EdgeInsets.fromLTRB(
+                            45 * fem, 10 * fem, 39 * fem, 0 * fem),
+                        width: double.infinity,
+                        height: 48 * fem,
+                        decoration: BoxDecoration(
+                          color: const Color(0xffffffff),
+                          borderRadius: BorderRadius.circular(50 * fem),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0x3f000000),
+                              offset: Offset(0 * fem, 4 * fem),
+                              blurRadius: 2 * fem,
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: loading
+                              ? CircularProgressIndicator(
+                                  color: CustomTheme.whiteTextColor,
+                                )
+                              : SvgPicture.asset(
+                                  'assets/icons/google.svg',
+                                  height: 40,
+                                  fit: BoxFit.contain,
+                                ),
+                        )),
                   ),
                 ],
               ),

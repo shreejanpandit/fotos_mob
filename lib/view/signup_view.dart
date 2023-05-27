@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fotos_mobile/res/safe_google_font.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
@@ -52,11 +53,12 @@ class _SignUpViewState extends State<SignUpView> {
 
     bool loading = authViewModel.loading;
     return Scaffold(
-        // appBar: AppBar(
-        //   automaticallyImplyLeading: false,
-        //   backgroundColor: Colors.transparent,
-        //   elevation: 0,
-        // ),
+        appBar: AppBar(
+          toolbarHeight: 10,
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: CustomTheme.primaryColor,
         body: SafeArea(
@@ -68,7 +70,7 @@ class _SignUpViewState extends State<SignUpView> {
                   Container(
                     // group49z7 (268:88)
                     margin: EdgeInsets.fromLTRB(
-                        126 * fem, 40 * fem, 125 * fem, 13 * fem),
+                        126 * fem, 0 * fem, 125 * fem, 13 * fem),
                     width: double.infinity,
 
                     child: Row(
@@ -97,7 +99,7 @@ class _SignUpViewState extends State<SignUpView> {
                   Container(
                     // yourmemoriesmarketplaceUuu (265:294)
                     margin: EdgeInsets.fromLTRB(
-                        2 * fem, 0 * fem, 0 * fem, 20 * fem),
+                        2 * fem, 0 * fem, 0 * fem, 15 * fem),
                     child: Text('Your memories marketplace',
                         style: GoogleFonts.kaushanScript().copyWith(
                           fontSize: 20 * ffem,
@@ -108,7 +110,7 @@ class _SignUpViewState extends State<SignUpView> {
                   ),
                   Container(
                     margin: EdgeInsets.fromLTRB(
-                        19 * fem, 0 * fem, 18 * fem, 36 * fem),
+                        19 * fem, 0 * fem, 18 * fem, 5 * fem),
                     padding: const EdgeInsets.only(right: 0, bottom: 0),
                     width: double.infinity,
                     decoration: const BoxDecoration(
@@ -163,7 +165,7 @@ class _SignUpViewState extends State<SignUpView> {
                   ),
                   Container(
                     margin: EdgeInsets.fromLTRB(
-                        19 * fem, 0 * fem, 18 * fem, 36 * fem),
+                        19 * fem, 0 * fem, 18 * fem, 5 * fem),
                     padding: const EdgeInsets.only(right: 0, bottom: 0),
                     width: double.infinity,
                     decoration: const BoxDecoration(
@@ -222,7 +224,7 @@ class _SignUpViewState extends State<SignUpView> {
                         return Container(
                           // logininputbox2TZ (265:248)
                           margin: EdgeInsets.fromLTRB(
-                              19 * fem, 0 * fem, 18 * fem, 36 * fem),
+                              19 * fem, 0 * fem, 18 * fem, 15 * fem),
                           padding: const EdgeInsets.only(right: 0, bottom: 0),
                           width: double.infinity,
                           decoration: const BoxDecoration(
@@ -371,7 +373,7 @@ class _SignUpViewState extends State<SignUpView> {
                     child: Container(
                         // group3ECF (268:87)
                         margin: EdgeInsets.fromLTRB(
-                            45 * fem, 0 * fem, 39 * fem, 0 * fem),
+                            45 * fem, 0 * fem, 39 * fem, 10 * fem),
                         width: double.infinity,
                         height: 48 * fem,
                         decoration: BoxDecoration(
@@ -392,13 +394,52 @@ class _SignUpViewState extends State<SignUpView> {
                                   )
                                 : Text('Signup',
                                     style: GoogleFonts.inter().copyWith(
-                                      fontSize: 15 * ffem,
+                                      fontSize: 20 * ffem,
                                       fontWeight: FontWeight.w600,
                                       height: 1.2125 * ffem / fem,
                                       letterSpacing: 2.25 * fem,
                                       color: const Color(0xff239de9),
                                     ) // Center(
                                     ))),
+                  ),
+                  Text(
+                    'OR',
+                    style: CustomTheme.base.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: CustomTheme.whiteTextColor),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      print('Login with google');
+                    },
+                    child: Container(
+                        // group3ECF (268:87)
+                        margin: EdgeInsets.fromLTRB(
+                            45 * fem, 10 * fem, 39 * fem, 0 * fem),
+                        width: double.infinity,
+                        height: 48 * fem,
+                        decoration: BoxDecoration(
+                          color: const Color(0xffffffff),
+                          borderRadius: BorderRadius.circular(50 * fem),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0x3f000000),
+                              offset: Offset(0 * fem, 4 * fem),
+                              blurRadius: 2 * fem,
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: loading
+                              ? CircularProgressIndicator(
+                                  color: CustomTheme.whiteTextColor,
+                                )
+                              : SvgPicture.asset(
+                                  'assets/icons/google.svg',
+                                  height: 40,
+                                  fit: BoxFit.contain,
+                                ),
+                        )),
                   ),
                 ],
               ),

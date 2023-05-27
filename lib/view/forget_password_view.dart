@@ -42,6 +42,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
+          toolbarHeight: 10,
           elevation: 0,
         ),
         resizeToAvoidBottomInset: false,
@@ -184,7 +185,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                                   )
                                 : Text('SEND RESET LINK',
                                     style: GoogleFonts.inter().copyWith(
-                                      fontSize: 15 * ffem,
+                                      fontSize: 20 * ffem,
                                       fontWeight: FontWeight.w600,
                                       height: 1.2125 * ffem / fem,
                                       letterSpacing: 2.25 * fem,
