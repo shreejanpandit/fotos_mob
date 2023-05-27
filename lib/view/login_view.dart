@@ -9,14 +9,14 @@ import 'package:fotos_mobile/view_model/auth_view_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class LogInView extends StatefulWidget {
+  const LogInView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<LogInView> createState() => _LogInViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LogInViewState extends State<LogInView> {
   final ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -241,7 +241,8 @@ class _LoginViewState extends State<LoginView> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        print("Forget clicked");
+                                        Navigator.pushNamed(context,
+                                            RoutesName.forget_password);
                                       },
                                       child: const SizedBox(
                                         width: 70,
@@ -352,9 +353,9 @@ class _LoginViewState extends State<LoginView> {
                                 TextSpan(
                                   text: "Signup",
                                   style: CustomTheme.base.copyWith(
-                                    color: CustomTheme.primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                      color: CustomTheme.primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
                                 ),
                               ],
                             ),

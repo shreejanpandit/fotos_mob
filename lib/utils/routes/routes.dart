@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
+import 'package:fotos_mobile/view/forget_password_view.dart';
 import 'package:fotos_mobile/view/home_screen.dart';
 import 'package:fotos_mobile/view/login_view.dart';
 import 'package:fotos_mobile/view/signup_view.dart';
@@ -13,10 +14,13 @@ class Routes {
             builder: ((BuildContext context) => const HomeScreen()));
       case RoutesName.login:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => const LoginView()));
+            builder: ((BuildContext context) => const LogInView()));
       case RoutesName.signup:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => const SignupView()));
+            builder: ((BuildContext context) => const SignUpView()));
+      case RoutesName.forget_password:
+        return MaterialPageRoute(
+            builder: ((BuildContext context) => const ForgetPasswordView()));
       case RoutesName.splash:
         return MaterialPageRoute(
             builder: ((BuildContext context) => const SplashView()));
