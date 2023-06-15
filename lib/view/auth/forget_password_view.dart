@@ -1,7 +1,6 @@
 // ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
-import 'package:fotos_mobile/res/safe_google_font.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/utils/utils.dart';
@@ -185,7 +184,6 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                                   )
                                 : Text('SEND RESET LINK',
                                     style: GoogleFonts.inter().copyWith(
-                                      fontSize: 20 * ffem,
                                       fontWeight: FontWeight.w600,
                                       height: 1.2125 * ffem / fem,
                                       letterSpacing: 2.25 * fem,
@@ -218,7 +216,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                       alignment: Alignment.bottomRight,
                       child: Padding(
                         padding:
-                            EdgeInsets.only(right: 25 * fem, bottom: 50 * fem),
+                            EdgeInsets.only(right: 60 * fem, bottom: 50 * fem),
                         child: InkWell(
                           onTap: () =>
                               Navigator.pushNamed(context, RoutesName.login),
@@ -228,15 +226,15 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text: "Back to  ",
-                                  style: CustomTheme.base.copyWith(
+                                  style: CustomTheme.xSmall.copyWith(
                                       color: CustomTheme.lightBlackTextColor),
                                 ),
                                 TextSpan(
                                   text: "Login",
-                                  style: CustomTheme.base.copyWith(
-                                      color: CustomTheme.primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
+                                  style: CustomTheme.small.copyWith(
+                                    color: CustomTheme.primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ],
                             ),

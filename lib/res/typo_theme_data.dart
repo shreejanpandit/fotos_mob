@@ -84,9 +84,9 @@ class CustomTheme {
       textTheme: ButtonTextTheme.primary,
     ),
     appBarTheme: AppBarTheme(
-      color: primaryColor,
+      color: Colors.white,
       toolbarTextStyle: h6.copyWith(
-        color: Colors.white,
+        color: primaryColor,
       ),
       titleTextStyle: h6.copyWith(color: Colors.white),
     ),

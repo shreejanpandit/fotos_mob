@@ -8,7 +8,7 @@ class AuthRepository {
     try {
       dynamic response =
           await _apiService.getPostApiResponse(AppUrl.loginUrl, data);
-      print(response.toString());
+      // print(response.toString());
 
       return response;
     } catch (e) {

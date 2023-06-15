@@ -3,6 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fotos_mobile/data/response/status.dart';
 import 'package:fotos_mobile/res/components/appbar_widget.dart';
 import 'package:fotos_mobile/res/components/drawer_widget.dart';
+import 'package:fotos_mobile/res/components/home_component/gerne_row.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/utils/utils.dart';
@@ -235,6 +236,41 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
+                        SliverToBoxAdapter(
+                          child: Container(
+                            margin: EdgeInsets.all(10),
+                            child: Text(
+                              'Gerne',
+                              style: CustomTheme.h6,
+                            ),
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Container(
+                            width: 159,
+                            height: 81,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                Gerne(
+                                    text: 'Illustration',
+                                    imagePath: 'assets/photos/space.png'),
+                                Gerne(
+                                    text: 'Illustration',
+                                    imagePath: 'assets/photos/space.png'),
+                                Gerne(
+                                    text: 'Illustration',
+                                    imagePath: 'assets/photos/space.png'),
+                                Gerne(
+                                    text: 'Illustration',
+                                    imagePath: 'assets/photos/space.png'),
+                                Gerne(
+                                    text: 'Illustration',
+                                    imagePath: 'assets/photos/space.png'),
+                              ],
+                            ),
+                          ),
+                        ),
                         SliverPadding(
                           padding: const EdgeInsets.all(5),
                           sliver: SliverMasonryGrid(
@@ -280,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     alignment: Alignment.bottomLeft,
                     child: Container(
                       width: double.infinity,
-                      height: 20,
+                      height: 60,
                       decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
@@ -288,7 +324,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           colors: [
                             Color(0x00efd7d7),
                             Color(0xf0dad8d8),
-                            Color(0xffd9d9d9),
                           ],
                         ),
                       ),

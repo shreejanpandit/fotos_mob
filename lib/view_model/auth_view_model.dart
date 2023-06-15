@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:fotos_mobile/models/user_models.dart';
 import 'package:fotos_mobile/repository/auth_repository.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
@@ -23,8 +24,13 @@ class AuthViewModel with ChangeNotifier {
       setloading(false);
       print(value.toString());
       final userPreference = Provider.of<UserViewModel>(context, listen: false);
-      userPreference.saveUser(UserModel(token: value['token'].toString()));
-      Utils.snackBar('Login sucessful', context);
+      userPreference
+          .saveUser(UserModel(token: value['accessToken'].toString()));
+      Utils.snackBar(
+          message: 'Login sucessful',
+          context: context,
+          bgColor: Colors.greenAccent,
+          textColor: Colors.black);
       Navigator.pushNamed(context, RoutesName.home);
     }).onError((error, stackTrace) {
       setloading(false);
@@ -43,7 +49,11 @@ class AuthViewModel with ChangeNotifier {
       ..then((value) {
         setloading(false);
 
-        Utils.snackBar('Register sucessful', context);
+        Utils.snackBar(
+            message: 'Register sucessful',
+            context: context,
+            bgColor: Colors.greenAccent,
+            textColor: Colors.black);
         Navigator.pushNamed(context, RoutesName.login);
       }).onError((error, stackTrace) {
         setloading(false);

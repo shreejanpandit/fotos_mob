@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/routes/routes.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
-import 'package:fotos_mobile/view/login_view.dart';
+import 'package:fotos_mobile/view/auth/login_view.dart';
 import 'package:fotos_mobile/view_model/auth_view_model.dart';
 import 'package:fotos_mobile/view_model/drawer_view_model.dart';
 import 'package:fotos_mobile/view_model/home_view_model.dart';

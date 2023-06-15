@@ -14,7 +14,7 @@ class SplashServices {
       //   await Future.delayed(Duration(seconds: 3));
       //   Navigator.pushNamed(context, RoutesName.login);
       // } else {
-      await Future.delayed(Duration(seconds: 3));
+      await Future.delayed(Duration(seconds: 2));
 
       Navigator.pushNamed(context, RoutesName.home);
       // }

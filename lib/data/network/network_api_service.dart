@@ -24,7 +24,10 @@ class NetworkApiService extends BaseApiService {
     dynamic responseJson;
     try {
       http.Response response = await http
-          .post(Uri.parse(url), body: data)
+          .post(
+            Uri.parse(url),
+            body: data,
+          )
           .timeout(Duration(seconds: 15));
       responseJson = returnResponse(response);
     } on SocketException {
@@ -45,7 +48,7 @@ class NetworkApiService extends BaseApiService {
       default:
         throw FetchDataException(
             'Error occured while communicating with server' +
-                'with respnse code' +
+                'with response code' +
                 response.statusCode.toString());
     }
   }

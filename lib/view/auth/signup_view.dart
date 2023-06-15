@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fotos_mobile/res/safe_google_font.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/utils/utils.dart';
@@ -327,23 +326,85 @@ class _SignUpViewState extends State<SignUpView> {
                           },
                         ),
                       ),
-                      RichText(
-                        textAlign: TextAlign.end,
-                        text: TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: "I read and agree to ",
-                              style: CustomTheme.base.copyWith(
-                                  color: CustomTheme.lightBlackTextColor),
-                            ),
-                            TextSpan(
-                              text: "Terms & Condition",
-                              style: CustomTheme.base.copyWith(
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Welcome to FOTOS!'),
+                                content: Text(
+                                  'Terms and Conditions',
+                                  style: CustomTheme.base
+                                      .copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                actions: [
+                                  Center(
+                                      child: Text(
+                                    "Please read before proceeding.",
+                                    style: CustomTheme.base
+                                        .copyWith(fontWeight: FontWeight.w500),
+                                  )),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    "FOTOS is a photo library application where you can purchase high-quality images for your projects or use free images available in our collection.",
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    "By using FOTOS, you agree to our Terms and Conditions. Please read them carefully before using the application.",
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    "For any questions or support, please contact our team at support@fotosapp.com.",
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pushNamed(context,
+                                                RoutesName.terms_And_condition);
+                                            // Navigator.of(context).pop();
+                                          },
+                                          child:
+                                              const Text('Terms & Conditions')),
+                                      TextButton(
+                                          onPressed: () {
+                                            isChecked = true;
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Agree')),
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Close')),
+                                    ],
+                                  )
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: RichText(
+                          textAlign: TextAlign.end,
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: "I read and agree to ",
+                                style: CustomTheme.xSmall.copyWith(
+                                    color: CustomTheme.lightBlackTextColor),
+                              ),
+                              TextSpan(
+                                text: "Terms & Condition",
+                                style: CustomTheme.small.copyWith(
                                   color: CustomTheme.whiteTextColor,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 18),
-                            ),
-                          ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -389,12 +450,12 @@ class _SignUpViewState extends State<SignUpView> {
                         ),
                         child: Center(
                             child: loading
-                                ? CircularProgressIndicator(
+                                ? const CircularProgressIndicator(
                                     color: CustomTheme.whiteTextColor,
                                   )
                                 : Text('Signup',
                                     style: GoogleFonts.inter().copyWith(
-                                      fontSize: 20 * ffem,
+                                      // fontSize: 20 * ffem,
                                       fontWeight: FontWeight.w600,
                                       height: 1.2125 * ffem / fem,
                                       letterSpacing: 2.25 * fem,
@@ -408,39 +469,39 @@ class _SignUpViewState extends State<SignUpView> {
                         fontWeight: FontWeight.bold,
                         color: CustomTheme.whiteTextColor),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      print('Login with google');
-                    },
-                    child: Container(
-                        // group3ECF (268:87)
-                        margin: EdgeInsets.fromLTRB(
-                            45 * fem, 10 * fem, 39 * fem, 0 * fem),
-                        width: double.infinity,
-                        height: 48 * fem,
-                        decoration: BoxDecoration(
-                          color: const Color(0xffffffff),
-                          borderRadius: BorderRadius.circular(50 * fem),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0x3f000000),
-                              offset: Offset(0 * fem, 4 * fem),
-                              blurRadius: 2 * fem,
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                          child: loading
-                              ? CircularProgressIndicator(
-                                  color: CustomTheme.whiteTextColor,
-                                )
-                              : SvgPicture.asset(
-                                  'assets/icons/google.svg',
-                                  height: 40,
-                                  fit: BoxFit.contain,
+                  Container(
+                    margin: EdgeInsets.fromLTRB(
+                        45 * fem, 10 * fem, 39 * fem, 0 * fem),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              print('Google');
+                            },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white,
+
+                                    width: 5, // Adjust the width of the border
+                                  ),
                                 ),
-                        )),
-                  ),
+                                child: Image.asset('assets/icons/gg.png'))),
+                        InkWell(
+                            onTap: () {
+                              print('Facebook');
+                            },
+                            child: Icon(
+                              Icons.facebook_outlined,
+                              color: Colors.white,
+                              size: 50,
+                            )),
+                      ],
+                    ),
+                  )
                 ],
               ),
               Positioned(
@@ -466,7 +527,7 @@ class _SignUpViewState extends State<SignUpView> {
                       alignment: Alignment.bottomRight,
                       child: Padding(
                         padding:
-                            EdgeInsets.only(right: 25 * fem, bottom: 50 * fem),
+                            EdgeInsets.only(right: 50 * fem, bottom: 50 * fem),
                         child: InkWell(
                           onTap: () =>
                               Navigator.pushNamed(context, RoutesName.login),
@@ -476,15 +537,15 @@ class _SignUpViewState extends State<SignUpView> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text: "Already Have an accoutn? ",
-                                  style: CustomTheme.base.copyWith(
+                                  style: CustomTheme.xSmall.copyWith(
                                       color: CustomTheme.lightBlackTextColor),
                                 ),
                                 TextSpan(
                                   text: "Login",
-                                  style: CustomTheme.base.copyWith(
-                                      color: CustomTheme.primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
+                                  style: CustomTheme.small.copyWith(
+                                    color: CustomTheme.primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ],
                             ),

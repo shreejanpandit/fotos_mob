@@ -10,10 +10,14 @@ AppBar appBar(context, GlobalKey<ScaffoldState> scaffoldKey) {
   final drawerProvider = Provider.of<DrawerViewModel>(context);
   final ValueNotifier<bool> _drawer = drawerProvider.drawerOpenNotifier;
   return AppBar(
+    // backgroundColor: Colors.white,
     automaticallyImplyLeading: false,
     actions: [
       IconButton(
-        icon: Icon(Icons.notifications_none),
+        icon: Icon(
+          Icons.notifications_none,
+          // color: CustomTheme.primaryColor,
+        ),
         onPressed: () {
           print("notification");
         },
@@ -29,9 +33,8 @@ AppBar appBar(context, GlobalKey<ScaffoldState> scaffoldKey) {
         color: CustomTheme.otherColor2,
         icon: CircleAvatar(
           backgroundImage: AssetImage('assets/branding/images/avatar.jpg'),
-          backgroundColor: Colors.white,
+          backgroundColor: CustomTheme.primaryColor,
         ),
-        // offset: Offset(0, 50),
         itemBuilder: (BuildContext context) {
           if (_drawer.value) {
             scaffoldKey.currentState?.openEndDrawer();
@@ -148,16 +151,22 @@ AppBar appBar(context, GlobalKey<ScaffoldState> scaffoldKey) {
       ValueListenableBuilder(
           valueListenable: _drawer,
           builder: ((context, value, child) {
-            return IconButton(
-                icon: const Icon(Icons.dehaze),
-                onPressed: () {
-                  if (_drawer.value) {
-                    scaffoldKey.currentState?.openEndDrawer();
-                  } else {
-                    scaffoldKey.currentState?.openDrawer();
-                  }
-                  _drawer.value = !_drawer.value; // Toggle the drawer value
-                });
+            return Container(
+              margin: EdgeInsets.only(right: 10),
+              child: CircleAvatar(
+                backgroundColor: CustomTheme.primaryColor,
+                child: IconButton(
+                    icon: const Icon(Icons.dehaze),
+                    onPressed: () {
+                      if (_drawer.value) {
+                        scaffoldKey.currentState?.openEndDrawer();
+                      } else {
+                        scaffoldKey.currentState?.openDrawer();
+                      }
+                      _drawer.value = !_drawer.value; // Toggle the drawer value
+                    }),
+              ),
+            );
           })),
     ],
     title: Row(
@@ -173,7 +182,8 @@ AppBar appBar(context, GlobalKey<ScaffoldState> scaffoldKey) {
         ),
         const SizedBox(width: 10),
         Text('Fotos',
-            style: GoogleFonts.lobster(fontSize: 40, color: Colors.white))
+            style: GoogleFonts.lobster(
+                fontSize: 40, color: CustomTheme.primaryColor))
       ],
     ),
     elevation: 0,

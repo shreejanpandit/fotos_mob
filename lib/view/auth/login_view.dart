@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fotos_mobile/res/safe_google_font.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/utils/utils.dart';
@@ -302,11 +301,11 @@ class _LogInViewState extends State<LogInView> {
                         child: Center(
                             child: loading
                                 ? CircularProgressIndicator(
-                                    color: CustomTheme.whiteTextColor,
+                                    color: CustomTheme.primaryColor,
                                   )
                                 : Text('Login',
                                     style: GoogleFonts.inter().copyWith(
-                                      fontSize: 20 * ffem,
+                                      // fontSize: 20 * ffem,
                                       fontWeight: FontWeight.w600,
                                       height: 1.2125 * ffem / fem,
                                       letterSpacing: 2.25 * fem,
@@ -320,39 +319,72 @@ class _LogInViewState extends State<LogInView> {
                         fontWeight: FontWeight.bold,
                         color: CustomTheme.whiteTextColor),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      print('Login with google');
-                    },
-                    child: Container(
-                        // group3ECF (268:87)
-                        margin: EdgeInsets.fromLTRB(
-                            45 * fem, 10 * fem, 39 * fem, 0 * fem),
-                        width: double.infinity,
-                        height: 48 * fem,
-                        decoration: BoxDecoration(
-                          color: const Color(0xffffffff),
-                          borderRadius: BorderRadius.circular(50 * fem),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0x3f000000),
-                              offset: Offset(0 * fem, 4 * fem),
-                              blurRadius: 2 * fem,
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                          child: loading
-                              ? CircularProgressIndicator(
-                                  color: CustomTheme.whiteTextColor,
-                                )
-                              : SvgPicture.asset(
-                                  'assets/icons/google.svg',
-                                  height: 40,
-                                  fit: BoxFit.contain,
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     print('Login with google');
+                  //   },
+                  //   child: Container(
+                  //       // group3ECF (268:87)
+                  //       margin: EdgeInsets.fromLTRB(
+                  //           45 * fem, 10 * fem, 39 * fem, 0 * fem),
+                  //       width: double.infinity,
+                  //       height: 48 * fem,
+                  //       decoration: BoxDecoration(
+                  //         color: const Color(0xffffffff),
+                  //         borderRadius: BorderRadius.circular(50 * fem),
+                  //         boxShadow: [
+                  //           BoxShadow(
+                  //             color: const Color(0x3f000000),
+                  //             offset: Offset(0 * fem, 4 * fem),
+                  //             blurRadius: 2 * fem,
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       child: Center(
+                  //         child: loading
+                  //             ? CircularProgressIndicator(
+                  //                 color: CustomTheme.primaryColor,
+                  //               )
+                  //             : SvgPicture.asset(
+                  //                 'assets/icons/google.svg',
+                  //                 height: 40,
+                  //                 fit: BoxFit.contain,
+                  //               ),
+                  //       )),
+                  // ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(
+                        45 * fem, 10 * fem, 39 * fem, 0 * fem),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              print('Google');
+                            },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white,
+
+                                    width: 5, // Adjust the width of the border
+                                  ),
                                 ),
-                        )),
-                  ),
+                                child: Image.asset('assets/icons/gg.png'))),
+                        InkWell(
+                            onTap: () {
+                              print('Facebook');
+                            },
+                            child: Icon(
+                              Icons.facebook_outlined,
+                              color: Colors.white,
+                              size: 50,
+                            )),
+                      ],
+                    ),
+                  )
                 ],
               ),
               Positioned(
@@ -378,7 +410,7 @@ class _LogInViewState extends State<LogInView> {
                       alignment: Alignment.bottomRight,
                       child: Padding(
                         padding:
-                            EdgeInsets.only(right: 25 * fem, bottom: 50 * fem),
+                            EdgeInsets.only(right: 50 * fem, bottom: 50 * fem),
                         child: InkWell(
                           onTap: () =>
                               Navigator.pushNamed(context, RoutesName.signup),
@@ -387,16 +419,16 @@ class _LogInViewState extends State<LogInView> {
                             text: TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: "Don't have an account? ",
-                                  style: CustomTheme.base.copyWith(
+                                  text: "Don't have an account?  ",
+                                  style: CustomTheme.xSmall.copyWith(
                                       color: CustomTheme.lightBlackTextColor),
                                 ),
                                 TextSpan(
                                   text: "Signup",
-                                  style: CustomTheme.base.copyWith(
-                                      color: CustomTheme.primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
+                                  style: CustomTheme.small.copyWith(
+                                    color: CustomTheme.primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ],
                             ),
