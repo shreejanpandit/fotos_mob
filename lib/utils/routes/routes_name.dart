@@ -7,4 +7,5 @@ class RoutesName {
   static const String terms_And_condition = 'terms_And_condition_screen';
   static const String privacy = 'privacy_screen';
   static const String about_us = 'about_us_screen';
+  static const String test = 'test_screen';
 }

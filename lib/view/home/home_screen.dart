@@ -1,14 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:fotos_mobile/data/response/status.dart';
 import 'package:fotos_mobile/res/components/appbar_widget.dart';
 import 'package:fotos_mobile/res/components/drawer_widget.dart';
 import 'package:fotos_mobile/res/components/home_component/gerne_row.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
-import 'package:fotos_mobile/utils/routes/routes_name.dart';
-import 'package:fotos_mobile/utils/utils.dart';
+import 'package:fotos_mobile/view/home/profile_screen.dart';
+import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 import 'package:fotos_mobile/view_model/home_view_model.dart';
-import 'package:fotos_mobile/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -107,244 +106,331 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+    GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
-    final userPreference = Provider.of<UserViewModel>(context);
+    // final userPreference = Provider.of<UserViewModel>(context);
+    final appbarProvider = Provider.of<AppbarViewModel>(context);
 
     return Scaffold(
-        appBar: appBar(context, _scaffoldKey),
-        body: Scaffold(
-          key: _scaffoldKey,
+      appBar: appBar(context, scaffoldKey),
+      body: Scaffold(
+          key: scaffoldKey,
           drawer: const AppDrawer(),
-          body: ChangeNotifierProvider<HomeViewModel>(
-            create: (BuildContext context) => homeViewModel,
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xff239de9),
-                    Color(0xffddeffb),
-                    Colors.white,
-                    Color(0x00ffffff)
-                  ],
-                ),
-              ),
-              child: Stack(
-                children: [
-                  SizedBox(
-                    child: CustomScrollView(
-                      slivers: [
-                        SliverToBoxAdapter(
-                          child: Container(
-                            color: Colors.white,
-                            child: Stack(
-                              alignment: Alignment.topCenter,
-                              children: [
-                                Image.asset(
-                                  'assets/photos/space.png',
-                                  height: 320,
-                                  fit: BoxFit.fill,
-                                ),
-                                Positioned(
-                                  top: 30,
-                                  child: Text(
-                                    "Stunning free images &\nroyalty free stock",
-                                    textAlign: TextAlign.center,
-                                    style: CustomTheme.h6.copyWith(
-                                      color: CustomTheme.whiteTextColor,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 100,
-                                  child: Text(
-                                    "Over 2.7 million+ high quality stock images,\nvideos and music shared by our talented\ncommunity",
-                                    textAlign: TextAlign.center,
-                                    style: CustomTheme.base.copyWith(
-                                      fontSize: 15.0,
-                                      color: CustomTheme.whiteTextColor,
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 170,
-                                  child: SizedBox(
-                                    width: 361,
-                                    height: 50,
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
+          body: appbarProvider.showBody
+              ? ChangeNotifierProvider<HomeViewModel>(
+                  create: (BuildContext context) => homeViewModel,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xff239de9),
+                          Color(0xffddeffb),
+                          Colors.white,
+                          Color(0x00ffffff)
+                        ],
+                      ),
+                    ),
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          child: CustomScrollView(
+                            slivers: [
+                              SliverToBoxAdapter(
+                                child: Container(
+                                  color: Colors.white,
+                                  child: Stack(
+                                    alignment: Alignment.topCenter,
+                                    children: [
+                                      Image.asset(
+                                        'assets/photos/space.png',
+                                        height: 320,
+                                        fit: BoxFit.fill,
+                                      ),
+                                      Positioned(
+                                        top: 30,
+                                        child: Text(
+                                          "Stunning free images &\nroyalty free stock",
+                                          textAlign: TextAlign.center,
+                                          style: CustomTheme.h6.copyWith(
+                                            color: CustomTheme.whiteTextColor,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 100,
+                                        child: Text(
+                                          "Over 2.7 million+ high quality stock images,\nvideos and music shared by our talented\ncommunity",
+                                          textAlign: TextAlign.center,
+                                          style: CustomTheme.base.copyWith(
+                                            fontSize: 15.0,
+                                            color: CustomTheme.whiteTextColor,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 170,
+                                        child: SizedBox(
                                           width: 361,
                                           height: 50,
-                                          child: Material(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                left: 92,
-                                                right: 19,
-                                              ),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    "Find your imagination",
-                                                    style: CustomTheme.base
-                                                        .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w500,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              // Handle the tap event here
+                                              // Perform the search or show search options
+                                            },
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  width: 361,
+                                                  height: 50,
+                                                  child: Material(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: TextField(
+                                                              decoration:
+                                                                  const InputDecoration(
+                                                                hintText:
+                                                                    'Find your imagination',
+                                                                border:
+                                                                    InputBorder
+                                                                        .none,
+                                                                contentPadding:
+                                                                    EdgeInsets.only(
+                                                                        left:
+                                                                            15),
+                                                              ),
+                                                              style: CustomTheme
+                                                                  .base
+                                                                  .copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              if (kDebugMode) {
+                                                                print(
+                                                                    'clicked');
+                                                              }
+                                                              // Handle search icon tap event here
+                                                              // Perform the search or show search options
+                                                            },
+                                                            child: Container(
+                                                              color: CustomTheme
+                                                                  .primaryColor,
+                                                              width: 50,
+                                                              height: 50,
+                                                              child: const Icon(
+                                                                Icons.search,
+                                                                color: Colors
+                                                                    .white,
+                                                                size: 32,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
-                                                  SizedBox(width: 43),
-                                                  SizedBox(
-                                                    width: 30,
-                                                    height: 30,
-                                                    child: Icon(Icons.search),
-                                                  ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 250,
-                                  child: Text(
-                                    "Popular Images: new year, wallpaper, nature, background,\nsky, money, love, cat car, dog, food, flowers, ipone\nwallpaper",
-                                    textAlign: TextAlign.center,
-                                    style: CustomTheme.xSmall
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: Container(
-                            margin: EdgeInsets.all(10),
-                            child: Text(
-                              'Gerne',
-                              style: CustomTheme.h6,
-                            ),
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: Container(
-                            width: 159,
-                            height: 81,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: [
-                                Gerne(
-                                    text: 'Illustration',
-                                    imagePath: 'assets/photos/space.png'),
-                                Gerne(
-                                    text: 'Illustration',
-                                    imagePath: 'assets/photos/space.png'),
-                                Gerne(
-                                    text: 'Illustration',
-                                    imagePath: 'assets/photos/space.png'),
-                                Gerne(
-                                    text: 'Illustration',
-                                    imagePath: 'assets/photos/space.png'),
-                                Gerne(
-                                    text: 'Illustration',
-                                    imagePath: 'assets/photos/space.png'),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SliverPadding(
-                          padding: const EdgeInsets.all(5),
-                          sliver: SliverMasonryGrid(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) => Card(
-                                  child: Stack(
-                                    alignment: Alignment.topRight,
-                                    children: [
-                                      Image.asset(
-                                        imageList[index],
                                       ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: const [
-                                          Icon(
-                                            Icons.favorite,
-                                            color: Colors.white,
-                                          ),
-                                          Icon(
-                                            Icons.bookmark_add,
-                                            color: Colors.white,
-                                          ),
-                                          Icon(
-                                            Icons.share,
-                                            color: Colors.white,
-                                          ),
-                                        ],
+                                      Positioned(
+                                        top: 250,
+                                        child: Text(
+                                          "Popular Images: new year, wallpaper, nature, background,\nsky, money, love, cat car, dog, food, flowers, ipone\nwallpaper",
+                                          textAlign: TextAlign.center,
+                                          style: CustomTheme.xSmall
+                                              .copyWith(color: Colors.white),
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                childCount: imageList.length,
                               ),
-                              gridDelegate:
-                                  const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2)),
+                              SliverToBoxAdapter(
+                                child: Container(
+                                  margin: const EdgeInsets.all(10),
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    'Gerne',
+                                    style: CustomTheme.h6
+                                        .copyWith(fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
+                              SliverToBoxAdapter(
+                                child: Container(
+                                  margin: const EdgeInsets.only(bottom: 10),
+                                  height: 81,
+                                  child: ListView(
+                                    scrollDirection: Axis.horizontal,
+                                    children: const [
+                                      Gerne(
+                                          text: 'Illustration',
+                                          imagePath:
+                                              'assets/photos/saturn.png'),
+                                      Gerne(
+                                          text: 'Space',
+                                          imagePath: 'assets/photos/space.png'),
+                                      Gerne(
+                                          text: 'Potrait',
+                                          imagePath: 'assets/photos/tree.jpg'),
+                                      Gerne(
+                                          text: 'Documentry',
+                                          imagePath:
+                                              'assets/photos/seagull.png'),
+                                      Gerne(
+                                          text: 'Still Life',
+                                          imagePath: 'assets/photos/space.png'),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SliverPadding(
+                                padding: const EdgeInsets.all(5),
+                                sliver: SliverMasonryGrid(
+                                    delegate: SliverChildBuilderDelegate(
+                                      (context, index) => Card(
+                                        child: Stack(
+                                          alignment: Alignment.topRight,
+                                          children: [
+                                            Image.asset(
+                                              imageList[index],
+                                            ),
+                                            const Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Icon(
+                                                  Icons.favorite,
+                                                  color: Colors.white,
+                                                ),
+                                                Icon(
+                                                  Icons.bookmark_add,
+                                                  color: Colors.white,
+                                                ),
+                                                Icon(
+                                                  Icons.share,
+                                                  color: Colors.white,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      childCount: imageList.length,
+                                    ),
+                                    gridDelegate:
+                                        const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2)),
+                              ),
+                            ],
+                          ),
                         ),
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Container(
+                            width: double.infinity,
+                            height: 60,
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Color(0x00efd7d7),
+                                  Color(0xf0dad8d8),
+                                ],
+                              ),
+                            ),
+                            padding: const EdgeInsets.only(
+                              left: 128,
+                              right: 121,
+                              top: 61,
+                              bottom: 23,
+                            ),
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [],
+                            ),
+                          ),
+                        ),
+                        Stack(
+                          children: [
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Container(
+                                  width: 390,
+                                  height: 122,
+                                  padding: const EdgeInsets.only(
+                                    left: 124,
+                                    right: 125,
+                                    top: 30,
+                                    bottom: 15,
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 141,
+                                        height: 38,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          color: CustomTheme.primaryColor,
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 29,
+                                          vertical: 10,
+                                        ),
+                                        child: const Text(
+                                          "Discover More",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontFamily: "Inter",
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Container(
-                      width: double.infinity,
-                      height: 60,
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Color(0x00efd7d7),
-                            Color(0xf0dad8d8),
-                          ],
-                        ),
-                      ),
-                      padding: const EdgeInsets.only(
-                        left: 128,
-                        right: 121,
-                        top: 61,
-                        bottom: 23,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: const [],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ));
+                )
+              : ProfileScreen()),
+    );
   }
 }

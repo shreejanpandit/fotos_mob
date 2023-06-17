@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/view_model/services/splash_services.dart';
 
 class SplashView extends StatefulWidget {

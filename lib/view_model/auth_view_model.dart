@@ -18,28 +18,71 @@ class AuthViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  // Future<void> loginApi(dynamic data, BuildContext context) async {
+  //   setloading(true);
+  //   _myRepo.loginApi(data).then((value) {
+  //     setloading(false);
+  //     print(value.toString());
+  //     final userPreference = Provider.of<UserViewModel>(context, listen: false);
+  //     userPreference
+  //         .saveUser(UserModel(token: value['accessToken'].toString()));
+  //     Utils.snackBar(
+  //         message: 'Login sucessful',
+  //         context: context,
+  //         bgColor: Colors.greenAccent,
+  //         textColor: Colors.black);
+  //     Navigator.pushNamed(context, RoutesName.home);
+  //   }).onError((error, stackTrace) {
+  //     setloading(false);
+
+  //     Utils.flushBarErrorMessage(error.toString(), context);
+  //     if (kDebugMode) {
+  //       print(error.toString());
+  //     }
+  //   });
+  // }
+
   Future<void> loginApi(dynamic data, BuildContext context) async {
     setloading(true);
-    _myRepo.loginApi(data).then((value) {
-      setloading(false);
-      print(value.toString());
-      final userPreference = Provider.of<UserViewModel>(context, listen: false);
-      userPreference
-          .saveUser(UserModel(token: value['accessToken'].toString()));
-      Utils.snackBar(
-          message: 'Login sucessful',
-          context: context,
-          bgColor: Colors.greenAccent,
-          textColor: Colors.black);
-      Navigator.pushNamed(context, RoutesName.home);
-    }).onError((error, stackTrace) {
+    try {
+      var res = await _myRepo.loginApi(data);
+
+      if (res != null) {
+        var result = res as Map<String, dynamic>;
+
+        if (result.containsKey('message')) {
+          var message = result['message'];
+          var errors = result['errors'] as Map<String, dynamic>;
+
+          if (errors.containsKey('email')) {
+            setloading(false);
+            Utils.flushBarErrorMessage(message.toString(),
+                context); // Display the error message using Utils.flushBarErrorMessage
+          }
+        } else {
+          setloading(false);
+          final userPreference =
+              Provider.of<UserViewModel>(context, listen: false);
+          userPreference
+              .saveUser(UserModel(token: result['accessToken'].toString()));
+          // ignore: use_build_context_synchronously
+          Utils.snackBar(
+            message: 'Login successful',
+            context: context,
+            bgColor: Colors.greenAccent,
+            textColor: Colors.black,
+          );
+          Navigator.pushNamed(context, RoutesName.home);
+        }
+      }
+    } catch (error, stackTrace) {
       setloading(false);
 
       Utils.flushBarErrorMessage(error.toString(), context);
       if (kDebugMode) {
         print(error.toString());
       }
-    });
+    }
   }
 
   Future<void> signupApi(dynamic data, BuildContext context) async {

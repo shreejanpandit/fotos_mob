@@ -20,20 +20,22 @@ class NetworkApiService extends BaseApiService {
   }
 
   @override
-  Future getPostApiResponse(String url, dynamic data) async {
-    dynamic responseJson;
+  Future<dynamic> getPostApiResponse(String url, dynamic data) async {
     try {
-      http.Response response = await http
-          .post(
-            Uri.parse(url),
-            body: data,
-          )
-          .timeout(Duration(seconds: 15));
-      responseJson = returnResponse(response);
+      http.Response response = await http.post(
+        Uri.parse(url),
+        body: jsonEncode(data),
+        headers: {
+          "Content-type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+          "Accept": "application/json"
+        },
+      ).timeout(Duration(seconds: 15));
+
+      return returnResponse(response);
     } on SocketException {
       throw FetchDataException('No internet connection');
     }
-    return responseJson;
   }
 
   dynamic returnResponse(http.Response response) {
@@ -43,12 +45,15 @@ class NetworkApiService extends BaseApiService {
         return responseJson;
       case 400:
         throw BadRequestException(response.body.toString());
+      case 422:
+        dynamic responseJson = jsonDecode(response.body);
+        return responseJson;
       case 404:
         throw UnauthorizedException(response.body.toString());
       default:
         throw FetchDataException(
-            'Error occured while communicating with server' +
-                'with response code' +
+            'Error occurred while communicating with the server ' +
+                'with response code ' +
                 response.statusCode.toString());
     }
   }

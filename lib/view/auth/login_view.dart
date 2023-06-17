@@ -267,6 +267,11 @@ class _LogInViewState extends State<LogInView> {
                       if (_emailController.text.isEmpty) {
                         Utils.flushBarErrorMessage(
                             "Please enter Email", context);
+                      } else if (!RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(_emailController.text)) {
+                        Utils.flushBarErrorMessage(
+                            "Please enter Email in proper format", context);
                       } else if (_passwordController.text.isEmpty) {
                         Utils.flushBarErrorMessage(
                             "Please enter Password", context);

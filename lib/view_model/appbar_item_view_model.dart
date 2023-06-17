@@ -1,9 +1,16 @@
 import 'package:flutter/foundation.dart';
 
-class DrawerViewModel extends ChangeNotifier {
+class AppbarViewModel extends ChangeNotifier {
   ValueNotifier<bool> drawerOpenNotifier = ValueNotifier<bool>(false);
 
   void toggleDrawer() {
     drawerOpenNotifier.value = !drawerOpenNotifier.value;
+  }
+
+  bool showBody = true;
+
+  void toggleBody() {
+    showBody = !showBody;
+    notifyListeners();
   }
 }

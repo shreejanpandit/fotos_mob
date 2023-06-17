@@ -31,7 +31,7 @@ class Gerne extends StatelessWidget {
               ),
               Text(
                 text,
-                style: CustomTheme.h6.copyWith(
+                style: CustomTheme.base.copyWith(
                   color: CustomTheme.whiteTextColor,
                 ),
               ),

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fotos_mobile/res/components/drawer_custom_tile.dart';
@@ -18,7 +19,7 @@ class AppDrawer extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
-    GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+    // GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
     final userPreference = Provider.of<UserViewModel>(context);
     Future<UserModel> getUserData() => UserViewModel().getUser();
 
@@ -34,12 +35,14 @@ class AppDrawer extends StatelessWidget {
                 future: getUserData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
                     final user = snapshot.data;
-                    print(user?.token.toString());
+                    if (kDebugMode) {
+                      print(user?.token.toString());
+                    }
                     if (user?.token.toString() == 'null' || user?.token == '') {
                       return CustomListTile(
                         title: "Login",
@@ -67,7 +70,8 @@ class AppDrawer extends StatelessWidget {
                   }
                 },
               ),
-              const Divider(height: 1, thickness: 1, color: Color(0xff645E5E)),
+              const Divider(
+                  height: 1, thickness: 1, color: CustomTheme.whiteTextColor),
               CustomListTile(
                 opacity: 1.0,
                 title: "Media",
@@ -81,7 +85,8 @@ class AppDrawer extends StatelessWidget {
               ),
               CustomListTile(title: "Vectors", onTap: () {}, opacity: 0.8),
               CustomListTile(title: "GIFs", onTap: () {}, opacity: 0.8),
-              const Divider(height: 1, thickness: 1, color: Color(0xff645E5E)),
+              const Divider(
+                  height: 1, thickness: 1, color: CustomTheme.whiteTextColor),
               CustomListTile(
                   title: "Editor's Choice", onTap: () {}, opacity: 0.8),
               CustomListTile(
@@ -123,7 +128,10 @@ class AppDrawer extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Divider(height: 1, thickness: 1, color: Color(0xff645E5E)),
+                    Divider(
+                        height: 1,
+                        thickness: 1,
+                        color: CustomTheme.whiteTextColor),
                     Expanded(
                       child: SizedBox(
                         height: 50.0,

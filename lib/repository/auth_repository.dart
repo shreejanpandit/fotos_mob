@@ -12,7 +12,7 @@ class AuthRepository {
 
       return response;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 

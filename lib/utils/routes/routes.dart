@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fotos_mobile/test.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/view/auth/forget_password_view.dart';
 import 'package:fotos_mobile/view/drawer_items/about_us_view.dart';
@@ -36,6 +37,8 @@ class Routes {
       case RoutesName.about_us:
         return MaterialPageRoute(
             builder: ((BuildContext context) => AboutUsPage()));
+      case RoutesName.test:
+        return MaterialPageRoute(builder: ((BuildContext context) => Test()));
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(
