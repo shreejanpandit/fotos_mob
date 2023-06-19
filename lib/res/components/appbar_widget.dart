@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
-import 'home_component/profile_icons_with_text.dart';
-import 'package:dotted_border/dotted_border.dart';
 
 AppBar appBar(context, GlobalKey<ScaffoldState> scaffoldKey) {
   final appbarProvider = Provider.of<AppbarViewModel>(context);

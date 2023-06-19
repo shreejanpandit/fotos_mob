@@ -9,6 +9,12 @@ class CustomTheme {
   static const Color otherColor3 = Color(0xFFF29F05);
   static const Color whiteTextColor = Color(0xFFFFFFFF);
   static const Color lightBlackTextColor = Color.fromARGB(255, 41, 39, 39);
+  static const Color yellowColor = Color(0xFFF2B705);
+  static const Color lightGreenColor = Color(0xFF39BF5E);
+  static const Color faintGreenColor = Color(0xFF10B981);
+  static const Color pinkColor = Color(0xFFE92382);
+  static const Color lightRedColor = Color(0xFFFF0000);
+  static const Color faintTextColor = Color(0xFF8F8F9D);
 
   static final TextStyle xSmall = GoogleFonts.poppins(
     fontSize: 12.0,
