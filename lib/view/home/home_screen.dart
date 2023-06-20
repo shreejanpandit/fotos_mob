@@ -5,7 +5,7 @@ import 'package:fotos_mobile/res/components/appbar_widget.dart';
 import 'package:fotos_mobile/res/components/drawer_widget.dart';
 import 'package:fotos_mobile/res/components/home_component/gerne_row.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
-import 'package:fotos_mobile/view/home/profile_screen.dart';
+import 'package:fotos_mobile/view/profile/profile_screen.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 import 'package:fotos_mobile/view_model/home_view_model.dart';
 import 'package:provider/provider.dart';

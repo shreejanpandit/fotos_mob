@@ -48,6 +48,8 @@ dependencies:
   dotted_border: ^2.0.0+3
   google_fonts: ^4.0.4
   flutter_svg: ^2.0.7
+  dialog_alert: ^0.0.3
+  rflutter_alert: ^2.0.7
 
 dev_dependencies:
   flutter_test:

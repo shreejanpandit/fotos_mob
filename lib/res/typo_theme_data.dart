@@ -8,6 +8,7 @@ class CustomTheme {
   static const Color otherColor2 = Color(0xFFF2B705);
   static const Color otherColor3 = Color(0xFFF29F05);
   static const Color whiteTextColor = Color(0xFFFFFFFF);
+  static const Color lightTextColor = Color(0xFF5C5C5C);
   static const Color lightBlackTextColor = Color.fromARGB(255, 41, 39, 39);
   static const Color yellowColor = Color(0xFFF2B705);
   static const Color lightGreenColor = Color(0xFF39BF5E);

@@ -58,7 +58,7 @@ class AppDrawer extends StatelessWidget {
                         opacity: 1.0,
                         onTap: () {
                           userPreference.removeUser();
-                          Navigator.pushNamed(context, RoutesName.home);
+                          Navigator.pushNamed(context, RoutesName.login);
                           Utils.snackBar(
                               message: 'Logout sucessfully',
                               context: context,

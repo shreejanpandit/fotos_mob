@@ -1,21 +1,34 @@
+import 'package:dialog_alert/dialog_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fotos_mobile/res/components/home_component/button_with_color_icon_and_text.dart';
+import 'package:fotos_mobile/res/components/profile_component/submit_and_cancle_button.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
+import 'package:fotos_mobile/utils/routes/routes_name.dart';
+import 'package:fotos_mobile/utils/utils.dart';
+import 'package:fotos_mobile/view/profile/collection_screen.dart';
+import 'package:fotos_mobile/view/profile/user_profile_screen.dart';
+import 'package:fotos_mobile/view_model/user_view_model.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+
+import '../../models/user_models.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final userPreference = Provider.of<UserViewModel>(context);
+    Future<UserModel> getUserData() => UserViewModel().getUser();
     double baseWidth = 390;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
 
     return Container(
       // homeuser4Sw (38:203)
-      padding: EdgeInsets.fromLTRB(0 * fem, 11 * fem, 0 * fem, 0 * fem),
+      padding: EdgeInsets.fromLTRB(0, 22, 0, 0),
       width: double.infinity,
       decoration: BoxDecoration(
         color: const Color(0xffffffff),
@@ -23,57 +36,66 @@ class ProfileScreen extends StatelessWidget {
       ),
       child: SingleChildScrollView(
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          SizedBox(
-            height: 80,
-            width: double.infinity,
-            child: Container(
-              padding: const EdgeInsets.only(left: 17, right: 26, bottom: 23),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 80,
-                        height: 80,
-                        child: const CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/branding/images/avatar.png'),
+          InkWell(
+            onTap: () {
+              print('profile clicked');
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => UserProfileScreen()));
+            },
+            child: SizedBox(
+              height: 80,
+              width: double.infinity,
+              child: Container(
+                padding: const EdgeInsets.only(left: 17, right: 26),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 80,
+                          child: const CircleAvatar(
+                            backgroundImage:
+                                AssetImage('assets/branding/images/avatar.png'),
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 13),
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'John Deo',
-                            style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'Photographer',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w300,
-                              color: CustomTheme.primaryColor,
+                        const SizedBox(width: 13),
+                        const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'John Deo',
+                              style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.w500),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const Icon(
-                    Icons.arrow_forward_ios,
-                    color: Color(0xFFA7A7A7),
-                    size: 16,
-                  ),
-                ],
+                            SizedBox(height: 4),
+                            Text(
+                              'Photographer',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w300,
+                                color: CustomTheme.primaryColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      color: Color(0xFFA7A7A7),
+                      size: 16,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(left: 12, right: 11, bottom: 23),
+            padding:
+                const EdgeInsets.only(left: 12, right: 11, bottom: 23, top: 23),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -123,12 +145,12 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(left: 12, right: 11, bottom: 23),
+            padding: const EdgeInsets.only(left: 12, right: 11, bottom: 7),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 7, left: 21),
+                  padding: const EdgeInsets.only(bottom: 7, left: 20),
                   child: Text(
                     'General',
                     style: CustomTheme.base.copyWith(
@@ -144,11 +166,17 @@ class ProfileScreen extends StatelessWidget {
                   containerColor: CustomTheme.primaryColor,
                   containerText: '100+',
                 ),
-                const ContainerWithIconTextAndLeading(
+                ContainerWithIconTextAndLeading(
+                  ontap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CollectionScreen()));
+                  },
                   bgColor: CustomTheme.yellowColor,
                   imagePath: 'assets/branding/home/collection.svg',
                   text: 'Collections',
-                  containerColor: Colors.yellowAccent,
+                  containerColor: CustomTheme.yellowColor,
                   containerText: '200+',
                 ),
                 const ContainerWithIconTextAndLeading(
@@ -169,7 +197,7 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(left: 12, right: 11, bottom: 23),
+            padding: const EdgeInsets.only(left: 12, right: 11),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -193,7 +221,15 @@ class ProfileScreen extends StatelessWidget {
                   imagePath: 'assets/branding/home/switch.svg',
                   text: 'Switch Account',
                 ),
-                const ContainerWithIconTextAndLeading(
+                ContainerWithIconTextAndLeading(
+                  ontap: () {
+                    userPreference.removeUser();
+                    Navigator.pushNamed(context, RoutesName.login);
+                    Utils.snackBar(
+                        message: 'Logout sucessfully',
+                        context: context,
+                        bgColor: Colors.redAccent);
+                  },
                   bgColor: CustomTheme.lightRedColor,
                   imagePath: 'assets/branding/home/logout.svg',
                   text: 'Log Out',
@@ -213,7 +249,7 @@ class ContainerWithIconTextAndLeading extends StatelessWidget {
   final Color? containerColor;
   final Color? bgColor;
   final String? containerText;
-
+  final VoidCallback? ontap;
   const ContainerWithIconTextAndLeading({
     required this.imagePath,
     required this.text,
@@ -221,60 +257,70 @@ class ContainerWithIconTextAndLeading extends StatelessWidget {
     this.containerColor,
     this.containerText,
     Key? key,
+    this.ontap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 37,
-      width: double.infinity,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
+    return InkWell(
+      onTap: ontap,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: SizedBox(
+          height: 37,
+          width: double.infinity,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  width: 37,
-                  height: 37,
-                  child: CircleAvatar(
-                    backgroundColor: bgColor,
-                    child: SvgPicture.asset(
-                      imagePath,
-                      height: 10,
-                      width: 10,
-                      // fit: BoxFit.contain,
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 37,
+                      height: 37,
+                      child: CircleAvatar(
+                        backgroundColor: bgColor,
+                        child: SvgPicture.asset(
+                          imagePath,
+                          height: 24,
+                          width: 24,
+                          // fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 13,
+                    ),
+                    Text(
+                      text,
+                      style: CustomTheme.base
+                          .copyWith(fontSize: 18, fontWeight: FontWeight.w400),
+                    ),
+                  ],
+                ),
+                if (containerColor != null && containerText != null)
+                  Container(
+                    width: 36,
+                    height: 23,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(26),
+                      color: containerColor,
+                    ),
+                    child: Center(
+                      child: Text(
+                        containerText!,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                Text(
-                  text,
-                  style: CustomTheme.base
-                      .copyWith(fontSize: 18, fontWeight: FontWeight.w400),
-                ),
               ],
             ),
-            if (containerColor != null && containerText != null)
-              Container(
-                width: 36,
-                height: 23,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(26),
-                  color: containerColor,
-                ),
-                child: Center(
-                  child: Text(
-                    containerText!,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-          ],
+          ),
         ),
       ),
     );
@@ -326,6 +372,7 @@ void _showBottomSheet(BuildContext context) {
                       width: 336,
                       height: 45.25,
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
                         color: const Color(0xFFF9F9F9),
                         border: Border.all(
                           color: const Color(0xFFCDECFF),
@@ -334,24 +381,33 @@ void _showBottomSheet(BuildContext context) {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Padding(
+                          Padding(
                             padding: EdgeInsets.only(left: 16),
-                            child: Text('Select File'),
-                          ),
-                          Container(
-                            width: 86,
-                            height: 23,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: CustomTheme.primaryColor,
+                            child: Text(
+                              'Select File',
+                              style: CustomTheme.base.copyWith(
+                                  color: CustomTheme.lightTextColor
+                                      .withOpacity(0.4),
+                                  fontWeight: FontWeight.w300),
                             ),
-                            child: const Center(
-                              child: Text(
-                                'Upload',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 3),
+                            child: Container(
+                              width: 86,
+                              height: 23,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: CustomTheme.primaryColor,
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  'Upload',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -375,19 +431,31 @@ void _showBottomSheet(BuildContext context) {
                       width: 336,
                       height: 45.25,
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
                         color: const Color(0xFFF9F9F9),
                         border: Border.all(
                           color: const Color(0xFFCDECFF),
                         ),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
                             padding: EdgeInsets.only(left: 16),
-                            child: Text('Select Collection'),
+                            child: Text(
+                              'Select Collection',
+                              style: CustomTheme.base.copyWith(
+                                  color: CustomTheme.lightTextColor
+                                      .withOpacity(0.4),
+                                  fontWeight: FontWeight.w300),
+                            ),
                           ),
-                          Icon(Icons.arrow_downward)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: SvgPicture.asset(
+                              'assets/branding/home/down_arrow.svg',
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -411,17 +479,24 @@ void _showBottomSheet(BuildContext context) {
                       width: 336,
                       height: 45.25,
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
                         color: const Color(0xFFF9F9F9),
                         border: Border.all(
                           color: const Color(0xFFCDECFF),
                         ),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
                             padding: EdgeInsets.only(left: 16),
-                            child: Text('Enter Media Name'),
+                            child: Text(
+                              'Enter Media Name',
+                              style: CustomTheme.base.copyWith(
+                                  color: CustomTheme.lightTextColor
+                                      .withOpacity(0.4),
+                                  fontWeight: FontWeight.w300),
+                            ),
                           ),
                         ],
                       ),
@@ -443,20 +518,28 @@ void _showBottomSheet(BuildContext context) {
                       ),
                     ),
                     Container(
+                      alignment: Alignment.topLeft,
                       width: 336,
                       height: 124,
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
                         color: const Color(0xFFF9F9F9),
                         border: Border.all(
                           color: const Color(0xFFCDECFF),
                         ),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 16),
-                            child: Text('Enter Media Description'),
+                            padding: EdgeInsets.only(left: 16, top: 3),
+                            child: Text(
+                              'Enter Media Description',
+                              style: CustomTheme.base.copyWith(
+                                  color: CustomTheme.lightTextColor
+                                      .withOpacity(0.4),
+                                  fontWeight: FontWeight.w300),
+                            ),
                           ),
                         ],
                       ),
@@ -464,59 +547,7 @@ void _showBottomSheet(BuildContext context) {
                   ],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(bottom: 37),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 113,
-                      height: 37,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(33),
-                        color: CustomTheme.faintGreenColor,
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Submit',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 17,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        width: 113,
-                        height: 37,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(33),
-                          color: CustomTheme.faintTextColor,
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Cancel',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              SubmitAndCancleButton(),
             ],
           ),
         ),

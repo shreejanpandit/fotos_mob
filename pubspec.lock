@@ -73,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  dialog_alert:
+    dependency: "direct main"
+    description:
+      name: dialog_alert
+      sha256: f3781247ac5621bb9f159fd4b4b3a8ecedc1ce804f86f50212d6154f44745c12
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   dotted_border:
     dependency: "direct main"
     description:
@@ -344,6 +352,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
+  rflutter_alert:
+    dependency: "direct main"
+    description:
+      name: rflutter_alert
+      sha256: "8ff35e3f9712ba24c746499cfa95bf320385edf38901a1a4eab0fe555867f66c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.7"
   shared_preferences:
     dependency: "direct main"
     description:
