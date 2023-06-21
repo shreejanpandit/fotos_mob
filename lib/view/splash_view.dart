@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fotos_mobile/res/app_urls.dart';
 import 'package:fotos_mobile/view_model/services/splash_services.dart';
+
+import '../view_model/home_view_model.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -10,10 +13,12 @@ class SplashView extends StatefulWidget {
 
 class _SplashViewState extends State<SplashView> {
   SplashServices splashServices = SplashServices();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     splashServices.checkAuthentication(context);
   }
 

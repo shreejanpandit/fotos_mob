@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fotos_mobile/data/response/status.dart';
 import 'package:fotos_mobile/res/components/appbar_widget.dart';
 import 'package:fotos_mobile/res/components/drawer_widget.dart';
 import 'package:fotos_mobile/res/components/home_component/gerne_row.dart';
@@ -24,85 +25,86 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     // homeViewModel.fetchMoviesListApi();
+    homeViewModel.fetchMedia();
   }
 
-  List<String> imageList = [
-    'assets/photos/seagull.png',
-    'assets/photos/phone-wallpaper.png',
-    'assets/photos/saturn.png',
-    'assets/photos/space.png',
-    'assets/photos/tree.jpg',
-    'assets/photos/seagull.png',
-    'assets/photos/phone-wallpaper.png',
-    'assets/photos/saturn.png',
-    'assets/photos/space.png',
-    'assets/photos/tree.jpg',
-    'assets/photos/seagull.png',
-    'assets/photos/phone-wallpaper.png',
-    'assets/photos/saturn.png',
-    'assets/photos/space.png',
-    'assets/photos/tree.jpg',
-    'assets/photos/seagull.png',
-    'assets/photos/phone-wallpaper.png',
-    'assets/photos/saturn.png',
-    'assets/photos/space.png',
-    'assets/photos/tree.jpg',
-    'assets/photos/seagull.png',
-    'assets/photos/phone-wallpaper.png',
-    'assets/photos/saturn.png',
-    'assets/photos/space.png',
-    'assets/photos/tree.jpg',
-    'assets/photos/seagull.png',
-    'assets/photos/phone-wallpaper.png',
-    'assets/photos/saturn.png',
-    'assets/photos/space.png',
-    'assets/photos/tree.jpg',
-    'assets/photos/seagull.png',
-    'assets/photos/phone-wallpaper.png',
-    'assets/photos/saturn.png',
-    'assets/photos/space.png',
-    'assets/photos/tree.jpg',
-    'assets/photos/seagull.png',
-    'assets/photos/phone-wallpaper.png',
-    'assets/photos/saturn.png',
-    'assets/photos/space.png',
-    'assets/photos/tree.jpg',
-    'assets/photos/seagull.png',
-    'assets/photos/phone-wallpaper.png',
-    'assets/photos/saturn.png',
-    'assets/photos/space.png',
-    'assets/photos/tree.jpg',
-    'assets/photos/seagull.png',
-    'assets/photos/phone-wallpaper.png',
-    'assets/photos/saturn.png',
-    'assets/photos/space.png',
-    'assets/photos/tree.jpg',
-    'assets/photos/seagull.png',
-    'assets/photos/phone-wallpaper.png',
-    'assets/photos/saturn.png',
-    'assets/photos/space.png',
-    'assets/photos/tree.jpg',
-    'assets/photos/seagull.png',
-    'assets/photos/phone-wallpaper.png',
-    'assets/photos/saturn.png',
-    'assets/photos/space.png',
-    'assets/photos/tree.jpg',
-    'assets/photos/seagull.png',
-    'assets/photos/phone-wallpaper.png',
-    'assets/photos/saturn.png',
-    'assets/photos/space.png',
-    'assets/photos/tree.jpg',
-    'assets/photos/seagull.png',
-    'assets/photos/phone-wallpaper.png',
-    'assets/photos/saturn.png',
-    'assets/photos/space.png',
-    'assets/photos/tree.jpg',
-    'assets/photos/seagull.png',
-    'assets/photos/phone-wallpaper.png',
-    'assets/photos/saturn.png',
-    'assets/photos/space.png',
-    'assets/photos/tree.jpg',
-  ];
+  // List<String> imageList = [
+  //   'assets/photos/seagull.png',
+  //   'assets/photos/phone-wallpaper.png',
+  //   'assets/photos/saturn.png',
+  //   'assets/photos/space.png',
+  //   'assets/photos/tree.jpg',
+  //   'assets/photos/seagull.png',
+  //   'assets/photos/phone-wallpaper.png',
+  //   'assets/photos/saturn.png',
+  //   'assets/photos/space.png',
+  //   'assets/photos/tree.jpg',
+  //   'assets/photos/seagull.png',
+  //   'assets/photos/phone-wallpaper.png',
+  //   'assets/photos/saturn.png',
+  //   'assets/photos/space.png',
+  //   'assets/photos/tree.jpg',
+  //   'assets/photos/seagull.png',
+  //   'assets/photos/phone-wallpaper.png',
+  //   'assets/photos/saturn.png',
+  //   'assets/photos/space.png',
+  //   'assets/photos/tree.jpg',
+  //   'assets/photos/seagull.png',
+  //   'assets/photos/phone-wallpaper.png',
+  //   'assets/photos/saturn.png',
+  //   'assets/photos/space.png',
+  //   'assets/photos/tree.jpg',
+  //   'assets/photos/seagull.png',
+  //   'assets/photos/phone-wallpaper.png',
+  //   'assets/photos/saturn.png',
+  //   'assets/photos/space.png',
+  //   'assets/photos/tree.jpg',
+  //   'assets/photos/seagull.png',
+  //   'assets/photos/phone-wallpaper.png',
+  //   'assets/photos/saturn.png',
+  //   'assets/photos/space.png',
+  //   'assets/photos/tree.jpg',
+  //   'assets/photos/seagull.png',
+  //   'assets/photos/phone-wallpaper.png',
+  //   'assets/photos/saturn.png',
+  //   'assets/photos/space.png',
+  //   'assets/photos/tree.jpg',
+  //   'assets/photos/seagull.png',
+  //   'assets/photos/phone-wallpaper.png',
+  //   'assets/photos/saturn.png',
+  //   'assets/photos/space.png',
+  //   'assets/photos/tree.jpg',
+  //   'assets/photos/seagull.png',
+  //   'assets/photos/phone-wallpaper.png',
+  //   'assets/photos/saturn.png',
+  //   'assets/photos/space.png',
+  //   'assets/photos/tree.jpg',
+  //   'assets/photos/seagull.png',
+  //   'assets/photos/phone-wallpaper.png',
+  //   'assets/photos/saturn.png',
+  //   'assets/photos/space.png',
+  //   'assets/photos/tree.jpg',
+  //   'assets/photos/seagull.png',
+  //   'assets/photos/phone-wallpaper.png',
+  //   'assets/photos/saturn.png',
+  //   'assets/photos/space.png',
+  //   'assets/photos/tree.jpg',
+  //   'assets/photos/seagull.png',
+  //   'assets/photos/phone-wallpaper.png',
+  //   'assets/photos/saturn.png',
+  //   'assets/photos/space.png',
+  //   'assets/photos/tree.jpg',
+  //   'assets/photos/seagull.png',
+  //   'assets/photos/phone-wallpaper.png',
+  //   'assets/photos/saturn.png',
+  //   'assets/photos/space.png',
+  //   'assets/photos/tree.jpg',
+  //   'assets/photos/seagull.png',
+  //   'assets/photos/phone-wallpaper.png',
+  //   'assets/photos/saturn.png',
+  //   'assets/photos/space.png',
+  //   'assets/photos/tree.jpg',
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -310,41 +312,79 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               SliverPadding(
                                 padding: const EdgeInsets.all(5),
-                                sliver: SliverMasonryGrid(
-                                    delegate: SliverChildBuilderDelegate(
-                                      (context, index) => Card(
-                                        child: Stack(
-                                          alignment: Alignment.topRight,
-                                          children: [
-                                            Image.asset(
-                                              imageList[index],
+                                sliver: Consumer<HomeViewModel>(
+                                  builder: (context, value, child) {
+                                    switch (value.media.status) {
+                                      case Status.LOADING:
+                                        return const SliverToBoxAdapter(
+                                          child: Center(
+                                            child: CircularProgressIndicator
+                                                .adaptive(),
+                                          ),
+                                        );
+                                      case Status.ERROR:
+                                        return SliverToBoxAdapter(
+                                          child: Text(
+                                              value.media.message.toString()),
+                                        );
+                                      case Status.COMPLETED:
+                                        return SliverPadding(
+                                          padding: const EdgeInsets.all(5),
+                                          sliver: SliverMasonryGrid(
+                                            delegate:
+                                                SliverChildBuilderDelegate(
+                                                    (context, index) {
+                                              return Card(
+                                                child: Stack(
+                                                  alignment: Alignment.topRight,
+                                                  children: [
+                                                    Image.network(
+                                                      value.imageList[index]
+                                                          .toString(),
+                                                      errorBuilder: (context,
+                                                          error, stackTrace) {
+                                                        return const Icon(
+                                                          Icons.error,
+                                                          color: Colors.red,
+                                                        );
+                                                      },
+                                                    ),
+                                                    const Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.favorite,
+                                                          color: Colors.white,
+                                                        ),
+                                                        Icon(
+                                                          Icons.bookmark_add,
+                                                          color: Colors.white,
+                                                        ),
+                                                        Icon(
+                                                          Icons.share,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                                    childCount: homeViewModel
+                                                        .imageList.length),
+                                            gridDelegate:
+                                                const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
                                             ),
-                                            const Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                Icon(
-                                                  Icons.favorite,
-                                                  color: Colors.white,
-                                                ),
-                                                Icon(
-                                                  Icons.bookmark_add,
-                                                  color: Colors.white,
-                                                ),
-                                                Icon(
-                                                  Icons.share,
-                                                  color: Colors.white,
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      childCount: imageList.length,
-                                    ),
-                                    gridDelegate:
-                                        const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 2)),
+                                          ),
+                                        );
+
+                                      default:
+                                        return const SliverToBoxAdapter();
+                                    }
+                                  },
+                                ),
                               ),
                             ],
                           ),
@@ -383,43 +423,53 @@ class _HomeScreenState extends State<HomeScreen> {
                             Positioned.fill(
                               child: Align(
                                 alignment: Alignment.bottomCenter,
-                                child: Container(
-                                  width: 390,
-                                  height: 122,
-                                  padding: const EdgeInsets.only(
-                                    left: 124,
-                                    right: 125,
-                                    top: 30,
-                                    bottom: 15,
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: 141,
-                                        height: 38,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          color: CustomTheme.primaryColor,
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 29,
-                                          vertical: 10,
-                                        ),
-                                        child: const Text(
-                                          "Discover More",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12,
-                                            fontFamily: "Inter",
-                                            fontWeight: FontWeight.w500,
+                                child: InkWell(
+                                  onTap: () {
+                                    homeViewModel.loadMoreData(2);
+                                    for (var i = 0;
+                                        i < homeViewModel.imageList.length;
+                                        i++) {
+                                      print('${homeViewModel.imageList[i]}');
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 390,
+                                    height: 122,
+                                    padding: const EdgeInsets.only(
+                                      left: 124,
+                                      right: 125,
+                                      top: 30,
+                                      bottom: 15,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 141,
+                                          height: 38,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            color: CustomTheme.primaryColor,
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 29,
+                                            vertical: 10,
+                                          ),
+                                          child: const Text(
+                                            "Discover More",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontFamily: "Inter",
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

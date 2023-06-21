@@ -1,798 +1,1058 @@
-import 'package:flutter/material.dart';
+// // import 'package:flutter/foundation.dart';
+// // import 'package:flutter/material.dart';
+// // import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+// // import 'package:fotos_mobile/res/components/appbar_widget.dart';
+// // import 'package:fotos_mobile/res/components/drawer_widget.dart';
+// // import 'package:fotos_mobile/res/components/home_component/gerne_row.dart';
+// // import 'package:fotos_mobile/res/typo_theme_data.dart';
+// // import 'package:fotos_mobile/view/profile/profile_screen.dart';
+// // import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
+// // import 'package:fotos_mobile/view_model/home_view_model.dart';
+// // import 'package:provider/provider.dart';
 
-class Test extends StatefulWidget {
-  const Test({super.key});
+// // import '../../data/response/status.dart';
 
-  @override
-  State<Test> createState() => _TestState();
-}
+// // class HomeScreen extends StatefulWidget {
+// //   const HomeScreen({Key? key}) : super(key: key);
 
-class _TestState extends State<Test> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: 390,
-        height: 844,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
-        ),
-        padding: const EdgeInsets.only(
-          right: 1,
-          top: 11,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: 362,
-              height: 25,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 78.24,
-                    child: Text(
-                      "10:00 AM",
-                      style: TextStyle(
-                        color: Color(0xff1e1e1e),
-                        fontSize: 14,
-                        fontFamily: "Inter",
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 296.79),
-                  Container(
-                    width: 24.52,
-                    height: 20,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: FlutterLogo(size: 20),
-                  ),
-                  SizedBox(width: 296.79),
-                  Container(
-                    width: 29.19,
-                    height: 25,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: FlutterLogo(size: 25),
-                  ),
-                  SizedBox(width: 296.79),
-                  Transform.rotate(
-                    angle: 1.57,
-                    child: Container(
-                      width: 16,
-                      height: 18.68,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: FlutterLogo(size: 16),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 1),
-            Container(
-              width: 362,
-              height: 50,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 390,
-                    height: double.infinity,
-                    color: Colors.white,
-                    padding: const EdgeInsets.only(
-                      left: 18,
-                      right: 15,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 104.11,
-                          height: 50,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 15.69,
-                                height: 15.69,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Color(0xff239de9),
-                                    width: 1,
-                                  ),
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Container(
-                                width: 4.39,
-                                height: 4.39,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color(0xff239de9),
-                                ),
-                              ),
-                              Container(
-                                width: 10.67,
-                                height: 10.67,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color(0xff239de9),
-                                ),
-                              ),
-                              Container(
-                                width: 3.77,
-                                height: 3.77,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color(0xff239de9),
-                                ),
-                              ),
-                              Text(
-                                "Fotos",
-                                style: TextStyle(
-                                  color: Color(0xff239de9),
-                                  fontSize: 40,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: 217.89),
-                        Container(
-                          width: 35,
-                          height: 35,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 35,
-                                height: 35,
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      width: 35,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Color(0x19000000),
-                                            blurRadius: 0,
-                                            offset: Offset(0, 0),
-                                          ),
-                                          BoxShadow(
-                                            color: Color(0x19000000),
-                                            blurRadius: 2,
-                                            offset: Offset(0, 1),
-                                          ),
-                                          BoxShadow(
-                                            color: Color(0x16000000),
-                                            blurRadius: 3,
-                                            offset: Offset(0, 3),
-                                          ),
-                                          BoxShadow(
-                                            color: Color(0x14000000),
-                                            blurRadius: 5,
-                                            offset: Offset(1, 8),
-                                          ),
-                                          BoxShadow(
-                                            color: Color(0x02000000),
-                                            blurRadius: 5,
-                                            offset: Offset(1, 14),
-                                          ),
-                                          BoxShadow(
-                                            color: Color(0x00000000),
-                                            blurRadius: 6,
-                                            offset: Offset(2, 21),
-                                          ),
-                                        ],
-                                        color: Color(0xff239de9),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      left: 6,
-                                      top: 10,
-                                      child: Container(
-                                        width: 22,
-                                        height: 15,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 1),
-            Container(
-              width: 181,
-              height: 49,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 49,
-                    height: 49,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    child: FlutterLogo(size: 49),
-                  ),
-                  SizedBox(width: 13),
-                  SizedBox(
-                    width: 119,
-                    height: 35,
-                    child: Text(
-                      "John Doe",
-                      style: TextStyle(
-                        color: Color(0xff239de9),
-                        fontSize: 24,
-                        fontFamily: "Inter",
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 1),
-            Container(
-              width: 390,
-              height: 228,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
-                  bottomLeft: Radius.circular(0),
-                  bottomRight: Radius.circular(0),
-                ),
-                color: Color(0xff239de9),
-              ),
-              padding: const EdgeInsets.only(
-                left: 33,
-                right: 32,
-                top: 37,
-                bottom: 92,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 146,
-                    height: 99,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 146,
-                          height: 99,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(18),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0x19000000),
-                                blurRadius: 0,
-                                offset: Offset(0, 0),
-                              ),
-                              BoxShadow(
-                                color: Color(0x19000000),
-                                blurRadius: 13,
-                                offset: Offset(0, 6),
-                              ),
-                              BoxShadow(
-                                color: Color(0x16000000),
-                                blurRadius: 24,
-                                offset: Offset(-1, 24),
-                              ),
-                              BoxShadow(
-                                color: Color(0x0c000000),
-                                blurRadius: 32,
-                                offset: Offset(-2, 54),
-                              ),
-                              BoxShadow(
-                                color: Color(0x02000000),
-                                blurRadius: 38,
-                                offset: Offset(-3, 96),
-                              ),
-                              BoxShadow(
-                                color: Color(0x00000000),
-                                blurRadius: 42,
-                                offset: Offset(-5, 150),
-                              ),
-                            ],
-                            color: Colors.white,
-                          ),
-                          padding: const EdgeInsets.only(
-                            left: 34,
-                            right: 33,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Followers",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 17,
-                                ),
-                              ),
-                              Text(
-                                "45+",
-                                style: TextStyle(
-                                  color: Color(0xff239de9),
-                                  fontSize: 40,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 33),
-                  Container(
-                    width: 146,
-                    height: 99,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 146,
-                          height: 99,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(18),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0x19000000),
-                                blurRadius: 0,
-                                offset: Offset(0, 0),
-                              ),
-                              BoxShadow(
-                                color: Color(0x19000000),
-                                blurRadius: 13,
-                                offset: Offset(0, 6),
-                              ),
-                              BoxShadow(
-                                color: Color(0x16000000),
-                                blurRadius: 24,
-                                offset: Offset(-1, 24),
-                              ),
-                              BoxShadow(
-                                color: Color(0x0c000000),
-                                blurRadius: 32,
-                                offset: Offset(-2, 54),
-                              ),
-                              BoxShadow(
-                                color: Color(0x02000000),
-                                blurRadius: 38,
-                                offset: Offset(-3, 96),
-                              ),
-                              BoxShadow(
-                                color: Color(0x00000000),
-                                blurRadius: 42,
-                                offset: Offset(-5, 150),
-                              ),
-                            ],
-                            color: Colors.white,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 13,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Collection",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 17,
-                                ),
-                              ),
-                              Text(
-                                "10+",
-                                style: TextStyle(
-                                  color: Color(0xff239de9),
-                                  fontSize: 40,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 1),
-            Container(
-              width: 390,
-              height: 477,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
-                  bottomLeft: Radius.circular(0),
-                  bottomRight: Radius.circular(0),
-                ),
-                color: Colors.white,
-              ),
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 129,
-                    top: 462,
-                    child: Container(
-                      width: 134,
-                      height: 5,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 21,
-                    top: 25,
-                    child: Container(
-                      width: 80,
-                      height: 105,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 80,
-                            height: 80,
-                            child: FlutterLogo(size: 80),
-                          ),
-                          SizedBox(height: 8),
-                          SizedBox(
-                            width: 62,
-                            height: 17,
-                            child: Text(
-                              "Profile",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color(0xff239de9),
-                                fontSize: 16,
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 145,
-                    top: 25,
-                    child: Container(
-                      width: 103,
-                      height: 112,
-                      padding: const EdgeInsets.only(
-                        top: 6,
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 80,
-                            height: 80,
-                            child: FlutterLogo(size: 80),
-                          ),
-                          SizedBox(height: 2),
-                          Text(
-                            "Subscription",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xff239de9),
-                              fontSize: 16,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 292,
-                    top: 36,
-                    child: Container(
-                      width: 75.38,
-                      height: 101,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 75.38,
-                            height: 70,
-                            child: FlutterLogo(size: 70),
-                          ),
-                          SizedBox(height: 7),
-                          Text(
-                            "Media",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xff239de9),
-                              fontSize: 16,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 23,
-                    top: 178,
-                    child: Container(
-                      width: 75,
-                      height: 106,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 75,
-                            height: 75,
-                            child: FlutterLogo(size: 75),
-                          ),
-                          SizedBox(height: 7),
-                          Text(
-                            "Settings",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xff239de9),
-                              fontSize: 16,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 158,
-                    top: 178,
-                    child: Container(
-                      width: 77,
-                      height: 106,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 75,
-                            height: 75,
-                            child: FlutterLogo(size: 75),
-                          ),
-                          SizedBox(height: 7),
-                          Text(
-                            "Statistics",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xff239de9),
-                              fontSize: 16,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 289,
-                    top: 178,
-                    child: Container(
-                      width: 82,
-                      height: 106,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 75,
-                            height: 75,
-                            child: FlutterLogo(size: 75),
-                          ),
-                          SizedBox(height: 7),
-                          Text(
-                            "Messages",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xff239de9),
-                              fontSize: 16,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 23,
-                    top: 332,
-                    child: Container(
-                      width: 83,
-                      height: 105,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 75,
-                            height: 75,
-                            child: FlutterLogo(size: 75),
-                          ),
-                          SizedBox(height: 6),
-                          Text(
-                            "Collection",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xff239de9),
-                              fontSize: 16,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 150,
-                    top: 332,
-                    child: Container(
-                      width: 218,
-                      height: 99,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 218,
-                            height: 99,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(18),
-                              border: Border.all(
-                                color: Color(0xff239de9),
-                                width: 4,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0x19000000),
-                                  blurRadius: 0,
-                                  offset: Offset(0, 0),
-                                ),
-                                BoxShadow(
-                                  color: Color(0x19000000),
-                                  blurRadius: 16,
-                                  offset: Offset(0, 7),
-                                ),
-                                BoxShadow(
-                                  color: Color(0x16000000),
-                                  blurRadius: 29,
-                                  offset: Offset(0, 29),
-                                ),
-                                BoxShadow(
-                                  color: Color(0x0c000000),
-                                  blurRadius: 39,
-                                  offset: Offset(0, 64),
-                                ),
-                                BoxShadow(
-                                  color: Color(0x02000000),
-                                  blurRadius: 46,
-                                  offset: Offset(0, 114),
-                                ),
-                                BoxShadow(
-                                  color: Color(0x00000000),
-                                  blurRadius: 50,
-                                  offset: Offset(0, 178),
-                                ),
-                              ],
-                              color: Colors.white,
-                            ),
-                            padding: const EdgeInsets.only(
-                              left: 26,
-                              right: 13,
-                              top: 20,
-                              bottom: 19,
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "UPLOAD",
-                                  style: TextStyle(
-                                    color: Color(0xff239de9),
-                                    fontSize: 26,
-                                    fontFamily: "Poppins",
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                SizedBox(width: 13),
-                                Container(
-                                  width: 62,
-                                  height: 60,
-                                  child: FlutterLogo(size: 60),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// //   @override
+// //   State<HomeScreen> createState() => _HomeScreenState();
+// // }
+
+// // class _HomeScreenState extends State<HomeScreen> {
+// //   HomeViewModel homeViewModel = HomeViewModel();
+
+// //   @override
+// //   void initState() {
+// //     super.initState();
+// //     homeViewModel.fetchMedia();
+// //   }
+
+// //   List<String> imageList = [
+// //     'assets/photos/seagull.png',
+// //     'assets/photos/phone-wallpaper.png',
+// //     'assets/photos/saturn.png',
+// //     'assets/photos/space.png',
+// //     'assets/photos/tree.jpg',
+// //     'assets/photos/seagull.png',
+// //     'assets/photos/phone-wallpaper.png',
+// //     'assets/photos/saturn.png',
+// //     'assets/photos/space.png',
+// //     'assets/photos/tree.jpg',
+// //     'assets/photos/seagull.png',
+// //     'assets/photos/phone-wallpaper.png',
+// //     'assets/photos/saturn.png',
+// //     'assets/photos/space.png',
+// //     'assets/photos/tree.jpg',
+// //     'assets/photos/seagull.png',
+// //     'assets/photos/phone-wallpaper.png',
+// //     'assets/photos/saturn.png',
+// //     'assets/photos/space.png',
+// //     'assets/photos/tree.jpg',
+// //     'assets/photos/seagull.png',
+// //     'assets/photos/phone-wallpaper.png',
+// //     'assets/photos/saturn.png',
+// //     'assets/photos/space.png',
+// //     'assets/photos/tree.jpg',
+// //     'assets/photos/seagull.png',
+// //     'assets/photos/phone-wallpaper.png',
+// //     'assets/photos/saturn.png',
+// //     'assets/photos/space.png',
+// //     'assets/photos/tree.jpg',
+// //     'assets/photos/seagull.png',
+// //     'assets/photos/phone-wallpaper.png',
+// //     'assets/photos/saturn.png',
+// //     'assets/photos/space.png',
+// //     'assets/photos/tree.jpg',
+// //     'assets/photos/seagull.png',
+// //     'assets/photos/phone-wallpaper.png',
+// //     'assets/photos/saturn.png',
+// //     'assets/photos/space.png',
+// //     'assets/photos/tree.jpg',
+// //     'assets/photos/seagull.png',
+// //     'assets/photos/phone-wallpaper.png',
+// //     'assets/photos/saturn.png',
+// //     'assets/photos/space.png',
+// //     'assets/photos/tree.jpg',
+// //     'assets/photos/seagull.png',
+// //     'assets/photos/phone-wallpaper.png',
+// //     'assets/photos/saturn.png',
+// //     'assets/photos/space.png',
+// //     'assets/photos/tree.jpg',
+// //     'assets/photos/seagull.png',
+// //     'assets/photos/phone-wallpaper.png',
+// //     'assets/photos/saturn.png',
+// //     'assets/photos/space.png',
+// //     'assets/photos/tree.jpg',
+// //     'assets/photos/seagull.png',
+// //     'assets/photos/phone-wallpaper.png',
+// //     'assets/photos/saturn.png',
+// //     'assets/photos/space.png',
+// //     'assets/photos/tree.jpg',
+// //     'assets/photos/seagull.png',
+// //     'assets/photos/phone-wallpaper.png',
+// //     'assets/photos/saturn.png',
+// //     'assets/photos/space.png',
+// //     'assets/photos/tree.jpg',
+// //     'assets/photos/seagull.png',
+// //     'assets/photos/phone-wallpaper.png',
+// //     'assets/photos/saturn.png',
+// //     'assets/photos/space.png',
+// //     'assets/photos/tree.jpg',
+// //     'assets/photos/seagull.png',
+// //     'assets/photos/phone-wallpaper.png',
+// //     'assets/photos/saturn.png',
+// //     'assets/photos/space.png',
+// //     'assets/photos/tree.jpg',
+// //   ];
+
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
+// //     // final userPreference = Provider.of<UserViewModel>(context);
+// //     final appbarProvider = Provider.of<AppbarViewModel>(context);
+// //     return Scaffold(
+// //       appBar: appBar(context, scaffoldKey),
+// //       body: Scaffold(
+// //           key: scaffoldKey,
+// //           drawer: const AppDrawer(),
+// //           body: appbarProvider.showBody
+// //               ? ChangeNotifierProvider<HomeViewModel>(
+// //                   create: (BuildContext context) => homeViewModel,
+// //                   child: Container(
+// //                     decoration: const BoxDecoration(
+// //                       gradient: LinearGradient(
+// //                         begin: Alignment.topCenter,
+// //                         end: Alignment.bottomCenter,
+// //                         colors: [
+// //                           Color(0xff239de9),
+// //                           Color(0xffddeffb),
+// //                           Colors.white,
+// //                           Color(0x00ffffff)
+// //                         ],
+// //                       ),
+// //                     ),
+// //                     child: Stack(
+// //                       children: [
+// //                         SizedBox(
+// //                           child: CustomScrollView(
+// //                             slivers: [
+// //                               SliverToBoxAdapter(
+// //                                 child: Container(
+// //                                   color: Colors.white,
+// //                                   child: Stack(
+// //                                     alignment: Alignment.topCenter,
+// //                                     children: [
+// //                                       Image.asset(
+// //                                         'assets/photos/space.png',
+// //                                         height: 320,
+// //                                         fit: BoxFit.fill,
+// //                                       ),
+// //                                       Positioned(
+// //                                         top: 30,
+// //                                         child: Text(
+// //                                           "Stunning free images &\nroyalty free stock",
+// //                                           textAlign: TextAlign.center,
+// //                                           style: CustomTheme.h6.copyWith(
+// //                                             color: CustomTheme.whiteTextColor,
+// //                                             fontWeight: FontWeight.w700,
+// //                                           ),
+// //                                         ),
+// //                                       ),
+// //                                       Positioned(
+// //                                         top: 100,
+// //                                         child: Text(
+// //                                           "Over 2.7 million+ high quality stock images,\nvideos and music shared by our talented\ncommunity",
+// //                                           textAlign: TextAlign.center,
+// //                                           style: CustomTheme.base.copyWith(
+// //                                             fontSize: 15.0,
+// //                                             color: CustomTheme.whiteTextColor,
+// //                                           ),
+// //                                         ),
+// //                                       ),
+// //                                       Positioned(
+// //                                         top: 170,
+// //                                         child: SizedBox(
+// //                                           width: 361,
+// //                                           height: 50,
+// //                                           child: GestureDetector(
+// //                                             onTap: () {
+// //                                               // Handle the tap event here
+// //                                               // Perform the search or show search options
+// //                                             },
+// //                                             child: Row(
+// //                                               mainAxisSize: MainAxisSize.min,
+// //                                               mainAxisAlignment:
+// //                                                   MainAxisAlignment.center,
+// //                                               crossAxisAlignment:
+// //                                                   CrossAxisAlignment.center,
+// //                                               children: [
+// //                                                 SizedBox(
+// //                                                   width: 361,
+// //                                                   height: 50,
+// //                                                   child: Material(
+// //                                                     color: Colors.white,
+// //                                                     borderRadius:
+// //                                                         BorderRadius.circular(
+// //                                                             20),
+// //                                                     child: ClipRRect(
+// //                                                       borderRadius:
+// //                                                           BorderRadius.circular(
+// //                                                               20),
+// //                                                       child: Row(
+// //                                                         children: [
+// //                                                           Expanded(
+// //                                                             child: TextField(
+// //                                                               decoration:
+// //                                                                   const InputDecoration(
+// //                                                                 hintText:
+// //                                                                     'Find your imagination',
+// //                                                                 border:
+// //                                                                     InputBorder
+// //                                                                         .none,
+// //                                                                 contentPadding:
+// //                                                                     EdgeInsets.only(
+// //                                                                         left:
+// //                                                                             15),
+// //                                                               ),
+// //                                                               style: CustomTheme
+// //                                                                   .base
+// //                                                                   .copyWith(
+// //                                                                 fontWeight:
+// //                                                                     FontWeight
+// //                                                                         .w500,
+// //                                                               ),
+// //                                                             ),
+// //                                                           ),
+// //                                                           GestureDetector(
+// //                                                             onTap: () {
+// //                                                               if (kDebugMode) {
+// //                                                                 print(
+// //                                                                     'clicked');
+// //                                                               }
+// //                                                               // Handle search icon tap event here
+// //                                                               // Perform the search or show search options
+// //                                                             },
+// //                                                             child: Container(
+// //                                                               color: CustomTheme
+// //                                                                   .primaryColor,
+// //                                                               width: 50,
+// //                                                               height: 50,
+// //                                                               child: const Icon(
+// //                                                                 Icons.search,
+// //                                                                 color: Colors
+// //                                                                     .white,
+// //                                                                 size: 32,
+// //                                                               ),
+// //                                                             ),
+// //                                                           ),
+// //                                                         ],
+// //                                                       ),
+// //                                                     ),
+// //                                                   ),
+// //                                                 ),
+// //                                               ],
+// //                                             ),
+// //                                           ),
+// //                                         ),
+// //                                       ),
+// //                                       Positioned(
+// //                                         top: 250,
+// //                                         child: Text(
+// //                                           "Popular Images: new year, wallpaper, nature, background,\nsky, money, love, cat car, dog, food, flowers, ipone\nwallpaper",
+// //                                           textAlign: TextAlign.center,
+// //                                           style: CustomTheme.xSmall
+// //                                               .copyWith(color: Colors.white),
+// //                                         ),
+// //                                       ),
+// //                                     ],
+// //                                   ),
+// //                                 ),
+// //                               ),
+// //                               SliverToBoxAdapter(
+// //                                 child: Container(
+// //                                   margin: const EdgeInsets.all(10),
+// //                                   padding: const EdgeInsets.only(left: 10),
+// //                                   child: Text(
+// //                                     'Gerne',
+// //                                     style: CustomTheme.h6
+// //                                         .copyWith(fontWeight: FontWeight.w600),
+// //                                   ),
+// //                                 ),
+// //                               ),
+// //                               SliverToBoxAdapter(
+// //                                 child: Container(
+// //                                   margin: const EdgeInsets.only(bottom: 10),
+// //                                   height: 81,
+// //                                   child: ListView(
+// //                                     scrollDirection: Axis.horizontal,
+// //                                     children: const [
+// //                                       Gerne(
+// //                                           text: 'Illustration',
+// //                                           imagePath:
+// //                                               'assets/photos/saturn.png'),
+// //                                       Gerne(
+// //                                           text: 'Space',
+// //                                           imagePath: 'assets/photos/space.png'),
+// //                                       Gerne(
+// //                                           text: 'Potrait',
+// //                                           imagePath: 'assets/photos/tree.jpg'),
+// //                                       Gerne(
+// //                                           text: 'Documentry',
+// //                                           imagePath:
+// //                                               'assets/photos/seagull.png'),
+// //                                       Gerne(
+// //                                           text: 'Still Life',
+// //                                           imagePath: 'assets/photos/space.png'),
+// //                                     ],
+// //                                   ),
+// //                                 ),
+// //                               ),
+// //                               SliverPadding(
+// //                                 padding: const EdgeInsets.all(5),
+// //                                 sliver: Consumer<HomeViewModel>(
+// //                                   builder: (context, value, child) {
+// //                                     switch (value.media.status) {
+// //                                       case Status.LOADING:
+// //                                         return const SliverToBoxAdapter(
+// //                                           child: Center(
+// //                                             child: CircularProgressIndicator
+// //                                                 .adaptive(),
+// //                                           ),
+// //                                         );
+// //                                       case Status.ERROR:
+// //                                         return SliverToBoxAdapter(
+// //                                           child: Text(
+// //                                               value.media.message.toString()),
+// //                                         );
+// //                                       case Status.COMPLETED:
+// //                                         return SliverPadding(
+// //                                           padding: const EdgeInsets.all(5),
+// //                                           sliver: SliverMasonryGrid(
+// //                                             delegate:
+// //                                                 SliverChildBuilderDelegate(
+// //                                               (context, index) {
+// //                                                 if (index <
+// //                                                     value.media.data!.data!
+// //                                                         .length) {
+// //                                                   return Card(
+// //                                                     child: Stack(
+// //                                                       alignment:
+// //                                                           Alignment.topRight,
+// //                                                       children: [
+// //                                                         Image.network(
+// //                                                           value
+// //                                                               .media
+// //                                                               .data!
+// //                                                               .data![index]
+// //                                                               .imagePath
+// //                                                               .toString(),
+// //                                                           errorBuilder:
+// //                                                               (context, error,
+// //                                                                   stackTrace) {
+// //                                                             return const Icon(
+// //                                                               Icons.error,
+// //                                                               color: Colors.red,
+// //                                                             );
+// //                                                           },
+// //                                                         ),
+// //                                                         const Row(
+// //                                                           mainAxisAlignment:
+// //                                                               MainAxisAlignment
+// //                                                                   .end,
+// //                                                           children: [
+// //                                                             Icon(
+// //                                                               Icons.favorite,
+// //                                                               color:
+// //                                                                   Colors.white,
+// //                                                             ),
+// //                                                             Icon(
+// //                                                               Icons
+// //                                                                   .bookmark_add,
+// //                                                               color:
+// //                                                                   Colors.white,
+// //                                                             ),
+// //                                                             Icon(
+// //                                                               Icons.share,
+// //                                                               color:
+// //                                                                   Colors.white,
+// //                                                             ),
+// //                                                           ],
+// //                                                         ),
+// //                                                       ],
+// //                                                     ),
+// //                                                   );
+// //                                                 } else if (index ==
+// //                                                     value.media.data!.data!
+// //                                                         .length) {
+// //                                                   // "Load More" button
+// //                                                   return Align(
+// //                                                     alignment:
+// //                                                         Alignment.bottomCenter,
+// //                                                     child: Row(
+// //                                                       mainAxisAlignment:
+// //                                                           MainAxisAlignment
+// //                                                               .spaceAround,
+// //                                                       children: [
+// //                                                         InkWell(
+// //                                                             onTap: () {
+// //                                                               // Fetch next page of data
+// //                                                               var currentpage = value
+// //                                                                       .media
+// //                                                                       .data!
+// //                                                                       .pagination!
+// //                                                                       .currentPage
+// //                                                                   as int;
+// //                                                               var newPage =
+// //                                                                   currentpage +
+// //                                                                       1;
+// //                                                               print(newPage
+// //                                                                   .toString());
+// //                                                               value
+// //                                                                   .loadMoreData(
+// //                                                                       newPage);
+// //                                                             },
+// //                                                             child: Container(
+// //                                                               width: 141,
+// //                                                               height: 38,
+// //                                                               decoration:
+// //                                                                   BoxDecoration(
+// //                                                                 borderRadius:
+// //                                                                     BorderRadius
+// //                                                                         .circular(
+// //                                                                             50),
+// //                                                                 color: CustomTheme
+// //                                                                     .primaryColor,
+// //                                                               ),
+// //                                                               padding:
+// //                                                                   const EdgeInsets
+// //                                                                       .symmetric(
+// //                                                                 horizontal: 29,
+// //                                                                 vertical: 10,
+// //                                                               ),
+// //                                                               child: const Text(
+// //                                                                 "Discover More",
+// //                                                                 style:
+// //                                                                     TextStyle(
+// //                                                                   color: Colors
+// //                                                                       .white,
+// //                                                                   fontSize: 12,
+// //                                                                   fontFamily:
+// //                                                                       "Inter",
+// //                                                                   fontWeight:
+// //                                                                       FontWeight
+// //                                                                           .w500,
+// //                                                                 ),
+// //                                                               ),
+// //                                                             )),
+// //                                                       ],
+// //                                                     ),
+// //                                                   );
+// //                                                 } else {
+// //                                                   return null;
+// //                                                 }
+// //                                               },
+// //                                             ),
+// //                                             gridDelegate:
+// //                                                 const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+// //                                               crossAxisCount: 2,
+// //                                             ),
+// //                                           ),
+// //                                         );
+
+// //                                       default:
+// //                                         return const SliverToBoxAdapter();
+// //                                     }
+// //                                   },
+// //                                 ),
+// //                               ),
+// //                               SliverToBoxAdapter(
+// //                                 child: SizedBox(
+// //                                   height: 20,
+// //                                 ),
+// //                               )
+// //                             ],
+// //                           ),
+// //                         ),
+// //                         Align(
+// //                           alignment: Alignment.bottomLeft,
+// //                           child: Container(
+// //                             width: double.infinity,
+// //                             height: 60,
+// //                             decoration: const BoxDecoration(
+// //                               gradient: LinearGradient(
+// //                                 begin: Alignment.topCenter,
+// //                                 end: Alignment.bottomCenter,
+// //                                 colors: [
+// //                                   Color(0x00efd7d7),
+// //                                   Color(0xf0dad8d8),
+// //                                 ],
+// //                               ),
+// //                             ),
+// //                             padding: const EdgeInsets.only(
+// //                               left: 128,
+// //                               right: 121,
+// //                               top: 61,
+// //                               bottom: 23,
+// //                             ),
+// //                             child: const Row(
+// //                               mainAxisSize: MainAxisSize.min,
+// //                               mainAxisAlignment: MainAxisAlignment.center,
+// //                               crossAxisAlignment: CrossAxisAlignment.end,
+// //                               children: [],
+// //                             ),
+// //                           ),
+// //                         ),
+// //                       ],
+// //                     ),
+// //                   ),
+// //                 )
+// //               : const ProfileScreen()),
+// //     );
+// //   }
+// // }
+// import 'package:flutter/foundation.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+// import 'package:fotos_mobile/res/components/appbar_widget.dart';
+// import 'package:fotos_mobile/res/components/drawer_widget.dart';
+// import 'package:fotos_mobile/res/components/home_component/gerne_row.dart';
+// import 'package:fotos_mobile/res/typo_theme_data.dart';
+// import 'package:fotos_mobile/view/profile/profile_screen.dart';
+// import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
+// import 'package:fotos_mobile/view_model/home_view_model.dart';
+// import 'package:provider/provider.dart';
+
+// import '../../data/response/status.dart';
+
+// class HomeScreen extends StatefulWidget {
+//   const HomeScreen({Key? key}) : super(key: key);
+
+//   @override
+//   State<HomeScreen> createState() => _HomeScreenState();
+// }
+
+// class _HomeScreenState extends State<HomeScreen> {
+//   HomeViewModel homeViewModel = HomeViewModel();
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     homeViewModel.fetchMedia();
+//   }
+
+//   @override
+//   void dispose() {
+//     super.dispose();
+//     homeViewModel.dispose();
+//   }
+
+//   List<String> imageList = [
+//     'assets/photos/seagull.png',
+//     'assets/photos/phone-wallpaper.png',
+//     'assets/photos/saturn.png',
+//     'assets/photos/space.png',
+//     'assets/photos/tree.jpg',
+//     'assets/photos/seagull.png',
+//     'assets/photos/phone-wallpaper.png',
+//     'assets/photos/saturn.png',
+//     'assets/photos/space.png',
+//     'assets/photos/tree.jpg',
+//     'assets/photos/seagull.png',
+//     'assets/photos/phone-wallpaper.png',
+//     'assets/photos/saturn.png',
+//     'assets/photos/space.png',
+//     'assets/photos/tree.jpg',
+//     'assets/photos/seagull.png',
+//     'assets/photos/phone-wallpaper.png',
+//     'assets/photos/saturn.png',
+//     'assets/photos/space.png',
+//     'assets/photos/tree.jpg',
+//     'assets/photos/seagull.png',
+//     'assets/photos/phone-wallpaper.png',
+//     'assets/photos/saturn.png',
+//     'assets/photos/space.png',
+//     'assets/photos/tree.jpg',
+//     'assets/photos/seagull.png',
+//     'assets/photos/phone-wallpaper.png',
+//     'assets/photos/saturn.png',
+//     'assets/photos/space.png',
+//     'assets/photos/tree.jpg',
+//     'assets/photos/seagull.png',
+//     'assets/photos/phone-wallpaper.png',
+//     'assets/photos/saturn.png',
+//     'assets/photos/space.png',
+//     'assets/photos/tree.jpg',
+//     'assets/photos/seagull.png',
+//     'assets/photos/phone-wallpaper.png',
+//     'assets/photos/saturn.png',
+//     'assets/photos/space.png',
+//     'assets/photos/tree.jpg',
+//     'assets/photos/seagull.png',
+//     'assets/photos/phone-wallpaper.png',
+//     'assets/photos/saturn.png',
+//     'assets/photos/space.png',
+//     'assets/photos/tree.jpg',
+//     'assets/photos/seagull.png',
+//     'assets/photos/phone-wallpaper.png',
+//     'assets/photos/saturn.png',
+//     'assets/photos/space.png',
+//     'assets/photos/tree.jpg',
+//     'assets/photos/seagull.png',
+//     'assets/photos/phone-wallpaper.png',
+//     'assets/photos/saturn.png',
+//     'assets/photos/space.png',
+//     'assets/photos/tree.jpg',
+//     'assets/photos/seagull.png',
+//     'assets/photos/phone-wallpaper.png',
+//     'assets/photos/saturn.png',
+//     'assets/photos/space.png',
+//     'assets/photos/tree.jpg',
+//     'assets/photos/seagull.png',
+//     'assets/photos/phone-wallpaper.png',
+//     'assets/photos/saturn.png',
+//     'assets/photos/space.png',
+//     'assets/photos/tree.jpg',
+//     'assets/photos/seagull.png',
+//     'assets/photos/phone-wallpaper.png',
+//     'assets/photos/saturn.png',
+//     'assets/photos/space.png',
+//     'assets/photos/tree.jpg',
+//     'assets/photos/seagull.png',
+//     'assets/photos/phone-wallpaper.png',
+//     'assets/photos/saturn.png',
+//     'assets/photos/space.png',
+//     'assets/photos/tree.jpg',
+//   ];
+
+//   @override
+//   Widget build(BuildContext context) {
+//     GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
+//     // final userPreference = Provider.of<UserViewModel>(context);
+//     final appbarProvider = Provider.of<AppbarViewModel>(context);
+//     return Scaffold(
+//       appBar: appBar(context, scaffoldKey),
+//       body: Scaffold(
+//           key: scaffoldKey,
+//           drawer: const AppDrawer(),
+//           body: appbarProvider.showBody
+//               ? ChangeNotifierProvider<HomeViewModel>(
+//                   create: (BuildContext context) => homeViewModel,
+//                   child: Container(
+//                     decoration: const BoxDecoration(
+//                       gradient: LinearGradient(
+//                         begin: Alignment.topCenter,
+//                         end: Alignment.bottomCenter,
+//                         colors: [
+//                           Color(0xff239de9),
+//                           Color(0xffddeffb),
+//                           Colors.white,
+//                           Color(0x00ffffff)
+//                         ],
+//                       ),
+//                     ),
+//                     child: Stack(
+//                       children: [
+//                         SizedBox(
+//                           child: CustomScrollView(
+//                             slivers: [
+//                               SliverToBoxAdapter(
+//                                 child: Container(
+//                                   color: Colors.white,
+//                                   child: Stack(
+//                                     alignment: Alignment.topCenter,
+//                                     children: [
+//                                       Image.asset(
+//                                         'assets/photos/space.png',
+//                                         height: 320,
+//                                         fit: BoxFit.fill,
+//                                       ),
+//                                       Positioned(
+//                                         top: 30,
+//                                         child: Text(
+//                                           "Stunning free images &\nroyalty free stock",
+//                                           textAlign: TextAlign.center,
+//                                           style: CustomTheme.h6.copyWith(
+//                                             color: CustomTheme.whiteTextColor,
+//                                             fontWeight: FontWeight.w700,
+//                                           ),
+//                                         ),
+//                                       ),
+//                                       Positioned(
+//                                         top: 100,
+//                                         child: Text(
+//                                           "Over 2.7 million+ high quality stock images,\nvideos and music shared by our talented\ncommunity",
+//                                           textAlign: TextAlign.center,
+//                                           style: CustomTheme.base.copyWith(
+//                                             fontSize: 15.0,
+//                                             color: CustomTheme.whiteTextColor,
+//                                           ),
+//                                         ),
+//                                       ),
+//                                       Positioned(
+//                                         top: 170,
+//                                         child: SizedBox(
+//                                           width: 361,
+//                                           height: 50,
+//                                           child: GestureDetector(
+//                                             onTap: () {
+//                                               // Handle the tap event here
+//                                               // Perform the search or show search options
+//                                             },
+//                                             child: Row(
+//                                               mainAxisSize: MainAxisSize.min,
+//                                               mainAxisAlignment:
+//                                                   MainAxisAlignment.center,
+//                                               crossAxisAlignment:
+//                                                   CrossAxisAlignment.center,
+//                                               children: [
+//                                                 SizedBox(
+//                                                   width: 361,
+//                                                   height: 50,
+//                                                   child: Material(
+//                                                     color: Colors.white,
+//                                                     borderRadius:
+//                                                         BorderRadius.circular(
+//                                                             20),
+//                                                     child: ClipRRect(
+//                                                       borderRadius:
+//                                                           BorderRadius.circular(
+//                                                               20),
+//                                                       child: Row(
+//                                                         children: [
+//                                                           Expanded(
+//                                                             child: TextField(
+//                                                               decoration:
+//                                                                   const InputDecoration(
+//                                                                 hintText:
+//                                                                     'Find your imagination',
+//                                                                 border:
+//                                                                     InputBorder
+//                                                                         .none,
+//                                                                 contentPadding:
+//                                                                     EdgeInsets.only(
+//                                                                         left:
+//                                                                             15),
+//                                                               ),
+//                                                               style: CustomTheme
+//                                                                   .base
+//                                                                   .copyWith(
+//                                                                 fontWeight:
+//                                                                     FontWeight
+//                                                                         .w500,
+//                                                               ),
+//                                                             ),
+//                                                           ),
+//                                                           GestureDetector(
+//                                                             onTap: () {
+//                                                               if (kDebugMode) {
+//                                                                 print(
+//                                                                     'clicked');
+//                                                               }
+//                                                               // Handle search icon tap event here
+//                                                               // Perform the search or show search options
+//                                                             },
+//                                                             child: Container(
+//                                                               color: CustomTheme
+//                                                                   .primaryColor,
+//                                                               width: 50,
+//                                                               height: 50,
+//                                                               child: const Icon(
+//                                                                 Icons.search,
+//                                                                 color: Colors
+//                                                                     .white,
+//                                                                 size: 32,
+//                                                               ),
+//                                                             ),
+//                                                           ),
+//                                                         ],
+//                                                       ),
+//                                                     ),
+//                                                   ),
+//                                                 ),
+//                                               ],
+//                                             ),
+//                                           ),
+//                                         ),
+//                                       ),
+//                                       Positioned(
+//                                         top: 250,
+//                                         child: Text(
+//                                           "Popular Images: new year, wallpaper, nature, background,\nsky, money, love, cat car, dog, food, flowers, ipone\nwallpaper",
+//                                           textAlign: TextAlign.center,
+//                                           style: CustomTheme.xSmall
+//                                               .copyWith(color: Colors.white),
+//                                         ),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                 ),
+//                               ),
+//                               SliverToBoxAdapter(
+//                                 child: Container(
+//                                   margin: const EdgeInsets.all(10),
+//                                   padding: const EdgeInsets.only(left: 10),
+//                                   child: Text(
+//                                     'Gerne',
+//                                     style: CustomTheme.h6
+//                                         .copyWith(fontWeight: FontWeight.w600),
+//                                   ),
+//                                 ),
+//                               ),
+//                               SliverToBoxAdapter(
+//                                 child: Container(
+//                                   margin: const EdgeInsets.only(bottom: 10),
+//                                   height: 81,
+//                                   child: ListView(
+//                                     scrollDirection: Axis.horizontal,
+//                                     children: const [
+//                                       Gerne(
+//                                           text: 'Illustration',
+//                                           imagePath:
+//                                               'assets/photos/saturn.png'),
+//                                       Gerne(
+//                                           text: 'Space',
+//                                           imagePath: 'assets/photos/space.png'),
+//                                       Gerne(
+//                                           text: 'Potrait',
+//                                           imagePath: 'assets/photos/tree.jpg'),
+//                                       Gerne(
+//                                           text: 'Documentry',
+//                                           imagePath:
+//                                               'assets/photos/seagull.png'),
+//                                       Gerne(
+//                                           text: 'Still Life',
+//                                           imagePath: 'assets/photos/space.png'),
+//                                     ],
+//                                   ),
+//                                 ),
+//                               ),
+//                               SliverPadding(
+//                                 padding: const EdgeInsets.all(5),
+//                                 sliver: Consumer<HomeViewModel>(
+//                                   builder: (context, value, child) {
+//                                     switch (value.media.status) {
+//                                       case Status.LOADING:
+//                                         return const SliverToBoxAdapter(
+//                                           child: Center(
+//                                             child: CircularProgressIndicator
+//                                                 .adaptive(),
+//                                           ),
+//                                         );
+//                                       case Status.ERROR:
+//                                         return SliverToBoxAdapter(
+//                                           child: Text(
+//                                               value.media.message.toString()),
+//                                         );
+//                                       case Status.COMPLETED:
+//                                         return SliverPadding(
+//                                           padding: const EdgeInsets.all(5),
+//                                           sliver: SliverMasonryGrid(
+//                                             delegate:
+//                                                 SliverChildBuilderDelegate(
+//                                               (context, index) {
+//                                                 if (index <
+//                                                     value.media.data!.data!
+//                                                         .length) {
+//                                                   return Card(
+//                                                     child: Stack(
+//                                                       alignment:
+//                                                           Alignment.topRight,
+//                                                       children: [
+//                                                         Image.network(
+//                                                           value
+//                                                               .media
+//                                                               .data!
+//                                                               .data![index]
+//                                                               .imagePath
+//                                                               .toString(),
+//                                                           errorBuilder:
+//                                                               (context, error,
+//                                                                   stackTrace) {
+//                                                             return const Icon(
+//                                                               Icons.error,
+//                                                               color: Colors.red,
+//                                                             );
+//                                                           },
+//                                                         ),
+//                                                         const Row(
+//                                                           mainAxisAlignment:
+//                                                               MainAxisAlignment
+//                                                                   .end,
+//                                                           children: [
+//                                                             Icon(
+//                                                               Icons.favorite,
+//                                                               color:
+//                                                                   Colors.white,
+//                                                             ),
+//                                                             Icon(
+//                                                               Icons
+//                                                                   .bookmark_add,
+//                                                               color:
+//                                                                   Colors.white,
+//                                                             ),
+//                                                             Icon(
+//                                                               Icons.share,
+//                                                               color:
+//                                                                   Colors.white,
+//                                                             ),
+//                                                           ],
+//                                                         ),
+//                                                       ],
+//                                                     ),
+//                                                   );
+//                                                 } else if (index ==
+//                                                     value.media.data!.data!
+//                                                         .length) {
+//                                                   // "Load More" button
+//                                                   return InkWell(
+//                                                     onTap: () {
+//                                                       // Fetch next page of data
+//                                                       var currentpage = value
+//                                                           .media
+//                                                           .data!
+//                                                           .pagination!
+//                                                           .currentPage as int;
+//                                                       var newPage =
+//                                                           currentpage + 1;
+//                                                       print(newPage.toString());
+//                                                       value.loadMoreData(
+//                                                           newPage);
+//                                                     },
+//                                                     child: Container(
+//                                                       color: Colors.red[200],
+//                                                       child: const Center(
+//                                                         child: Padding(
+//                                                           padding:
+//                                                               EdgeInsets.all(
+//                                                                   10),
+//                                                           child: Text(
+//                                                             'Load More',
+//                                                             style: TextStyle(
+//                                                               color:
+//                                                                   Colors.black,
+//                                                               fontWeight:
+//                                                                   FontWeight
+//                                                                       .bold,
+//                                                             ),
+//                                                           ),
+//                                                         ),
+//                                                       ),
+//                                                     ),
+//                                                   );
+//                                                 } else {
+//                                                   return null;
+//                                                 }
+//                                               },
+//                                             ),
+//                                             gridDelegate:
+//                                                 const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+//                                               crossAxisCount: 2,
+//                                             ),
+//                                           ),
+//                                         );
+
+//                                       default:
+//                                         return const SliverToBoxAdapter();
+//                                     }
+//                                   },
+//                                 ),
+//                               ),
+//                               SliverToBoxAdapter(
+//                                 child: SizedBox(
+//                                   height: 20,
+//                                 ),
+//                               )
+//                             ],
+//                           ),
+//                         ),
+//                         Align(
+//                           alignment: Alignment.bottomLeft,
+//                           child: Container(
+//                             width: double.infinity,
+//                             height: 60,
+//                             decoration: const BoxDecoration(
+//                               gradient: LinearGradient(
+//                                 begin: Alignment.topCenter,
+//                                 end: Alignment.bottomCenter,
+//                                 colors: [
+//                                   Color(0x00efd7d7),
+//                                   Color(0xf0dad8d8),
+//                                 ],
+//                               ),
+//                             ),
+//                             padding: const EdgeInsets.only(
+//                               left: 128,
+//                               right: 121,
+//                               top: 61,
+//                               bottom: 23,
+//                             ),
+//                             child: const Row(
+//                               mainAxisSize: MainAxisSize.min,
+//                               mainAxisAlignment: MainAxisAlignment.center,
+//                               crossAxisAlignment: CrossAxisAlignment.end,
+//                               children: [],
+//                             ),
+//                           ),
+//                         ),
+//                         Stack(
+//                           children: [
+//                             Positioned.fill(
+//                               child: Align(
+//                                 alignment: Alignment.bottomCenter,
+//                                 child: Container(
+//                                   width: 390,
+//                                   height: 122,
+//                                   padding: const EdgeInsets.only(
+//                                     left: 124,
+//                                     right: 125,
+//                                     top: 30,
+//                                     bottom: 15,
+//                                   ),
+//                                   child: Column(
+//                                     mainAxisAlignment: MainAxisAlignment.end,
+//                                     crossAxisAlignment:
+//                                         CrossAxisAlignment.center,
+//                                     children: [
+//                                       InkWell(
+//                                         onTap: () {},
+//                                         child: Container(
+//                                           width: 141,
+//                                           height: 38,
+//                                           decoration: BoxDecoration(
+//                                             borderRadius:
+//                                                 BorderRadius.circular(50),
+//                                             color: CustomTheme.primaryColor,
+//                                           ),
+//                                           padding: const EdgeInsets.symmetric(
+//                                             horizontal: 29,
+//                                             vertical: 10,
+//                                           ),
+//                                           child: const Text(
+//                                             "Discover More",
+//                                             style: TextStyle(
+//                                               color: Colors.white,
+//                                               fontSize: 12,
+//                                               fontFamily: "Inter",
+//                                               fontWeight: FontWeight.w500,
+//                                             ),
+//                                           ),
+//                                         ),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         )
+//                       ],
+//                     ),
+//                   ),
+//                 )
+//               : const ProfileScreen()),
+//     );
+//   }
+// }

@@ -7,6 +7,7 @@ import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/utils/utils.dart';
 import 'package:fotos_mobile/view/profile/collection_screen.dart';
+import 'package:fotos_mobile/view/profile/media_screen.dart';
 import 'package:fotos_mobile/view/profile/user_profile_screen.dart';
 import 'package:fotos_mobile/view_model/user_view_model.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -159,7 +160,11 @@ class ProfileScreen extends StatelessWidget {
                         fontWeight: FontWeight.w300),
                   ),
                 ),
-                const ContainerWithIconTextAndLeading(
+                ContainerWithIconTextAndLeading(
+                  ontap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MediaScreen()));
+                  },
                   bgColor: CustomTheme.primaryColor,
                   imagePath: 'assets/branding/home/medias.svg',
                   text: 'My medias',

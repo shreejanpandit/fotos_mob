@@ -37,8 +37,8 @@ class Routes {
       case RoutesName.about_us:
         return MaterialPageRoute(
             builder: ((BuildContext context) => AboutUsPage()));
-      case RoutesName.test:
-        return MaterialPageRoute(builder: ((BuildContext context) => Test()));
+      // case RoutesName.test:
+      //   return MaterialPageRoute(builder: ((BuildContext context) => Test()));
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(
