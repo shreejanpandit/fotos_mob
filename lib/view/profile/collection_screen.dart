@@ -1,6 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:fotos_mobile/res/components/home_component/button_with_color_icon_and_text.dart';
 import 'package:fotos_mobile/res/components/home_component/gerne_row.dart';
 import 'package:fotos_mobile/res/components/profile_component/submit_and_cancle_button.dart';
@@ -59,346 +61,206 @@ class _CollectionScreenState extends State<CollectionScreen> {
           ],
         ),
         body: Container(
-          child: Column(
+          margin: const EdgeInsets.only(left: 24, right: 26, bottom: 28),
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // // Column(
-              // //   children: [
-              // //     Column(
-              // //       crossAxisAlignment: CrossAxisAlignment.start,
-              // //       children: [
-              // //         Padding(
-              // //           padding: const EdgeInsets.only(
-              // //               left: 24, bottom: 18, top: 14),
-              // //           child: Text(
-              // //             "Images",
-              // //             textAlign: TextAlign.center,
-              // //             style: TextStyle(
-              // //               color: Colors.black,
-              // //               fontSize: 19,
-              // //               fontFamily: "Poppins",
-              // //               fontWeight: FontWeight.w500,
-              // //             ),
-              // //           ),
-              // //         ),
-              // //         Container(
-              // //           margin: EdgeInsets.only(bottom: 28),
-              // //           child: Row(
-              // //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              // //             children: [
-              // //               Container(
-              // //                 height: 81,
-              // //                 width: MediaQuery.of(context).size.width * 0.4,
-              // //                 decoration: BoxDecoration(
-              // //                     borderRadius: BorderRadius.circular(18),
-              // //                     color: Colors.red),
-              // //                 child: ClipRRect(
-              // //                   borderRadius: BorderRadius.circular(18),
-              // //                   child: Stack(
-              // //                     alignment: Alignment.center,
-              // //                     children: [
-              // //                       Image.asset(
-              // //                         'assets/photos/seagull.png',
-              // //                         fit: BoxFit.fitWidth,
-              // //                       ),
-              // //                       Text(
-              // //                         'test',
-              // //                         style: CustomTheme.base.copyWith(
-              // //                           color: CustomTheme.whiteTextColor,
-              // //                         ),
-              // //                       ),
-              // //                     ],
-              // //                   ),
-              // //                 ),
-              // //               ),
-              // //               Container(
-              // //                 width: MediaQuery.of(context).size.width * 0.4,
-              // //                 decoration: BoxDecoration(
-              // //                   borderRadius: BorderRadius.circular(18),
-              // //                 ),
-              // //                 child: ClipRRect(
-              // //                   borderRadius: BorderRadius.circular(18),
-              // //                   child: Stack(
-              // //                     alignment: Alignment.center,
-              // //                     children: [
-              // //                       Image.asset(
-              // //                         'assets/photos/seagull.png',
-              // //                         fit: BoxFit.cover,
-              // //                       ),
-              // //                       Text(
-              // //                         'test',
-              // //                         style: CustomTheme.base.copyWith(
-              // //                           color: CustomTheme.whiteTextColor,
-              // //                         ),
-              // //                       ),
-              // //                     ],
-              // //                   ),
-              // //                 ),
-              // //               ),
-              // //             ],
-              // //           ),
-              // //         ),
-              // //       ],
-              // //     ),
-              // //     Container(
-              // //       margin: EdgeInsets.only(bottom: 28),
-              // //       child: Row(
-              // //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              // //         children: [
-              // //           Container(
-              // //             // height: 81,
-              // //             width: MediaQuery.of(context).size.width * 0.4,
-
-              // //             decoration: BoxDecoration(
-              // //               borderRadius: BorderRadius.circular(18),
-              // //             ),
-              // //             child: ClipRRect(
-              // //               borderRadius: BorderRadius.circular(18),
-              // //               child: Stack(
-              // //                 alignment: Alignment.center,
-              // //                 children: [
-              // //                   Image.asset(
-              // //                     'assets/photos/seagull.png',
-              // //                     fit: BoxFit.cover,
-              // //                   ),
-              // //                   Text(
-              // //                     'test',
-              // //                     style: CustomTheme.base.copyWith(
-              // //                       color: CustomTheme.whiteTextColor,
-              // //                     ),
-              // //                   ),
-              // //                 ],
-              // //               ),
-              // //             ),
-              // //           ),
-              // //           Container(
-              // //             width: MediaQuery.of(context).size.width * 0.4,
-              // //             decoration: BoxDecoration(
-              // //               borderRadius: BorderRadius.circular(18),
-              // //             ),
-              // //             child: ClipRRect(
-              // //               borderRadius: BorderRadius.circular(18),
-              // //               child: Stack(
-              // //                 alignment: Alignment.center,
-              // //                 children: [
-              // //                   Image.asset(
-              // //                     'assets/photos/seagull.png',
-              // //                     fit: BoxFit.cover,
-              // //                   ),
-              // //                   Text(
-              // //                     'test',
-              // //                     style: CustomTheme.base.copyWith(
-              // //                       color: CustomTheme.whiteTextColor,
-              // //                     ),
-              // //                   ),
-              // //                 ],
-              // //               ),
-              // //             ),
-              // //           ),
-              // //         ],
-              // //       ),
-              // //     ),
-              // //     Center(
-              // //       child: Container(
-              // //         width: 111,
-              // //         height: 32,
-              // //         decoration: BoxDecoration(
-              // //           borderRadius: BorderRadius.circular(26),
-              // //           color: CustomTheme.primaryColor,
-              // //         ),
-              // //         padding: const EdgeInsets.only(
-              // //           top: 5,
-              // //           bottom: 6,
-              // //         ),
-              // //         child: Row(
-              // //           mainAxisAlignment: MainAxisAlignment.center,
-              // //           crossAxisAlignment: CrossAxisAlignment.center,
-              // //           children: [
-              // //             Text(
-              // //               'Load more',
-              // //               style: TextStyle(
-              // //                 color: Colors.white,
-              // //                 fontSize: 15,
-              // //                 fontFamily: "Poppins",
-              // //                 fontWeight: FontWeight.w500,
-              // //               ),
-              // //             ),
-              // //           ],
-              // //         ),
-              // //       ),
-              // //     )
-              // //   ],
-              // // ),
-              // Column(
-              //   children: [
-              //     Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         Padding(
-              //           padding: const EdgeInsets.only(
-              //               left: 24, bottom: 18, top: 14),
-              //           child: Text(
-              //             "Videos",
-              //             textAlign: TextAlign.center,
-              //             style: TextStyle(
-              //               color: Colors.black,
-              //               fontSize: 19,
-              //               fontFamily: "Poppins",
-              //               fontWeight: FontWeight.w500,
-              //             ),
-              //           ),
-              //         ),
-              //         Container(
-              //           margin: EdgeInsets.only(bottom: 28),
-              //           child: Row(
-              //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //             children: [
-              //               Container(
-              //                 // height: 81,
-              //                 width: MediaQuery.of(context).size.width * 0.4,
-
-              //                 decoration: BoxDecoration(
-              //                   borderRadius: BorderRadius.circular(18),
-              //                 ),
-              //                 child: ClipRRect(
-              //                   borderRadius: BorderRadius.circular(18),
-              //                   child: Stack(
-              //                     alignment: Alignment.center,
-              //                     children: [
-              //                       Image.asset(
-              //                         'assets/photos/seagull.png',
-              //                         fit: BoxFit.cover,
-              //                       ),
-              //                       Text(
-              //                         'test',
-              //                         style: CustomTheme.base.copyWith(
-              //                           color: CustomTheme.whiteTextColor,
-              //                         ),
-              //                       ),
-              //                     ],
-              //                   ),
-              //                 ),
-              //               ),
-              //               Container(
-              //                 width: MediaQuery.of(context).size.width * 0.4,
-              //                 decoration: BoxDecoration(
-              //                   borderRadius: BorderRadius.circular(18),
-              //                 ),
-              //                 child: ClipRRect(
-              //                   borderRadius: BorderRadius.circular(18),
-              //                   child: Stack(
-              //                     alignment: Alignment.center,
-              //                     children: [
-              //                       Image.asset(
-              //                         'assets/photos/seagull.png',
-              //                         fit: BoxFit.cover,
-              //                       ),
-              //                       Text(
-              //                         'test',
-              //                         style: CustomTheme.base.copyWith(
-              //                           color: CustomTheme.whiteTextColor,
-              //                         ),
-              //                       ),
-              //                     ],
-              //                   ),
-              //                 ),
-              //               ),
-              //             ],
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              // Container(
-              //   margin: EdgeInsets.only(bottom: 28),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //     children: [
-              //       Container(
-              //         // height: 81,
-              //         width: MediaQuery.of(context).size.width * 0.4,
-
-              //         decoration: BoxDecoration(
-              //           borderRadius: BorderRadius.circular(18),
-              //         ),
-              //         child: ClipRRect(
-              //           borderRadius: BorderRadius.circular(18),
-              //           child: Stack(
-              //             alignment: Alignment.center,
-              //             children: [
-              //               Image.asset(
-              //                 'assets/photos/seagull.png',
-              //                 fit: BoxFit.cover,
-              //               ),
-              //               Text(
-              //                 'test',
-              //                 style: CustomTheme.base.copyWith(
-              //                   color: CustomTheme.whiteTextColor,
-              //                 ),
-              //               ),
-              //             ],
-              //           ),
-              //         ),
-              //       ),
-              //       Container(
-              //         width: MediaQuery.of(context).size.width * 0.4,
-              //         decoration: BoxDecoration(
-              //           borderRadius: BorderRadius.circular(18),
-              //         ),
-              //         child: ClipRRect(
-              //           borderRadius: BorderRadius.circular(18),
-              //           child: Stack(
-              //             alignment: Alignment.center,
-              //             children: [
-              //               Image.asset(
-              //                 'assets/photos/seagull.png',
-              //                 fit: BoxFit.cover,
-              //               ),
-              //               Text(
-              //                 'test',
-              //                 style: CustomTheme.base.copyWith(
-              //                   color: CustomTheme.whiteTextColor,
-              //                 ),
-              //               ),
-              //             ],
-              //           ),
-              //         ),
-              //       ),
-              //         ],
-              //       ),
-              //     ),
-              //     Center(
-              //       child: Container(
-              //         width: 111,
-              //         height: 32,
-              //         decoration: BoxDecoration(
-              //           borderRadius: BorderRadius.circular(26),
-              //           color: CustomTheme.primaryColor,
-              //         ),
-              //         padding: const EdgeInsets.only(
-              //           top: 5,
-              //           bottom: 6,
-              //         ),
-              //         child: Row(
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           crossAxisAlignment: CrossAxisAlignment.center,
-              //           children: [
-              //             Text(
-              //               'Load more',
-              //               style: TextStyle(
-              //                 color: Colors.white,
-              //                 fontSize: 15,
-              //                 fontFamily: "Poppins",
-              //                 fontWeight: FontWeight.w500,
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     )
-              //   ],
-              // )
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 14, bottom: 18),
+                    child: Text(
+                      "Images",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 19,
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CardWithImageAndText(
+                          text: 'Potrait', imagePath: 'assets/photos/tree.jpg'),
+                      CardWithImageAndText(
+                          text: 'Space', imagePath: 'assets/photos/space.png')
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 28, bottom: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        CardWithImageAndText(
+                            text: 'Illustration',
+                            imagePath: 'assets/photos/saturn.png'),
+                        CardWithImageAndText(
+                            text: 'Still Life',
+                            imagePath: 'assets/photos/space.png')
+                      ],
+                    ),
+                  ),
+                  ShowMore(
+                    text: 'Show More',
+                  )
+                ],
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 14, bottom: 18),
+                        child: Text(
+                          "Videos",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 19,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          CardWithImageAndText(
+                              text: 'Potrait',
+                              imagePath: 'assets/photos/tree.jpg'),
+                          CardWithImageAndText(
+                              text: 'Space',
+                              imagePath: 'assets/photos/space.png')
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 28, bottom: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CardWithImageAndText(
+                                text: 'Illustration',
+                                imagePath: 'assets/photos/saturn.png'),
+                            CardWithImageAndText(
+                                text: 'Still Life',
+                                imagePath: 'assets/photos/space.png')
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 28, bottom: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CardWithImageAndText(
+                                text: 'Illustration',
+                                imagePath: 'assets/photos/phone-wallpaper.png'),
+                            CardWithImageAndText(
+                                text: 'Still Life',
+                                imagePath: 'assets/photos/tree.jpg')
+                          ],
+                        ),
+                      ),
+                      ShowMore(
+                        text: 'Show More',
+                      )
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class ShowMore extends StatelessWidget {
+  final String text;
+  const ShowMore({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: InkWell(
+      onTap: () {}, // Added onTap callback
+      child: Container(
+        width: 111,
+        height: 32,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(26),
+          color: CustomTheme.primaryColor,
+        ),
+        padding: const EdgeInsets.only(
+          top: 5,
+          bottom: 6,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              text,
+              style: const TextStyle(
+                color: CustomTheme.whiteTextColor,
+                fontSize: 15,
+                fontFamily: "Poppins",
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ));
+  }
+}
+
+class CardWithImageAndText extends StatelessWidget {
+  final String imagePath;
+  final String text;
+
+  const CardWithImageAndText({
+    Key? key,
+    required this.imagePath,
+    required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 81,
+      width: 159,
+      decoration: BoxDecoration(
+        color: Colors.amber,
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(18),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Image.asset(
+              imagePath,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+            Text(
+              text,
+              style: CustomTheme.base.copyWith(
+                color: CustomTheme.whiteTextColor,
+              ),
+            ),
+          ],
         ),
       ),
     );
