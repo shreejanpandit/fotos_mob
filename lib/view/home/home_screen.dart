@@ -20,6 +20,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   HomeViewModel homeViewModel = HomeViewModel();
+  bool _shouldLoadImages = true;
+  static int currentPage = 1;
+  int nextPage = 1;
 
   @override
   void initState() {
@@ -310,6 +313,97 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                               ),
+                              // SliverPadding(
+                              //   padding: const EdgeInsets.all(5),
+                              //   sliver: Consumer<HomeViewModel>(
+                              //     builder: (context, value, child) {
+                              //       switch (value.media.status) {
+                              //         case Status.LOADING:
+                              //           return const SliverToBoxAdapter(
+                              //             child: Center(
+                              //               child: CircularProgressIndicator
+                              //                   .adaptive(),
+                              //             ),
+                              //           );
+                              //         case Status.ERROR:
+                              //           return SliverToBoxAdapter(
+                              //             child: Text(
+                              //                 value.media.message.toString()),
+                              //           );
+                              //         case Status.COMPLETED:
+                              //           return SliverPadding(
+                              //             padding: const EdgeInsets.all(5),
+                              //             sliver: SliverMasonryGrid(
+                              //               delegate:
+                              //                   SliverChildBuilderDelegate(
+                              //                 (context, index) {
+                              //                   if (index <
+                              //                       value.imageList.length) {
+                              //                     return Card(
+                              //                       child: Stack(
+                              //                         alignment:
+                              //                             Alignment.topRight,
+                              //                         children: [
+                              //                           Image.network(
+                              //                             value.imageList[index]
+                              //                                 .toString(),
+                              //                             errorBuilder:
+                              //                                 (context, error,
+                              //                                     stackTrace) {
+                              //                               return const Icon(
+                              //                                 Icons.error,
+                              //                                 color: Colors.red,
+                              //                               );
+                              //                             },
+                              //                           ),
+                              //                           const Row(
+                              //                             mainAxisAlignment:
+                              //                                 MainAxisAlignment
+                              //                                     .end,
+                              //                             children: [
+                              //                               Icon(
+                              //                                 Icons.favorite,
+                              //                                 color:
+                              //                                     Colors.white,
+                              //                               ),
+                              //                               Icon(
+                              //                                 Icons
+                              //                                     .bookmark_add,
+                              //                                 color:
+                              //                                     Colors.white,
+                              //                               ),
+                              //                               Icon(
+                              //                                 Icons.share,
+                              //                                 color:
+                              //                                     Colors.white,
+                              //                               ),
+                              //                             ],
+                              //                           ),
+                              //                         ],
+                              //                       ),
+                              //                     );
+                              //                   }
+
+                              //                   return SliverToBoxAdapter(); // Return null for empty sliver
+                              //                 },
+                              //                 // Set childCount to the initial number of images
+                              //                 childCount:
+                              //                     value.imageList.length,
+                              //               ),
+                              //               gridDelegate:
+                              //                   const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                              //                 crossAxisCount: 2,
+                              //               ),
+                              //             ),
+                              //           );
+
+                              //         default:
+                              //           return const SliverToBoxAdapter();
+                              //       }
+                              //     },
+                              //   ),
+                              // ),
+
                               SliverPadding(
                                 padding: const EdgeInsets.all(5),
                                 sliver: Consumer<HomeViewModel>(
@@ -333,59 +427,143 @@ class _HomeScreenState extends State<HomeScreen> {
                                           sliver: SliverMasonryGrid(
                                             delegate:
                                                 SliverChildBuilderDelegate(
-                                                    (context, index) {
-                                              return Card(
-                                                child: Stack(
-                                                  alignment: Alignment.topRight,
-                                                  children: [
-                                                    Image.network(
-                                                      value.imageList[index]
-                                                          .toString(),
-                                                      errorBuilder: (context,
-                                                          error, stackTrace) {
-                                                        return const Icon(
-                                                          Icons.error,
-                                                          color: Colors.red,
-                                                        );
-                                                      },
-                                                    ),
-                                                    const Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
+                                              addRepaintBoundaries: true,
+                                              (context, index) {
+                                                if (index <
+                                                    value.imageList.length) {
+                                                  // Render existing images
+                                                  return Card(
+                                                    child: Stack(
+                                                      alignment:
+                                                          Alignment.topRight,
                                                       children: [
-                                                        Icon(
-                                                          Icons.favorite,
-                                                          color: Colors.white,
+                                                        Image.network(
+                                                          value.imageList[index]
+                                                              .toString(),
+                                                          fit: BoxFit.none,
+                                                          errorBuilder:
+                                                              (context, error,
+                                                                  stackTrace) {
+                                                            return const Icon(
+                                                              Icons.error,
+                                                              color: Colors.red,
+                                                            );
+                                                          },
                                                         ),
-                                                        Icon(
-                                                          Icons.bookmark_add,
-                                                          color: Colors.white,
-                                                        ),
-                                                        Icon(
-                                                          Icons.share,
-                                                          color: Colors.white,
+                                                        const Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Icon(
+                                                              Icons.favorite,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            Icon(
+                                                              Icons
+                                                                  .bookmark_add,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            Icon(
+                                                              Icons.share,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ],
                                                         ),
                                                       ],
                                                     ),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                                    childCount: homeViewModel
-                                                        .imageList.length),
+                                                  );
+                                                } else {
+                                                  final newIndex = index -
+                                                      value.imageList.length;
+                                                  if (newIndex <
+                                                      value.newlyAddedImages
+                                                          .length) {
+                                                    // Render newly added images
+                                                    // Card(
+                                                    // child: Image.network(
+                                                    //   value.newlyAddedImages[
+                                                    //       newIndex],
+                                                    //     errorBuilder: (context,
+                                                    //         error, stackTrace) {
+                                                    //       return const Icon(
+                                                    //         Icons.error,
+                                                    //         color: Colors.red,
+                                                    //       );
+                                                    //     },
+                                                    //   ),
+                                                    // );
+                                                    return Card(
+                                                      child: Stack(
+                                                        alignment:
+                                                            Alignment.topRight,
+                                                        children: [
+                                                          Image.network(
+                                                            value.newlyAddedImages[
+                                                                newIndex],
+                                                            fit: BoxFit.none,
+                                                            errorBuilder:
+                                                                (context, error,
+                                                                    stackTrace) {
+                                                              return const Icon(
+                                                                Icons.error,
+                                                                color:
+                                                                    Colors.red,
+                                                              );
+                                                            },
+                                                          ),
+                                                          const Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Icon(
+                                                                Icons.favorite,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                              Icon(
+                                                                Icons
+                                                                    .bookmark_add,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                              Icon(
+                                                                Icons.share,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    // This case should not be reached, but added for completeness
+                                                    return const SizedBox();
+                                                  }
+                                                }
+                                              },
+                                              addAutomaticKeepAlives: true,
+                                              childCount: value
+                                                      .imageList.length +
+                                                  value.newlyAddedImages.length,
+                                            ),
                                             gridDelegate:
                                                 const SliverSimpleGridDelegateWithFixedCrossAxisCount(
                                               crossAxisCount: 2,
                                             ),
                                           ),
                                         );
-
                                       default:
                                         return const SliverToBoxAdapter();
                                     }
                                   },
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         ),
@@ -425,12 +603,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 alignment: Alignment.bottomCenter,
                                 child: InkWell(
                                   onTap: () {
-                                    homeViewModel.loadMoreData(2);
-                                    for (var i = 0;
-                                        i < homeViewModel.imageList.length;
-                                        i++) {
-                                      print('${homeViewModel.imageList[i]}');
-                                    }
+                                    nextPage = currentPage + 1;
+                                    currentPage = nextPage;
+                                    homeViewModel.loadMoreData(nextPage);
                                   },
                                   child: Container(
                                     width: 390,

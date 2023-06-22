@@ -71,153 +71,156 @@ class _MediaScreenState extends State<MediaScreen> {
         ),
         body: Container(
           margin: const EdgeInsets.only(left: 24, right: 26, bottom: 28),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 14, bottom: 18),
-                    child: Text(
-                      "Images",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 19,
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Container(
-                      height: 296,
-                      child: CustomScrollView(
-                        slivers: [
-                          SliverPadding(
-                            padding: const EdgeInsets.all(5),
-                            sliver: SliverMasonryGrid(
-                                delegate: SliverChildBuilderDelegate(
-                                  (context, index) => Card(
-                                    child: Stack(
-                                      alignment: Alignment.topRight,
-                                      children: [
-                                        Image.asset(
-                                          imageList[index],
-                                        ),
-                                        const Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Icon(
-                                              Icons.favorite,
-                                              color: Colors.white,
-                                            ),
-                                            Icon(
-                                              Icons.bookmark_add,
-                                              color: Colors.white,
-                                            ),
-                                            Icon(
-                                              Icons.share,
-                                              color: Colors.white,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  childCount: imageList.length,
-                                ),
-                                gridDelegate:
-                                    const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  ShowMore(
-                    text: 'Show More',
-                  )
-                ],
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 14, bottom: 18),
-                        child: Text(
-                          "Videos",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 19,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                          ),
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 14, bottom: 18),
+                      child: Text(
+                        "Images",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 19,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: Container(
-                          height: 296,
-                          child: CustomScrollView(
-                            slivers: [
-                              SliverPadding(
-                                padding: const EdgeInsets.all(5),
-                                sliver: SliverMasonryGrid(
-                                    mainAxisSpacing: 13,
-                                    delegate: SliverChildBuilderDelegate(
-                                      (context, index) => Card(
-                                        child: Stack(
-                                          alignment: Alignment.topRight,
-                                          children: [
-                                            Image.asset(
-                                              imageList[index],
-                                            ),
-                                            const Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                Icon(
-                                                  Icons.favorite,
-                                                  color: Colors.white,
-                                                ),
-                                                Icon(
-                                                  Icons.bookmark_add,
-                                                  color: Colors.white,
-                                                ),
-                                                Icon(
-                                                  Icons.share,
-                                                  color: Colors.white,
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Container(
+                        height: 296,
+                        child: CustomScrollView(
+                          slivers: [
+                            SliverPadding(
+                              padding: const EdgeInsets.all(5),
+                              sliver: SliverMasonryGrid(
+                                  delegate: SliverChildBuilderDelegate(
+                                    (context, index) => Card(
+                                      child: Stack(
+                                        alignment: Alignment.topRight,
+                                        children: [
+                                          Image.asset(
+                                            imageList[index],
+                                          ),
+                                          const Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Icon(
+                                                Icons.favorite,
+                                                color: Colors.white,
+                                              ),
+                                              Icon(
+                                                Icons.bookmark_add,
+                                                color: Colors.white,
+                                              ),
+                                              Icon(
+                                                Icons.share,
+                                                color: Colors.white,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                      childCount: 1,
                                     ),
-                                    gridDelegate:
-                                        const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 1)),
-                              ),
-                            ],
-                          ),
+                                    childCount: imageList.length,
+                                  ),
+                                  gridDelegate:
+                                      const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2)),
+                            ),
+                          ],
                         ),
                       ),
-                      ShowMore(
-                        text: 'Show More',
-                      )
-                    ],
-                  ),
+                    ),
+                    ShowMore(
+                      text: 'Show More',
+                    )
+                  ],
                 ),
-              )
-            ],
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 14, bottom: 18),
+                          child: Text(
+                            "Videos",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 19,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: Container(
+                            height: 296,
+                            child: CustomScrollView(
+                              slivers: [
+                                SliverPadding(
+                                  padding: const EdgeInsets.all(5),
+                                  sliver: SliverMasonryGrid(
+                                      mainAxisSpacing: 13,
+                                      delegate: SliverChildBuilderDelegate(
+                                        (context, index) => Card(
+                                          child: Stack(
+                                            alignment: Alignment.topRight,
+                                            children: [
+                                              Image.asset(
+                                                imageList[index],
+                                              ),
+                                              const Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Icon(
+                                                    Icons.favorite,
+                                                    color: Colors.white,
+                                                  ),
+                                                  Icon(
+                                                    Icons.bookmark_add,
+                                                    color: Colors.white,
+                                                  ),
+                                                  Icon(
+                                                    Icons.share,
+                                                    color: Colors.white,
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        childCount: 1,
+                                      ),
+                                      gridDelegate:
+                                          const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 1)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        ShowMore(
+                          text: 'Show More',
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

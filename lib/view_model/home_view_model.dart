@@ -12,8 +12,32 @@ class HomeViewModel with ChangeNotifier {
   // ApiResponse<dynamic> mediaList = ApiResponse.loading();
   ApiResponse<MediaModel> media = ApiResponse.loading();
   List<String> imageList = [];
+  List<String> newlyAddedImages = [];
+
+  void updateNewlyAddedImages(List<String> images) {
+    newlyAddedImages.addAll(images);
+    notifyListeners();
+  }
+
   setMedia(ApiResponse<MediaModel> response) {
     media = response;
+    notifyListeners();
+  }
+
+  // Future<void> fetchMedia() async {
+  //   setMedia(ApiResponse.loading());
+  //   _myRepo.fetchMediaApi(1).then((value) {
+  //     for (var i = 0; i < value.data!.length; i++) {
+  //       imageList.add(value.data![i].imagePath.toString());
+  //     }
+  //     notifyListeners();
+  //     setMedia(ApiResponse.completed(value));
+  //   }).onError((error, stackTrace) {
+  //     setMedia(ApiResponse.error(error.toString()));
+  //   });
+  // }
+  void setNewlyAddedImages(List<String> images) {
+    newlyAddedImages = images;
     notifyListeners();
   }
 
@@ -22,8 +46,9 @@ class HomeViewModel with ChangeNotifier {
     _myRepo.fetchMediaApi(1).then((value) {
       for (var i = 0; i < value.data!.length; i++) {
         imageList.add(value.data![i].imagePath.toString());
+        newlyAddedImages.add(value.data![i].imagePath.toString());
       }
-      notifyListeners();
+      // Assign the fetched newly added images
       setMedia(ApiResponse.completed(value));
     }).onError((error, stackTrace) {
       setMedia(ApiResponse.error(error.toString()));
@@ -31,14 +56,26 @@ class HomeViewModel with ChangeNotifier {
   }
 
   void loadMoreData(int newPage) async {
-    setMedia(ApiResponse.loading());
     _myRepo.fetchMediaApi(newPage).then((value) {
       for (var i = 0; i < value.data!.length; i++) {
-        imageList.add(value.data![i].imagePath.toString());
+        newlyAddedImages.add(value.data![i].imagePath.toString());
       }
-      setMedia(ApiResponse.completed(value));
+      imageList.addAll(newlyAddedImages);
+      notifyListeners();
     }).onError((error, stackTrace) {
       setMedia(ApiResponse.error(error.toString()));
     });
   }
+
+  // void loadMoreData(int newPage) async {
+  //   setMedia(ApiResponse.loading());
+  //   _myRepo.fetchMediaApi(newPage).then((value) {
+  //     for (var i = 0; i < value.data!.length; i++) {
+  //       imageList.add(value.data![i].imagePath.toString());
+  //     }
+  //     setMedia(ApiResponse.completed(value));
+  //   }).onError((error, stackTrace) {
+  //     setMedia(ApiResponse.error(error.toString()));
+  //   });
+  // }
 }
