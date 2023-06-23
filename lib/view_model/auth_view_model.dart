@@ -75,7 +75,7 @@ class AuthViewModel with ChangeNotifier {
           Navigator.pushNamed(context, RoutesName.home);
         }
       }
-    } catch (error, stackTrace) {
+    } catch (error) {
       setloading(false);
 
       Utils.flushBarErrorMessage(error.toString(), context);

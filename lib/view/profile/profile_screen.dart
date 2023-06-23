@@ -1,4 +1,3 @@
-import 'package:dialog_alert/dialog_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fotos_mobile/res/components/home_component/button_with_color_icon_and_text.dart';
@@ -8,11 +7,11 @@ import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/utils/utils.dart';
 import 'package:fotos_mobile/view/profile/collection_screen.dart';
 import 'package:fotos_mobile/view/profile/media_screen.dart';
+import 'package:fotos_mobile/view/profile/message/message_screen.dart';
+import 'package:fotos_mobile/view/profile/payment/payment_screen.dart';
 import 'package:fotos_mobile/view/profile/user_profile_screen.dart';
 import 'package:fotos_mobile/view_model/user_view_model.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../models/user_models.dart';
 
@@ -25,7 +24,7 @@ class ProfileScreen extends StatelessWidget {
     Future<UserModel> getUserData() => UserViewModel().getUser();
     double baseWidth = 390;
     double fem = MediaQuery.of(context).size.width / baseWidth;
-    double ffem = fem * 0.97;
+    // double ffem = fem * 0.97;
 
     return Container(
       // homeuser4Sw (38:203)
@@ -125,7 +124,12 @@ class ProfileScreen extends StatelessWidget {
                       wid: 113,
                     ),
                     ButtonWithColorIconAndText(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PaymentScreen()));
+                      },
                       textColor: Colors.white,
                       backgroundColor: CustomTheme.faintGreenColor,
                       image: 'assets/branding/home/payments.svg',
@@ -133,7 +137,12 @@ class ProfileScreen extends StatelessWidget {
                       wid: 113,
                     ),
                     ButtonWithColorIconAndText(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MessagesScreen()));
+                      },
                       textColor: Colors.white,
                       backgroundColor: CustomTheme.primaryColor,
                       image: 'assets/branding/home/messages.svg',

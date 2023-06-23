@@ -1,15 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:fotos_mobile/res/components/home_component/button_with_color_icon_and_text.dart';
-import 'package:fotos_mobile/res/components/home_component/gerne_row.dart';
 import 'package:fotos_mobile/res/components/profile_component/submit_and_cancle_button.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
-import 'package:fotos_mobile/view/profile/personal_info.dart';
-import 'package:fotos_mobile/view/profile/work_info%20copy.dart';
 
 class MediaScreen extends StatefulWidget {
   const MediaScreen({super.key});
@@ -24,7 +18,7 @@ class _MediaScreenState extends State<MediaScreen> {
   List<String> imageList = [
     'assets/photos/seagull.png',
     'assets/photos/tree.jpg',
-    'assets/photos/saturn.png',
+    'assets/photos/seagull.png',
     'assets/photos/tree.jpg',
   ];
 
@@ -70,7 +64,6 @@ class _MediaScreenState extends State<MediaScreen> {
           ],
         ),
         body: Container(
-          margin: const EdgeInsets.only(left: 24, right: 26, bottom: 28),
           height: MediaQuery.of(context).size.height,
           child: SingleChildScrollView(
             child: Column(
@@ -79,8 +72,8 @@ class _MediaScreenState extends State<MediaScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 14, bottom: 18),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 14, bottom: 14, left: 24),
                       child: Text(
                         "Images",
                         textAlign: TextAlign.center,
@@ -108,21 +101,22 @@ class _MediaScreenState extends State<MediaScreen> {
                                         children: [
                                           Image.asset(
                                             imageList[index],
+                                            fit: BoxFit.cover,
                                           ),
                                           const Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
                                               Icon(
-                                                Icons.favorite,
+                                                Icons.favorite_border_outlined,
                                                 color: Colors.white,
                                               ),
                                               Icon(
-                                                Icons.bookmark_add,
+                                                Icons.bookmark_add_outlined,
                                                 color: Colors.white,
                                               ),
                                               Icon(
-                                                Icons.share,
+                                                Icons.share_outlined,
                                                 color: Colors.white,
                                               ),
                                             ],
@@ -140,83 +134,94 @@ class _MediaScreenState extends State<MediaScreen> {
                         ),
                       ),
                     ),
-                    ShowMore(
+                    const ShowMore(
                       text: 'Show More',
                     )
                   ],
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 14, bottom: 18),
-                          child: Text(
-                            "Videos",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 19,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w500,
-                            ),
+                SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(top: 14, bottom: 14, left: 24),
+                        child: Text(
+                          "Videos",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 19,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Container(
-                            height: 296,
-                            child: CustomScrollView(
-                              slivers: [
-                                SliverPadding(
-                                  padding: const EdgeInsets.all(5),
-                                  sliver: SliverMasonryGrid(
-                                      mainAxisSpacing: 13,
-                                      delegate: SliverChildBuilderDelegate(
-                                        (context, index) => Card(
-                                          child: Stack(
-                                            alignment: Alignment.topRight,
-                                            children: [
-                                              Image.asset(
-                                                imageList[index],
-                                              ),
-                                              const Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Icon(
-                                                    Icons.favorite,
-                                                    color: Colors.white,
-                                                  ),
-                                                  Icon(
-                                                    Icons.bookmark_add,
-                                                    color: Colors.white,
-                                                  ),
-                                                  Icon(
-                                                    Icons.share,
-                                                    color: Colors.white,
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Container(
+                          height: 226,
+                          child: CustomScrollView(
+                            slivers: [
+                              SliverPadding(
+                                padding: const EdgeInsets.all(5),
+                                sliver: SliverMasonryGrid(
+                                  delegate: SliverChildBuilderDelegate(
+                                    (context, index) => Card(
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Image.asset(
+                                            imageList[index],
                                           ),
-                                        ),
-                                        childCount: 1,
+                                          const Positioned(
+                                            top: 0,
+                                            right: 0,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Icon(
+                                                  Icons.favorite_outline,
+                                                  color: Colors.white,
+                                                ),
+                                                Icon(
+                                                  Icons.bookmark_add_outlined,
+                                                  color: Colors.white,
+                                                ),
+                                                Icon(
+                                                  Icons.share_outlined,
+                                                  color: Colors.white,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const Icon(
+                                            Icons.play_circle_fill_outlined,
+                                            size: 40,
+                                            color: Colors.white,
+                                          ),
+                                        ],
                                       ),
-                                      gridDelegate:
-                                          const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 1)),
+                                    ),
+                                    childCount: 1,
+                                  ),
+                                  gridDelegate:
+                                      const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 1,
+                                  ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                        ShowMore(
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: ShowMore(
                           text: 'Show More',
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
                 )
               ],
@@ -369,7 +374,7 @@ void _showBottomSheet(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 16),
+                            padding: const EdgeInsets.only(left: 16),
                             child: Text(
                               'Select File',
                               style: CustomTheme.base.copyWith(
@@ -428,7 +433,7 @@ void _showBottomSheet(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 16),
+                            padding: const EdgeInsets.only(left: 16),
                             child: Text(
                               'Select Collection',
                               style: CustomTheme.base.copyWith(
@@ -476,7 +481,7 @@ void _showBottomSheet(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 16),
+                            padding: const EdgeInsets.only(left: 16),
                             child: Text(
                               'Enter Media Name',
                               style: CustomTheme.base.copyWith(
@@ -519,7 +524,7 @@ void _showBottomSheet(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 16, top: 3),
+                            padding: const EdgeInsets.only(left: 16, top: 3),
                             child: Text(
                               'Enter Media Description',
                               style: CustomTheme.base.copyWith(
@@ -534,7 +539,7 @@ void _showBottomSheet(BuildContext context) {
                   ],
                 ),
               ),
-              SubmitAndCancleButton(),
+              const SubmitAndCancleButton(),
             ],
           ),
         ),

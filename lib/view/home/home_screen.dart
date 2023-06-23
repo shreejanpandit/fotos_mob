@@ -31,83 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
     homeViewModel.fetchMedia();
   }
 
-  // List<String> imageList = [
-  //   'assets/photos/seagull.png',
-  //   'assets/photos/phone-wallpaper.png',
-  //   'assets/photos/saturn.png',
-  //   'assets/photos/space.png',
-  //   'assets/photos/tree.jpg',
-  //   'assets/photos/seagull.png',
-  //   'assets/photos/phone-wallpaper.png',
-  //   'assets/photos/saturn.png',
-  //   'assets/photos/space.png',
-  //   'assets/photos/tree.jpg',
-  //   'assets/photos/seagull.png',
-  //   'assets/photos/phone-wallpaper.png',
-  //   'assets/photos/saturn.png',
-  //   'assets/photos/space.png',
-  //   'assets/photos/tree.jpg',
-  //   'assets/photos/seagull.png',
-  //   'assets/photos/phone-wallpaper.png',
-  //   'assets/photos/saturn.png',
-  //   'assets/photos/space.png',
-  //   'assets/photos/tree.jpg',
-  //   'assets/photos/seagull.png',
-  //   'assets/photos/phone-wallpaper.png',
-  //   'assets/photos/saturn.png',
-  //   'assets/photos/space.png',
-  //   'assets/photos/tree.jpg',
-  //   'assets/photos/seagull.png',
-  //   'assets/photos/phone-wallpaper.png',
-  //   'assets/photos/saturn.png',
-  //   'assets/photos/space.png',
-  //   'assets/photos/tree.jpg',
-  //   'assets/photos/seagull.png',
-  //   'assets/photos/phone-wallpaper.png',
-  //   'assets/photos/saturn.png',
-  //   'assets/photos/space.png',
-  //   'assets/photos/tree.jpg',
-  //   'assets/photos/seagull.png',
-  //   'assets/photos/phone-wallpaper.png',
-  //   'assets/photos/saturn.png',
-  //   'assets/photos/space.png',
-  //   'assets/photos/tree.jpg',
-  //   'assets/photos/seagull.png',
-  //   'assets/photos/phone-wallpaper.png',
-  //   'assets/photos/saturn.png',
-  //   'assets/photos/space.png',
-  //   'assets/photos/tree.jpg',
-  //   'assets/photos/seagull.png',
-  //   'assets/photos/phone-wallpaper.png',
-  //   'assets/photos/saturn.png',
-  //   'assets/photos/space.png',
-  //   'assets/photos/tree.jpg',
-  //   'assets/photos/seagull.png',
-  //   'assets/photos/phone-wallpaper.png',
-  //   'assets/photos/saturn.png',
-  //   'assets/photos/space.png',
-  //   'assets/photos/tree.jpg',
-  //   'assets/photos/seagull.png',
-  //   'assets/photos/phone-wallpaper.png',
-  //   'assets/photos/saturn.png',
-  //   'assets/photos/space.png',
-  //   'assets/photos/tree.jpg',
-  //   'assets/photos/seagull.png',
-  //   'assets/photos/phone-wallpaper.png',
-  //   'assets/photos/saturn.png',
-  //   'assets/photos/space.png',
-  //   'assets/photos/tree.jpg',
-  //   'assets/photos/seagull.png',
-  //   'assets/photos/phone-wallpaper.png',
-  //   'assets/photos/saturn.png',
-  //   'assets/photos/space.png',
-  //   'assets/photos/tree.jpg',
-  //   'assets/photos/seagull.png',
-  //   'assets/photos/phone-wallpaper.png',
-  //   'assets/photos/saturn.png',
-  //   'assets/photos/space.png',
-  //   'assets/photos/tree.jpg',
-  // ];
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    homeViewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,8 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
           key: scaffoldKey,
           drawer: const AppDrawer(),
           body: appbarProvider.showBody
-              ? ChangeNotifierProvider<HomeViewModel>(
-                  create: (BuildContext context) => homeViewModel,
+              ? ChangeNotifierProvider.value(
+                  value: homeViewModel,
                   child: Container(
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
@@ -313,97 +242,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                               ),
-                              // SliverPadding(
-                              //   padding: const EdgeInsets.all(5),
-                              //   sliver: Consumer<HomeViewModel>(
-                              //     builder: (context, value, child) {
-                              //       switch (value.media.status) {
-                              //         case Status.LOADING:
-                              //           return const SliverToBoxAdapter(
-                              //             child: Center(
-                              //               child: CircularProgressIndicator
-                              //                   .adaptive(),
-                              //             ),
-                              //           );
-                              //         case Status.ERROR:
-                              //           return SliverToBoxAdapter(
-                              //             child: Text(
-                              //                 value.media.message.toString()),
-                              //           );
-                              //         case Status.COMPLETED:
-                              //           return SliverPadding(
-                              //             padding: const EdgeInsets.all(5),
-                              //             sliver: SliverMasonryGrid(
-                              //               delegate:
-                              //                   SliverChildBuilderDelegate(
-                              //                 (context, index) {
-                              //                   if (index <
-                              //                       value.imageList.length) {
-                              //                     return Card(
-                              //                       child: Stack(
-                              //                         alignment:
-                              //                             Alignment.topRight,
-                              //                         children: [
-                              //                           Image.network(
-                              //                             value.imageList[index]
-                              //                                 .toString(),
-                              //                             errorBuilder:
-                              //                                 (context, error,
-                              //                                     stackTrace) {
-                              //                               return const Icon(
-                              //                                 Icons.error,
-                              //                                 color: Colors.red,
-                              //                               );
-                              //                             },
-                              //                           ),
-                              //                           const Row(
-                              //                             mainAxisAlignment:
-                              //                                 MainAxisAlignment
-                              //                                     .end,
-                              //                             children: [
-                              //                               Icon(
-                              //                                 Icons.favorite,
-                              //                                 color:
-                              //                                     Colors.white,
-                              //                               ),
-                              //                               Icon(
-                              //                                 Icons
-                              //                                     .bookmark_add,
-                              //                                 color:
-                              //                                     Colors.white,
-                              //                               ),
-                              //                               Icon(
-                              //                                 Icons.share,
-                              //                                 color:
-                              //                                     Colors.white,
-                              //                               ),
-                              //                             ],
-                              //                           ),
-                              //                         ],
-                              //                       ),
-                              //                     );
-                              //                   }
-
-                              //                   return SliverToBoxAdapter(); // Return null for empty sliver
-                              //                 },
-                              //                 // Set childCount to the initial number of images
-                              //                 childCount:
-                              //                     value.imageList.length,
-                              //               ),
-                              //               gridDelegate:
-                              //                   const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                              //                 crossAxisCount: 2,
-                              //               ),
-                              //             ),
-                              //           );
-
-                              //         default:
-                              //           return const SliverToBoxAdapter();
-                              //       }
-                              //     },
-                              //   ),
-                              // ),
-
                               SliverPadding(
                                 padding: const EdgeInsets.all(5),
                                 sliver: Consumer<HomeViewModel>(
@@ -456,13 +294,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .end,
                                                           children: [
                                                             Icon(
-                                                              Icons.favorite,
+                                                              Icons
+                                                                  .favorite_outline,
                                                               color:
                                                                   Colors.white,
                                                             ),
                                                             Icon(
                                                               Icons
-                                                                  .bookmark_add,
+                                                                  .bookmark_add_outlined,
                                                               color:
                                                                   Colors.white,
                                                             ),
@@ -521,13 +360,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     .end,
                                                             children: [
                                                               Icon(
-                                                                Icons.favorite,
+                                                                Icons
+                                                                    .favorite_outline,
                                                                 color: Colors
                                                                     .white,
                                                               ),
                                                               Icon(
                                                                 Icons
-                                                                    .bookmark_add,
+                                                                    .bookmark_add_outlined,
                                                                 color: Colors
                                                                     .white,
                                                               ),
@@ -596,57 +436,128 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
+                        // Stack(
+                        //   children: [
+                        //     Positioned.fill(
+                        //       child: Align(
+                        //         alignment: Alignment.bottomCenter,
+                        //         child: InkWell(
+                        //           onTap: () {
+                        //             nextPage = currentPage + 1;
+                        //             currentPage = nextPage;
+                        //             homeViewModel.loadMoreData(nextPage);
+                        //           },
+                        //           child: Container(
+                        //             width: 390,
+                        //             height: 122,
+                        //             padding: const EdgeInsets.only(
+                        //               left: 124,
+                        //               right: 125,
+                        //               top: 30,
+                        //               bottom: 15,
+                        //             ),
+                        //             child: Column(
+                        //               mainAxisAlignment: MainAxisAlignment.end,
+                        //               crossAxisAlignment:
+                        //                   CrossAxisAlignment.center,
+                        //               children: [
+                        //                 Container(
+                        //                   width: 141,
+                        //                   height: 38,
+                        //                   decoration: BoxDecoration(
+                        //                     borderRadius:
+                        //                         BorderRadius.circular(50),
+                        //                     color: CustomTheme.primaryColor,
+                        //                   ),
+                        //                   padding: const EdgeInsets.symmetric(
+                        //                     horizontal: 29,
+                        //                     vertical: 10,
+                        //                   ),
+                        //                   child: const Text(
+                        //                     "Discover More",
+                        //                     style: TextStyle(
+                        //                       color: Colors.white,
+                        //                       fontSize: 12,
+                        //                       fontFamily: "Inter",
+                        //                       fontWeight: FontWeight.w500,
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // )
+
                         Stack(
                           children: [
+                            // Existing code...
                             Positioned.fill(
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: InkWell(
-                                  onTap: () {
-                                    nextPage = currentPage + 1;
-                                    currentPage = nextPage;
-                                    homeViewModel.loadMoreData(nextPage);
-                                  },
-                                  child: Container(
-                                    width: 390,
-                                    height: 122,
-                                    padding: const EdgeInsets.only(
-                                      left: 124,
-                                      right: 125,
-                                      top: 30,
-                                      bottom: 15,
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          width: 141,
-                                          height: 38,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                            color: CustomTheme.primaryColor,
+                              child: AnimatedBuilder(
+                                animation: homeViewModel,
+                                builder: (context, child) {
+                                  final imageList = homeViewModel.imageList;
+                                  final lastItemIndex = imageList.length - 1;
+                                  final isLastItemShown = true;
+                                  return Visibility(
+                                    visible: isLastItemShown,
+                                    child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: InkWell(
+                                        onTap: () {
+                                          nextPage = currentPage + 1;
+                                          currentPage = nextPage;
+                                          homeViewModel.loadMoreData(nextPage);
+                                        },
+                                        child: Container(
+                                          width: 390,
+                                          height: 122,
+                                          padding: const EdgeInsets.only(
+                                            left: 124,
+                                            right: 125,
+                                            top: 30,
+                                            bottom: 15,
                                           ),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 29,
-                                            vertical: 10,
-                                          ),
-                                          child: const Text(
-                                            "Discover More",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                              fontFamily: "Inter",
-                                              fontWeight: FontWeight.w500,
-                                            ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 141,
+                                                height: 38,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  color:
+                                                      CustomTheme.primaryColor,
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 29,
+                                                  vertical: 10,
+                                                ),
+                                                child: const Text(
+                                                  "Discover More",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                    fontFamily: "Inter",
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                },
                               ),
                             ),
                           ],
