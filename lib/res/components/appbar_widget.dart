@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 import 'package:provider/provider.dart';
@@ -21,29 +22,32 @@ AppBar appBar(context, GlobalKey<ScaffoldState> scaffoldKey) {
       InkWell(
         onTap: appbarProvider.toggleBody,
         child: Padding(
-          padding: EdgeInsets.only(right: 5),
+          padding: const EdgeInsets.only(right: 5),
           child: SizedBox(
-            // height: 50,
             child: CircleAvatar(
-              backgroundColor: CustomTheme.primaryColor,
-              child: appbarProvider.showBody
-                  ? Icon(
-                      Icons.person_outline_sharp,
-                      color: Colors.white,
-                      size: 30,
-                    )
-                  : Icon(
-                      Icons.home_outlined,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-              // child: Image.asset(
-              //   appbarProvider.showBody
-              //       ? 'assets/branding/images/profile.jpg'
-              //       : 'assets/branding/images/home.png',
-              //   // fit: BoxFit.cover,
-              // ),
-            ),
+                backgroundColor: Colors.transparent,
+                child: appbarProvider.showBody
+                    ? Container(
+                        width: 33.97,
+                        height: 35,
+                        decoration: const ShapeDecoration(
+                          image: DecorationImage(
+                            image:
+                                AssetImage('assets/branding/images/avatar.png'),
+                            fit: BoxFit.fill,
+                          ),
+                          shape: OvalBorder(),
+                        ),
+                      )
+                    : Container(
+                        width: 33.97,
+                        height: 35,
+                        child: const Icon(
+                          Icons.home_outlined,
+                          color: CustomTheme.primaryColor,
+                          size: 30,
+                        ),
+                      )),
           ),
         ),
       ),
@@ -178,22 +182,33 @@ AppBar appBar(context, GlobalKey<ScaffoldState> scaffoldKey) {
           builder: ((context, value, child) {
             return Container(
               margin: const EdgeInsets.only(right: 10),
-              child: CircleAvatar(
-                backgroundColor: CustomTheme.primaryColor,
-                child: IconButton(
-                    icon: const Icon(
-                      Icons.dehaze,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      if (_drawer.value) {
-                        scaffoldKey.currentState?.openEndDrawer();
-                      } else {
-                        scaffoldKey.currentState?.openDrawer();
-                      }
-                      _drawer.value = !_drawer.value; // Toggle the drawer value
-                    }),
+              child: InkWell(
+                onTap: () {
+                  if (_drawer.value) {
+                    scaffoldKey.currentState?.openEndDrawer();
+                  } else {
+                    scaffoldKey.currentState?.openDrawer();
+                  }
+                  _drawer.value = !_drawer.value; // Toggle the drawer value
+                },
+                child: SvgPicture.asset('assets/branding/home/drawer.svg'),
               ),
+              // child: CircleAvatar(
+              //   backgroundColor: CustomTheme.primaryColor,
+              //   child: IconButton(
+              //       icon: const Icon(
+              //         Icons.dehaze,
+              //         color: Colors.white,
+              //       ),
+              //       onPressed: () {
+              //   if (_drawer.value) {
+              //     scaffoldKey.currentState?.openEndDrawer();
+              //   } else {
+              //     scaffoldKey.currentState?.openDrawer();
+              //   }
+              //   _drawer.value = !_drawer.value; // Toggle the drawer value
+              // }),
+              // ),
             );
           })),
     ],

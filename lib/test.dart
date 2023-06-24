@@ -1056,3 +1056,44 @@
 //     );
 //   }
 // }
+
+
+
+// import 'package:dart_openai/openai.dart';
+
+// class ChatGPTRepo {
+//   static const _apiKey = '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';
+
+//   static Future<String> generateChats(String prompt) async {
+//     OpenAI.apiKey = _apiKey;
+//     OpenAICompletionModel completion = await OpenAI.instance.completion.create(
+//       model: "text-davinci-003",
+//       prompt: prompt,
+//       maxTokens: 20,
+//       temperature: 0.5,
+//       n: 1,
+//       echo: true,
+//     );
+//     print(completion.choices[0].text);
+//     return completion.choices[0].text;
+//   }
+// }
+// import 'package:dart_openai/openai.dart';
+
+// class ChatGPTRepo {
+//   static const _apiKey = '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';
+
+//   static Future<String> generateChats(String prompt) async {
+//     OpenAI.apiKey = _apiKey;
+//     OpenAICompletionModel completion = await OpenAI.instance.completion.create(
+//       model: "text-davinci-003",
+//       prompt: prompt,
+//       maxTokens: 20,
+//       temperature: 0.5,
+//       n: 1,
+//       echo: true,
+//     );
+//     print(completion.choices[0].text);
+//     return completion.choices[0].text;
+//   }
+// }

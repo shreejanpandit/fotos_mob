@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fotos_mobile/res/components/profile_component/green_and_cancle_button.dart';
 
-import 'package:fotos_mobile/res/components/profile_component/submit_and_cancle_button.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class MediaScreen extends StatefulWidget {
   const MediaScreen({super.key});
@@ -539,7 +540,34 @@ void _showBottomSheet(BuildContext context) {
                   ],
                 ),
               ),
-              const SubmitAndCancleButton(),
+              GreenAndCancleButton(
+                greenButtonText: 'Submit',
+                onGreenButton: () {
+                  Navigator.pop(context);
+                  Alert(
+                      style: AlertStyle(
+                          titleStyle: TextStyle(color: Colors.white),
+                          backgroundColor: CustomTheme.lightGreenColor),
+                      context: context,
+                      closeFunction: () {
+                        Navigator.pop(context);
+                      },
+                      buttons: [],
+                      image: SvgPicture.asset(
+                        'assets/branding/home/tick.svg',
+                        height: 41,
+                        width: 41,
+                      ),
+                      title: 'Upload Sucessful !',
+                      closeIcon: InkWell(
+                        child: SvgPicture.asset(
+                          'assets/branding/home/close.svg',
+                          height: 20,
+                          width: 20,
+                        ),
+                      )).show();
+                },
+              ),
             ],
           ),
         ),

@@ -6,6 +6,7 @@ import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/view_model/auth_view_model.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 import 'package:fotos_mobile/view_model/home_view_model.dart';
+import 'package:fotos_mobile/view_model/image_picker_view_model.dart';
 import 'package:fotos_mobile/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +15,7 @@ void main() {
     systemNavigationBarColor: Colors.transparent,
     statusBarColor: Colors.transparent,
   ));
+
   runApp(const MyApp());
 }
 
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UserViewModel()),
         ChangeNotifierProvider(create: (_) => AppbarViewModel()),
         ChangeNotifierProvider(create: (_) => HomeViewModel()),
+        ChangeNotifierProvider(create: (_) => ImagePickerModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

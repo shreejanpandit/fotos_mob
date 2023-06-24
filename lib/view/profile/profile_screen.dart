@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fotos_mobile/res/components/home_component/button_with_color_icon_and_text.dart';
-import 'package:fotos_mobile/res/components/profile_component/submit_and_cancle_button.dart';
+import 'package:fotos_mobile/res/components/profile_component/green_and_cancle_button.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/utils/utils.dart';
@@ -10,14 +10,22 @@ import 'package:fotos_mobile/view/profile/media_screen.dart';
 import 'package:fotos_mobile/view/profile/message/message_screen.dart';
 import 'package:fotos_mobile/view/profile/payment/payment_screen.dart';
 import 'package:fotos_mobile/view/profile/user_profile_screen.dart';
+import 'package:fotos_mobile/view_model/image_picker_view_model.dart';
 import 'package:fotos_mobile/view_model/user_view_model.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../models/user_models.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  ProfileScreen({super.key});
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final userPreference = Provider.of<UserViewModel>(context);
@@ -382,53 +390,61 @@ void _showBottomSheet(BuildContext context) {
                             fontSize: 17, fontWeight: FontWeight.w200),
                       ),
                     ),
-                    Container(
-                      width: 336,
-                      height: 45.25,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color(0xFFF9F9F9),
-                        border: Border.all(
-                          color: const Color(0xFFCDECFF),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 16),
-                            child: Text(
-                              'Select File',
-                              style: CustomTheme.base.copyWith(
-                                  color: CustomTheme.lightTextColor
-                                      .withOpacity(0.4),
-                                  fontWeight: FontWeight.w300),
-                            ),
+                    Consumer<ImagePickerModel>(
+                        builder: (context, imagePickerModel, _) {
+                      return Container(
+                        width: 336,
+                        height: 45.25,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color(0xFFF9F9F9),
+                          border: Border.all(
+                            color: const Color(0xFFCDECFF),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 3),
-                            child: Container(
-                              width: 86,
-                              height: 23,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: CustomTheme.primaryColor,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 16),
+                              child: Text(
+                                'Select File',
+                                style: CustomTheme.base.copyWith(
+                                    color: CustomTheme.lightTextColor
+                                        .withOpacity(0.4),
+                                    fontWeight: FontWeight.w300),
                               ),
-                              child: const Center(
-                                child: Text(
-                                  'Upload',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                imagePickerModel.pickImage(ImageSource.gallery);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 3),
+                                child: Container(
+                                  width: 86,
+                                  height: 23,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: CustomTheme.primaryColor,
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      'Upload',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
+                          ],
+                        ),
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -561,7 +577,34 @@ void _showBottomSheet(BuildContext context) {
                   ],
                 ),
               ),
-              SubmitAndCancleButton(),
+              GreenAndCancleButton(
+                greenButtonText: 'Submit',
+                onGreenButton: () {
+                  Navigator.pop(context);
+                  Alert(
+                      style: AlertStyle(
+                          titleStyle: TextStyle(color: Colors.white),
+                          backgroundColor: CustomTheme.lightGreenColor),
+                      context: context,
+                      closeFunction: () {
+                        Navigator.pop(context);
+                      },
+                      buttons: [],
+                      image: SvgPicture.asset(
+                        'assets/branding/home/tick.svg',
+                        height: 41,
+                        width: 41,
+                      ),
+                      title: 'Upload Sucessful !',
+                      closeIcon: InkWell(
+                        child: SvgPicture.asset(
+                          'assets/branding/home/close.svg',
+                          height: 20,
+                          width: 20,
+                        ),
+                      )).show();
+                },
+              ),
             ],
           ),
         ),

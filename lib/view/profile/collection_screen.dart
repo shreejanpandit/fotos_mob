@@ -1,14 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:fotos_mobile/res/components/home_component/button_with_color_icon_and_text.dart';
-import 'package:fotos_mobile/res/components/home_component/gerne_row.dart';
-import 'package:fotos_mobile/res/components/profile_component/submit_and_cancle_button.dart';
+import 'package:fotos_mobile/res/components/profile_component/green_and_cancle_button.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
-import 'package:fotos_mobile/view/profile/personal_info.dart';
-import 'package:fotos_mobile/view/profile/work_info%20copy.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class CollectionScreen extends StatefulWidget {
   const CollectionScreen({super.key});
@@ -487,7 +483,34 @@ void _showBottomSheet(BuildContext context) {
                   ],
                 ),
               ),
-              const SubmitAndCancleButton(),
+              GreenAndCancleButton(
+                greenButtonText: 'Submit',
+                onGreenButton: () {
+                  Navigator.pop(context);
+                  Alert(
+                      style: AlertStyle(
+                          titleStyle: TextStyle(color: Colors.white),
+                          backgroundColor: CustomTheme.lightGreenColor),
+                      context: context,
+                      closeFunction: () {
+                        Navigator.pop(context);
+                      },
+                      buttons: [],
+                      image: SvgPicture.asset(
+                        'assets/branding/home/tick.svg',
+                        height: 41,
+                        width: 41,
+                      ),
+                      title: 'Upload Sucessful !',
+                      closeIcon: InkWell(
+                        child: SvgPicture.asset(
+                          'assets/branding/home/close.svg',
+                          height: 20,
+                          width: 20,
+                        ),
+                      )).show();
+                },
+              ),
             ],
           ),
         ),
