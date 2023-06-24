@@ -6,6 +6,7 @@ import 'package:fotos_mobile/res/components/appbar_widget.dart';
 import 'package:fotos_mobile/res/components/drawer_widget.dart';
 import 'package:fotos_mobile/res/components/home_component/gerne_row.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
+import 'package:fotos_mobile/view/home/search_result_screen.dart';
 import 'package:fotos_mobile/view/profile/profile_screen.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 import 'package:fotos_mobile/view_model/home_view_model.dart';
@@ -19,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  TextEditingController searchController = TextEditingController();
   HomeViewModel homeViewModel = HomeViewModel();
   bool _shouldLoadImages = true;
   static int currentPage = 1;
@@ -110,10 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           width: 361,
                                           height: 50,
                                           child: GestureDetector(
-                                            onTap: () {
-                                              // Handle the tap event here
-                                              // Perform the search or show search options
-                                            },
+                                            onTap: () {},
                                             child: Row(
                                               mainAxisSize: MainAxisSize.min,
                                               mainAxisAlignment:
@@ -137,6 +136,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         children: [
                                                           Expanded(
                                                             child: TextField(
+                                                              controller:
+                                                                  searchController,
                                                               decoration:
                                                                   const InputDecoration(
                                                                 hintText:
@@ -164,8 +165,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 print(
                                                                     'clicked');
                                                               }
-                                                              // Handle search icon tap event here
-                                                              // Perform the search or show search options
+                                                              if (searchController
+                                                                          .text !=
+                                                                      'null' ||
+                                                                  searchController
+                                                                      .text
+                                                                      .isNotEmpty) {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              SearchResultPage(),
+                                                                    ));
+                                                              }
                                                             },
                                                             child: Container(
                                                               color: CustomTheme
