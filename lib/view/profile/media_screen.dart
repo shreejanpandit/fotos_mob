@@ -20,11 +20,10 @@ class MediaScreen extends StatefulWidget {
 }
 
 class _MediaScreenState extends State<MediaScreen> {
-  @override
-  void initState() {
-    _mediaViewModel.fetchMediaList();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   bool showPersonalInfo = true;
 
@@ -38,6 +37,13 @@ class _MediaScreenState extends State<MediaScreen> {
   MediaViewModel _mediaViewModel = MediaViewModel();
 
   void _showBottomSheet(BuildContext context) {
+    // @override
+    // void initState() {
+    //   print(
+    //       "im priting form the acitivty crreen${_mediaViewModel.mediaListItems}");
+    //   super.initState();
+    // }
+
     showModalBottomSheet(
       context: context,
       isScrollControlled:
@@ -157,8 +163,54 @@ class _MediaScreenState extends State<MediaScreen> {
                         padding: EdgeInsets.only(bottom: 10),
                         child: Text('Choose Collection'),
                       ),
+                      // Consumer<MediaViewModel>(
+                      //   builder: (context, value, child) {
+                      //     return Container(
+                      //       width: 336,
+                      //       height: 45.25,
+                      //       decoration: BoxDecoration(
+                      //         borderRadius: BorderRadius.circular(10),
+                      //         color: const Color(0xFFF9F9F9),
+                      //         border: Border.all(
+                      //           color: const Color(0xFFCDECFF),
+                      //         ),
+                      //       ),
+                      //       child: DropdownButton<String>(
+                      //         onChanged: (value) {},
+                      //         isExpanded: true,
+                      //         underline:
+                      //             Container(), // Removes the default underline
+                      //         // value: value
+                      //         //     .selectedCollection, // Holds the currently selected collection ID
+                      //         // onChanged: (newValue) {
+                      //         //   setState(() {
+                      //         //     value.selectedCollection = newValue!;
+                      //         //   });
+                      //         // },
+                      //         items: value.mediaListItems.map((item) {
+                      //           return DropdownMenuItem<String>(
+                      //             value: item['id'],
+                      //             child: Padding(
+                      //               padding: const EdgeInsets.only(left: 16),
+                      //               child: Text(
+                      //                 item['name'],
+                      //                 style: CustomTheme.base.copyWith(
+                      //                   color: CustomTheme.lightTextColor
+                      //                       .withOpacity(0.4),
+                      //                   fontWeight: FontWeight.w300,
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           );
+                      //         }).toList(),
+                      //       ),
+                      //     );
+                      //   },
+                      // ),
                       Consumer<MediaViewModel>(
                         builder: (context, value, child) {
+                          // print(value.selectedCollection);
+                          // print(value.mediaListItems);
                           return Container(
                             width: 336,
                             height: 45.25,
@@ -173,13 +225,15 @@ class _MediaScreenState extends State<MediaScreen> {
                               isExpanded: true,
                               underline:
                                   Container(), // Removes the default underline
-                              value: value
-                                  .selectedCollection, // Holds the currently selected collection ID
+                              value: value.selectedCollection
+                                  .toString(), // Holds the currently selected collection ID
                               onChanged: (newValue) {
-                                setState(() {
-                                  value.selectedCollection = newValue!;
-                                });
+                                // print("object");
+
+                                value.setselectedCollection(newValue!);
+                                print(value.selectedCollection);
                               },
+                              // onChanged: (value) {},
                               items: value.mediaListItems.map((item) {
                                 return DropdownMenuItem<String>(
                                   value: item['id'],
@@ -299,32 +353,32 @@ class _MediaScreenState extends State<MediaScreen> {
                       isFavourite: false,
                     );
 
-                    var res = _mediaViewModel.createMedia(data, context);
-                    if (res == 'sucess') {
-                      Navigator.pop(context);
-                      Alert(
-                          style: AlertStyle(
-                              titleStyle: TextStyle(color: Colors.white),
-                              backgroundColor: CustomTheme.lightGreenColor),
-                          context: context,
-                          closeFunction: () {
-                            Navigator.pop(context);
-                          },
-                          buttons: [],
-                          image: SvgPicture.asset(
-                            'assets/branding/home/tick.svg',
-                            height: 41,
-                            width: 41,
-                          ),
-                          title: 'Upload Sucessful !',
-                          closeIcon: InkWell(
-                            child: SvgPicture.asset(
-                              'assets/branding/home/close.svg',
-                              height: 20,
-                              width: 20,
-                            ),
-                          )).show();
-                    }
+                    // var res = _mediaViewModel.createMedia(data, context);
+                    // if (res == 'sucess') {
+                    //   Navigator.pop(context);
+                    //   Alert(
+                    //       style: AlertStyle(
+                    //           titleStyle: TextStyle(color: Colors.white),
+                    //           backgroundColor: CustomTheme.lightGreenColor),
+                    //       context: context,
+                    //       closeFunction: () {
+                    //         Navigator.pop(context);
+                    //       },
+                    //       buttons: [],
+                    //       image: SvgPicture.asset(
+                    //         'assets/branding/home/tick.svg',
+                    //         height: 41,
+                    //         width: 41,
+                    //       ),
+                    //       title: 'Upload Sucessful !',
+                    //       closeIcon: InkWell(
+                    //         child: SvgPicture.asset(
+                    //           'assets/branding/home/close.svg',
+                    //           height: 20,
+                    //           width: 20,
+                    //         ),
+                    //       )).show();
+                    // }
                   },
                 ),
               ],
@@ -362,17 +416,24 @@ class _MediaScreenState extends State<MediaScreen> {
             Container(
               margin: const EdgeInsets.only(right: 5),
               child: CircleAvatar(
-                radius: 19,
-                backgroundColor: Colors.black,
-                child: IconButton(
-                    icon: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      _showBottomSheet(context);
-                    }),
-              ),
+                  radius: 19,
+                  backgroundColor: Colors.black,
+                  child: Consumer<MediaViewModel>(
+                    builder: (context, value, child) {
+                      return IconButton(
+                          icon: const Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          ),
+                          onPressed: () async {
+                            await value.fetchMediaList();
+                            Future.delayed(Duration(seconds: 3));
+                            if (!value.loading) {
+                              _showBottomSheet(context);
+                            }
+                          });
+                    },
+                  )),
             ),
           ],
         ),
