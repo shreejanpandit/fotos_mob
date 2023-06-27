@@ -3,20 +3,24 @@ import 'dart:io';
 
 import 'package:fotos_mobile/data/app_exceptions.dart';
 import 'package:fotos_mobile/data/network/base_api_service.dart';
+import 'package:fotos_mobile/models/user_models.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkApiService extends BaseApiService {
+  UserModel _userModel = UserModel();
   @override
   Future getGetApiResponse(String url) async {
     dynamic responseJson;
     try {
+      final token = _userModel.token;
       // print(url);
       final response = await http.get(
         Uri.parse(url),
         headers: {
           "Content-type": "application/json",
           // "X-Requested-With": "XMLHttpRequest",
-          "Accept": "application/json"
+          "Accept": "application/json",
+          // 'Authorization': 'Bearer $token',
         },
       ).timeout(
         Duration(seconds: 20),

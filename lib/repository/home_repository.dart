@@ -13,7 +13,7 @@ class HomeRepository {
       dynamic response =
           await _apiService.getGetApiResponse('${AppUrl.mediaUrl}?page=$page');
       // dynamic response = await _apiService.getGetApiResponse(AppUrl.mediaUrl);
-
+      // print(response);
       return MediaModel.fromJson(response);
       // return response.body;
     } catch (e) {

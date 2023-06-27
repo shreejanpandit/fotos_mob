@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fotos_mobile/res/components/profile_component/textfield_with_icon_and_text.dart';
-import 'package:fotos_mobile/res/typo_theme_data.dart';
 
 class PersonalInfo extends StatelessWidget {
   final bool isEditable;

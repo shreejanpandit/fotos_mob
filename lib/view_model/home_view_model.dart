@@ -7,10 +7,9 @@ import '../models/media_model.dart';
 class HomeViewModel with ChangeNotifier {
   final _myRepo = HomeRepository();
   bool discoverMore = false;
-  // ApiResponse<dynamic> mediaList = ApiResponse.loading();
   ApiResponse<MediaModel> media = ApiResponse.loading();
-  List<String> imageList = [];
-  List<String> newlyAddedImages = [];
+  List<Map<String, dynamic>> imageList = []; // Updated type
+  List<Map<String, dynamic>> newlyAddedImages = []; // Updated type
 
   setMedia(ApiResponse<MediaModel> response) {
     media = response;
@@ -21,7 +20,11 @@ class HomeViewModel with ChangeNotifier {
     setMedia(ApiResponse.loading());
     _myRepo.fetchMediaApi(1).then((value) {
       for (var i = 0; i < value.data!.length; i++) {
-        imageList.add(value.data![i].imagePath.toString());
+        final mediaItem = value.data![i];
+        imageList.add({
+          'imagePath': mediaItem.imagePath.toString(),
+          'isFavourite': mediaItem.isFavourite,
+        });
       }
       setMedia(ApiResponse.completed(value));
     }).onError((error, stackTrace) {
@@ -32,7 +35,11 @@ class HomeViewModel with ChangeNotifier {
   void loadMoreData(int newPage) async {
     _myRepo.fetchMediaApi(newPage).then((value) {
       for (var i = 0; i < value.data!.length; i++) {
-        newlyAddedImages.add(value.data![i].imagePath.toString());
+        final mediaItem = value.data![i];
+        newlyAddedImages.add({
+          'imagePath': mediaItem.imagePath.toString(),
+          'isFavourite': mediaItem.isFavourite,
+        });
       }
       discoverMore = true;
       notifyListeners();
@@ -46,7 +53,5 @@ class HomeViewModel with ChangeNotifier {
     imageList = [];
     newlyAddedImages = [];
     super.dispose();
-
-    // Reset variables if needed
   }
 }

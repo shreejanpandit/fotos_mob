@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/view/profile/profile_screen.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 
@@ -119,8 +118,14 @@ class _SearchResultPageState extends State<SearchResultPage> {
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: imageList.length,
                               itemBuilder: (context, index) {
-                                return SearchImagesList(
-                                  imagePath: imageList[index],
+                                return GestureDetector(
+                                  onTap: () {
+                                    print(
+                                        '${imageList[index]} at index $index');
+                                  },
+                                  child: SearchImagesList(
+                                    imagePath: imageList[index],
+                                  ),
                                 );
                               },
                             ),

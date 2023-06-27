@@ -1,29 +1,26 @@
-// ignore_for_file: unnecessary_getters_setters, prefer_void_to_null, dead_code
-
 class MediaModel {
-  List<Data>? _data;
+  List<MediaData>? _data;
   Pagination? _pagination;
 
-  MediaModel(
-      {List<Data>? data, Pagination? pagination, required int currentPage}) {
+  MediaModel({List<MediaData>? data, Pagination? pagination}) {
     if (data != null) {
-      _data = data;
+      this._data = data;
     }
     if (pagination != null) {
-      _pagination = pagination;
+      this._pagination = pagination;
     }
   }
 
-  List<Data>? get data => _data;
-  set data(List<Data>? data) => _data = data;
+  List<MediaData>? get data => _data;
+  set data(List<MediaData>? data) => _data = data;
   Pagination? get pagination => _pagination;
   set pagination(Pagination? pagination) => _pagination = pagination;
 
   MediaModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      _data = <Data>[];
+      _data = <MediaData>[];
       json['data'].forEach((v) {
-        _data!.add(new Data.fromJson(v));
+        _data!.add(new MediaData.fromJson(v));
       });
     }
     _pagination = json['pagination'] != null
@@ -33,53 +30,63 @@ class MediaModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (_data != null) {
-      data['data'] = _data!.map((v) => v.toJson()).toList();
+    if (this._data != null) {
+      data['data'] = this._data!.map((v) => v.toJson()).toList();
     }
-    if (_pagination != null) {
-      data['pagination'] = _pagination!.toJson();
+    if (this._pagination != null) {
+      data['pagination'] = this._pagination!.toJson();
     }
     return data;
   }
 }
 
-class Data {
+class MediaData {
   int? _id;
   String? _title;
   String? _slug;
   String? _description;
   String? _imagePath;
+  bool? _isFavourite;
+  String? _createdAt;
   MediaList? _mediaList;
   User? _user;
 
-  Data(
+  MediaData(
       {int? id,
       String? title,
       String? slug,
       String? description,
       String? imagePath,
+      bool? isFavourite,
+      String? createdAt,
       MediaList? mediaList,
       User? user}) {
     if (id != null) {
-      _id = id;
+      this._id = id;
     }
     if (title != null) {
-      _title = title;
+      this._title = title;
     }
     if (slug != null) {
-      _slug = slug;
+      this._slug = slug;
     }
     if (description != null) {
-      _description = description;
+      this._description = description;
     }
     if (imagePath != null) {
-      _imagePath = imagePath;
+      this._imagePath = imagePath;
+    }
+    if (isFavourite != null) {
+      this._isFavourite = isFavourite;
+    }
+    if (createdAt != null) {
+      this._createdAt = createdAt;
     }
     if (mediaList != null) {
-      _mediaList = mediaList;
+      this._mediaList = mediaList;
     }
     if (user != null) {
-      _user = user;
+      this._user = user;
     }
   }
 
@@ -93,17 +100,23 @@ class Data {
   set description(String? description) => _description = description;
   String? get imagePath => _imagePath;
   set imagePath(String? imagePath) => _imagePath = imagePath;
+  bool? get isFavourite => _isFavourite;
+  set isFavourite(bool? isFavourite) => _isFavourite = isFavourite;
+  String? get createdAt => _createdAt;
+  set createdAt(String? createdAt) => _createdAt = createdAt;
   MediaList? get mediaList => _mediaList;
   set mediaList(MediaList? mediaList) => _mediaList = mediaList;
   User? get user => _user;
   set user(User? user) => _user = user;
 
-  Data.fromJson(Map<String, dynamic> json) {
+  MediaData.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
     _title = json['title'];
     _slug = json['slug'];
     _description = json['description'];
     _imagePath = json['image_path'];
+    _isFavourite = json['is_favourite'];
+    _createdAt = json['created_at'];
     _mediaList = json['media_list'] != null
         ? new MediaList.fromJson(json['media_list'])
         : null;
@@ -112,16 +125,18 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = _id;
-    data['title'] = _title;
-    data['slug'] = _slug;
-    data['description'] = _description;
-    data['image_path'] = _imagePath;
-    if (_mediaList != null) {
-      data['media_list'] = _mediaList!.toJson();
+    data['id'] = this._id;
+    data['title'] = this._title;
+    data['slug'] = this._slug;
+    data['description'] = this._description;
+    data['image_path'] = this._imagePath;
+    data['is_favourite'] = this._isFavourite;
+    data['created_at'] = this._createdAt;
+    if (this._mediaList != null) {
+      data['media_list'] = this._mediaList!.toJson();
     }
-    if (_user != null) {
-      data['user'] = _user!.toJson();
+    if (this._user != null) {
+      data['user'] = this._user!.toJson();
     }
     return data;
   }
@@ -132,19 +147,33 @@ class MediaList {
   String? _name;
   String? _slug;
   String? _type;
+  String? _description;
+  String? _path;
 
-  MediaList({int? id, String? name, String? slug, String? type}) {
+  MediaList(
+      {int? id,
+      String? name,
+      String? slug,
+      String? type,
+      String? description,
+      String? path}) {
     if (id != null) {
-      _id = id;
+      this._id = id;
     }
     if (name != null) {
-      _name = name;
+      this._name = name;
     }
     if (slug != null) {
-      _slug = slug;
+      this._slug = slug;
     }
     if (type != null) {
-      _type = type;
+      this._type = type;
+    }
+    if (description != null) {
+      this._description = description;
+    }
+    if (path != null) {
+      this._path = path;
     }
   }
 
@@ -156,20 +185,28 @@ class MediaList {
   set slug(String? slug) => _slug = slug;
   String? get type => _type;
   set type(String? type) => _type = type;
+  String? get description => _description;
+  set description(String? description) => _description = description;
+  String? get path => _path;
+  set path(String? path) => _path = path;
 
   MediaList.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
     _name = json['name'];
     _slug = json['slug'];
     _type = json['type'];
+    _description = json['description'];
+    _path = json['path'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = _id;
-    data['name'] = _name;
-    data['slug'] = _slug;
-    data['type'] = _type;
+    data['id'] = this._id;
+    data['name'] = this._name;
+    data['slug'] = this._slug;
+    data['type'] = this._type;
+    data['description'] = this._description;
+    data['path'] = this._path;
     return data;
   }
 }
@@ -178,72 +215,59 @@ class User {
   int? _id;
   String? _name;
   String? _email;
-  Null _profession;
-  Null _country;
-  Null _city;
-  Null _state;
-  Null _zipcode;
-  Null _address;
-  Null _contact;
-  String? _emailVerifiedAt;
-  Null _imagePath;
-  String? _createdAt;
-  String? _updatedAt;
+  String? _profession;
+  String? _country;
+  String? _city;
+  String? _state;
+  String? _zipcode;
+  String? _address;
+  String? _contact;
+  String? _imagePath;
 
   User(
       {int? id,
       String? name,
       String? email,
-      Null profession,
-      Null country,
-      Null city,
-      Null state,
-      Null zipcode,
-      Null address,
-      Null contact,
-      String? emailVerifiedAt,
-      Null imagePath,
-      String? createdAt,
-      String? updatedAt}) {
+      String? profession,
+      String? country,
+      String? city,
+      String? state,
+      String? zipcode,
+      String? address,
+      String? contact,
+      String? imagePath}) {
     if (id != null) {
-      _id = id;
+      this._id = id;
     }
     if (name != null) {
-      _name = name;
+      this._name = name;
     }
     if (email != null) {
-      _email = email;
+      this._email = email;
     }
     if (profession != null) {
-      _profession = profession;
+      this._profession = profession;
     }
     if (country != null) {
-      _country = country;
+      this._country = country;
     }
-    if (city != null) {}
+    if (city != null) {
+      this._city = city;
+    }
     if (state != null) {
-      _state = state;
+      this._state = state;
     }
     if (zipcode != null) {
-      _zipcode = zipcode;
+      this._zipcode = zipcode;
     }
     if (address != null) {
-      _address = address;
+      this._address = address;
     }
     if (contact != null) {
-      _contact = contact;
-    }
-    if (emailVerifiedAt != null) {
-      _emailVerifiedAt = emailVerifiedAt;
+      this._contact = contact;
     }
     if (imagePath != null) {
-      _imagePath = imagePath;
-    }
-    if (createdAt != null) {
-      _createdAt = createdAt;
-    }
-    if (updatedAt != null) {
-      _updatedAt = updatedAt;
+      this._imagePath = imagePath;
     }
   }
 
@@ -253,29 +277,22 @@ class User {
   set name(String? name) => _name = name;
   String? get email => _email;
   set email(String? email) => _email = email;
-  Null get profession => _profession;
-  set profession(Null profession) => _profession = profession;
-  Null get country => _country;
-  set country(Null country) => _country = country;
-  Null get city => _city;
-  set city(Null city) => _city = city;
-  Null get state => _state;
-  set state(Null state) => _state = state;
-  Null get zipcode => _zipcode;
-  set zipcode(Null zipcode) => _zipcode = zipcode;
-  Null get address => _address;
-  set address(Null address) => _address = address;
-  Null get contact => _contact;
-  set contact(Null contact) => _contact = contact;
-  String? get emailVerifiedAt => _emailVerifiedAt;
-  set emailVerifiedAt(String? emailVerifiedAt) =>
-      _emailVerifiedAt = emailVerifiedAt;
-  Null get imagePath => _imagePath;
-  set imagePath(Null imagePath) => _imagePath = imagePath;
-  String? get createdAt => _createdAt;
-  set createdAt(String? createdAt) => _createdAt = createdAt;
-  String? get updatedAt => _updatedAt;
-  set updatedAt(String? updatedAt) => _updatedAt = updatedAt;
+  String? get profession => _profession;
+  set profession(String? profession) => _profession = profession;
+  String? get country => _country;
+  set country(String? country) => _country = country;
+  String? get city => _city;
+  set city(String? city) => _city = city;
+  String? get state => _state;
+  set state(String? state) => _state = state;
+  String? get zipcode => _zipcode;
+  set zipcode(String? zipcode) => _zipcode = zipcode;
+  String? get address => _address;
+  set address(String? address) => _address = address;
+  String? get contact => _contact;
+  set contact(String? contact) => _contact = contact;
+  String? get imagePath => _imagePath;
+  set imagePath(String? imagePath) => _imagePath = imagePath;
 
   User.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
@@ -288,28 +305,22 @@ class User {
     _zipcode = json['zipcode'];
     _address = json['address'];
     _contact = json['contact'];
-    _emailVerifiedAt = json['email_verified_at'];
     _imagePath = json['image_path'];
-    _createdAt = json['created_at'];
-    _updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = _id;
-    data['name'] = _name;
-    data['email'] = _email;
-    data['profession'] = _profession;
-    data['country'] = _country;
-    data['city'] = _city;
-    data['state'] = _state;
-    data['zipcode'] = _zipcode;
-    data['address'] = _address;
-    data['contact'] = _contact;
-    data['email_verified_at'] = _emailVerifiedAt;
-    data['image_path'] = _imagePath;
-    data['created_at'] = _createdAt;
-    data['updated_at'] = _updatedAt;
+    data['id'] = this._id;
+    data['name'] = this._name;
+    data['email'] = this._email;
+    data['profession'] = this._profession;
+    data['country'] = this._country;
+    data['city'] = this._city;
+    data['state'] = this._state;
+    data['zipcode'] = this._zipcode;
+    data['address'] = this._address;
+    data['contact'] = this._contact;
+    data['image_path'] = this._imagePath;
     return data;
   }
 }
@@ -328,19 +339,19 @@ class Pagination {
       int? currentPage,
       int? totalPages}) {
     if (total != null) {
-      _total = total;
+      this._total = total;
     }
     if (count != null) {
-      _count = count;
+      this._count = count;
     }
     if (perPage != null) {
-      _perPage = perPage;
+      this._perPage = perPage;
     }
     if (currentPage != null) {
-      _currentPage = currentPage;
+      this._currentPage = currentPage;
     }
     if (totalPages != null) {
-      _totalPages = totalPages;
+      this._totalPages = totalPages;
     }
   }
 
@@ -365,11 +376,11 @@ class Pagination {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['total'] = _total;
-    data['count'] = _count;
-    data['per_page'] = _perPage;
-    data['current_page'] = _currentPage;
-    data['total_pages'] = _totalPages;
+    data['total'] = this._total;
+    data['count'] = this._count;
+    data['per_page'] = this._perPage;
+    data['current_page'] = this._currentPage;
+    data['total_pages'] = this._totalPages;
     return data;
   }
 }

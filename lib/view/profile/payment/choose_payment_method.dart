@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fotos_mobile/res/components/profile_component/green_and_cancle_button.dart';
 import 'package:fotos_mobile/view/profile/payment/payment_details.dart';
 
 class ChoosePaymentMethod extends StatefulWidget {

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fotos_mobile/res/app_urls.dart';
 import 'package:fotos_mobile/view_model/services/splash_services.dart';
-
-import '../view_model/home_view_model.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});

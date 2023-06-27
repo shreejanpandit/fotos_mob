@@ -1,22 +1,8 @@
-// import 'package:flutter/foundation.dart';
-// import 'package:image_picker/image_picker.dart';
-
-// class ImagePickerModel extends ChangeNotifier {
-//   XFile? _pickedImage;
-
-//   XFile? get pickedImage => _pickedImage;
-
-//   Future<void> pickImage(ImageSource source) async {
-//     final picker = ImagePicker();
-//     _pickedImage = await picker.pickImage(source: source);
-//     notifyListeners();
-//   }
-// }
-
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerModel extends ChangeNotifier {
@@ -29,7 +15,10 @@ class ImagePickerModel extends ChangeNotifier {
       final image = ImagePicker();
       final pickedImage = await image.pickImage(source: source);
       if (pickedImage != null) {
-        _pickedImage = File(pickedImage.path);
+        var data = File(pickedImage.path);
+        print(data);
+        _pickedImage = await cropImage(imageFile: data);
+        print(_pickedImage);
         notifyListeners();
       } else {
         _pickedImage = null;
@@ -37,6 +26,20 @@ class ImagePickerModel extends ChangeNotifier {
     } on PlatformException catch (e) {
       print('Failed to pick an image: $e');
     }
+  }
+
+  Future<File?> cropImage({required File imageFile}) async {
+    try {
+      CroppedFile? cropedImage =
+          await ImageCropper().cropImage(sourcePath: imageFile.path);
+      if (cropedImage == null) {
+        return null;
+      }
+      return File(cropedImage.path);
+    } on PlatformException catch (e) {
+      print('Failed to pick an image: $e');
+    }
+    return null;
   }
 
   bool isWeb() {

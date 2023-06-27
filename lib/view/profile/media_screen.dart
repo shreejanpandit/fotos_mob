@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fotos_mobile/models/media_model.dart';
 import 'package:fotos_mobile/res/components/profile_component/green_and_cancle_button.dart';
 
 import 'package:fotos_mobile/res/typo_theme_data.dart';
+import 'package:fotos_mobile/view_model/media_view_model.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+
+import '../../view_model/image_picker_view_model.dart';
 
 class MediaScreen extends StatefulWidget {
   const MediaScreen({super.key});
@@ -14,6 +20,12 @@ class MediaScreen extends StatefulWidget {
 }
 
 class _MediaScreenState extends State<MediaScreen> {
+  @override
+  void initState() {
+    _mediaViewModel.fetchMediaList();
+    super.initState();
+  }
+
   bool showPersonalInfo = true;
 
   List<String> imageList = [
@@ -22,6 +34,306 @@ class _MediaScreenState extends State<MediaScreen> {
     'assets/photos/seagull.png',
     'assets/photos/tree.jpg',
   ];
+  final ImagePickerModel _imagePickerModel = ImagePickerModel();
+  MediaViewModel _mediaViewModel = MediaViewModel();
+
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled:
+          true, // Make the bottom sheet take 3/4th of the screen height
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(35),
+          topRight: Radius.circular(35),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height *
+              0.75, // Adjust the height to take 3/4th of the screen
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 77, top: 31, right: 65),
+                  child: Center(
+                      child: Text(
+                    'Upload Your Creativity',
+                    style: CustomTheme.base
+                        .copyWith(fontSize: 22, fontWeight: FontWeight.w500),
+                  )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(28, 31, 27, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          'Choose Media',
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w200,
+                          ),
+                        ),
+                      ),
+                      Consumer<ImagePickerModel>(
+                        builder: (context, _imagePickerModel, child) {
+                          return Container(
+                            width: 336,
+                            height: 45.25,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: const Color(0xFFF9F9F9),
+                              border: Border.all(
+                                color: const Color(0xFFCDECFF),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 16),
+                                  child: Container(
+                                    width: 200,
+                                    child: Text(
+                                      overflow: TextOverflow.ellipsis,
+                                      // filePath != null ? filePath! :
+                                      _imagePickerModel.pickedImage != null
+                                          ? _imagePickerModel.pickedImage!.path
+                                          : 'Select File',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 3),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await _imagePickerModel
+                                          .pickImage(ImageSource.gallery);
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      width: 86,
+                                      height: 23,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.blue,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Upload',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: Text('Choose Collection'),
+                      ),
+                      Consumer<MediaViewModel>(
+                        builder: (context, value, child) {
+                          return Container(
+                            width: 336,
+                            height: 45.25,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: const Color(0xFFF9F9F9),
+                              border: Border.all(
+                                color: const Color(0xFFCDECFF),
+                              ),
+                            ),
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              underline:
+                                  Container(), // Removes the default underline
+                              value: value
+                                  .selectedCollection, // Holds the currently selected collection ID
+                              onChanged: (newValue) {
+                                setState(() {
+                                  value.selectedCollection = newValue!;
+                                });
+                              },
+                              items: value.mediaListItems.map((item) {
+                                return DropdownMenuItem<String>(
+                                  value: item['id'],
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 16),
+                                    child: Text(
+                                      item['name'],
+                                      style: CustomTheme.base.copyWith(
+                                        color: CustomTheme.lightTextColor
+                                            .withOpacity(0.4),
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          'Media Name',
+                          style: CustomTheme.base.copyWith(
+                              fontSize: 17, fontWeight: FontWeight.w200),
+                        ),
+                      ),
+                      Container(
+                        width: 336,
+                        height: 45.25,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color(0xFFF9F9F9),
+                          border: Border.all(
+                            color: const Color(0xFFCDECFF),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: Text(
+                                'Enter Media Name',
+                                style: CustomTheme.base.copyWith(
+                                    color: CustomTheme.lightTextColor
+                                        .withOpacity(0.4),
+                                    fontWeight: FontWeight.w300),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          'Media Description',
+                          style: CustomTheme.base.copyWith(
+                              fontSize: 17, fontWeight: FontWeight.w200),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        width: 336,
+                        height: 124,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color(0xFFF9F9F9),
+                          border: Border.all(
+                            color: const Color(0xFFCDECFF),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16, top: 3),
+                              child: Text(
+                                'Enter Media Description',
+                                style: CustomTheme.base.copyWith(
+                                    color: CustomTheme.lightTextColor
+                                        .withOpacity(0.4),
+                                    fontWeight: FontWeight.w300),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                GreenAndCancleButton(
+                  greenButtonText: 'Submit',
+                  onGreenButton: () {
+                    dynamic data = MediaData(
+                      title: '',
+                      description: '',
+                      mediaList: MediaList(id: 1),
+                      imagePath: '',
+                      isFavourite: false,
+                    );
+
+                    var res = _mediaViewModel.createMedia(data, context);
+                    if (res == 'sucess') {
+                      Navigator.pop(context);
+                      Alert(
+                          style: AlertStyle(
+                              titleStyle: TextStyle(color: Colors.white),
+                              backgroundColor: CustomTheme.lightGreenColor),
+                          context: context,
+                          closeFunction: () {
+                            Navigator.pop(context);
+                          },
+                          buttons: [],
+                          image: SvgPicture.asset(
+                            'assets/branding/home/tick.svg',
+                            height: 41,
+                            width: 41,
+                          ),
+                          title: 'Upload Sucessful !',
+                          closeIcon: InkWell(
+                            child: SvgPicture.asset(
+                              'assets/branding/home/close.svg',
+                              height: 20,
+                              width: 20,
+                            ),
+                          )).show();
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -318,260 +630,4 @@ class CardWithImageAndText extends StatelessWidget {
       ),
     );
   }
-}
-
-void _showBottomSheet(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled:
-        true, // Make the bottom sheet take 3/4th of the screen height
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(35),
-        topRight: Radius.circular(35),
-      ),
-    ),
-    builder: (BuildContext context) {
-      return Container(
-        height: MediaQuery.of(context).size.height *
-            0.75, // Adjust the height to take 3/4th of the screen
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 77, top: 31, right: 65),
-                child: Center(
-                    child: Text(
-                  'Upload Your Creativity',
-                  style: CustomTheme.base
-                      .copyWith(fontSize: 22, fontWeight: FontWeight.w500),
-                )),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(28, 31, 27, 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Text(
-                        'Choose Media',
-                        style: CustomTheme.base.copyWith(
-                            fontSize: 17, fontWeight: FontWeight.w200),
-                      ),
-                    ),
-                    Container(
-                      width: 336,
-                      height: 45.25,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color(0xFFF9F9F9),
-                        border: Border.all(
-                          color: const Color(0xFFCDECFF),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16),
-                            child: Text(
-                              'Select File',
-                              style: CustomTheme.base.copyWith(
-                                  color: CustomTheme.lightTextColor
-                                      .withOpacity(0.4),
-                                  fontWeight: FontWeight.w300),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 3),
-                            child: Container(
-                              width: 86,
-                              height: 23,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: CustomTheme.primaryColor,
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  'Upload',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: Text('Choose Collection'),
-                    ),
-                    Container(
-                      width: 336,
-                      height: 45.25,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color(0xFFF9F9F9),
-                        border: Border.all(
-                          color: const Color(0xFFCDECFF),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16),
-                            child: Text(
-                              'Select Collection',
-                              style: CustomTheme.base.copyWith(
-                                  color: CustomTheme.lightTextColor
-                                      .withOpacity(0.4),
-                                  fontWeight: FontWeight.w300),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 15),
-                            child: SvgPicture.asset(
-                              'assets/branding/home/down_arrow.svg',
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Text(
-                        'Media Name',
-                        style: CustomTheme.base.copyWith(
-                            fontSize: 17, fontWeight: FontWeight.w200),
-                      ),
-                    ),
-                    Container(
-                      width: 336,
-                      height: 45.25,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color(0xFFF9F9F9),
-                        border: Border.all(
-                          color: const Color(0xFFCDECFF),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16),
-                            child: Text(
-                              'Enter Media Name',
-                              style: CustomTheme.base.copyWith(
-                                  color: CustomTheme.lightTextColor
-                                      .withOpacity(0.4),
-                                  fontWeight: FontWeight.w300),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Text(
-                        'Media Description',
-                        style: CustomTheme.base.copyWith(
-                            fontSize: 17, fontWeight: FontWeight.w200),
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      width: 336,
-                      height: 124,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color(0xFFF9F9F9),
-                        border: Border.all(
-                          color: const Color(0xFFCDECFF),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16, top: 3),
-                            child: Text(
-                              'Enter Media Description',
-                              style: CustomTheme.base.copyWith(
-                                  color: CustomTheme.lightTextColor
-                                      .withOpacity(0.4),
-                                  fontWeight: FontWeight.w300),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              GreenAndCancleButton(
-                greenButtonText: 'Submit',
-                onGreenButton: () {
-                  Navigator.pop(context);
-                  Alert(
-                      style: AlertStyle(
-                          titleStyle: TextStyle(color: Colors.white),
-                          backgroundColor: CustomTheme.lightGreenColor),
-                      context: context,
-                      closeFunction: () {
-                        Navigator.pop(context);
-                      },
-                      buttons: [],
-                      image: SvgPicture.asset(
-                        'assets/branding/home/tick.svg',
-                        height: 41,
-                        width: 41,
-                      ),
-                      title: 'Upload Sucessful !',
-                      closeIcon: InkWell(
-                        child: SvgPicture.asset(
-                          'assets/branding/home/close.svg',
-                          height: 20,
-                          width: 20,
-                        ),
-                      )).show();
-                },
-              ),
-            ],
-          ),
-        ),
-      );
-    },
-  );
 }
