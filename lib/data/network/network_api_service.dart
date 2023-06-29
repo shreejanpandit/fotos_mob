@@ -4,16 +4,16 @@ import 'dart:io';
 import 'package:fotos_mobile/data/app_exceptions.dart';
 import 'package:fotos_mobile/data/network/base_api_service.dart';
 import 'package:fotos_mobile/models/user_models.dart';
+import 'package:fotos_mobile/view_model/user_view_model.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkApiService extends BaseApiService {
-  UserModel _userModel = UserModel();
+  Future<UserModel> getUserData() => UserViewModel().getUser();
+  String? token = '';
   @override
   Future getGetApiResponse(String url) async {
     dynamic responseJson;
     try {
-      final token = _userModel.token;
-      // print(url);
       final response = await http.get(
         Uri.parse(url),
         headers: {
@@ -36,16 +36,23 @@ class NetworkApiService extends BaseApiService {
   @override
   Future<dynamic> getPostApiResponse(String url, dynamic data) async {
     try {
+      getUserData().then((value) {
+        token = value.token.toString();
+        print(token);
+      });
       http.Response response = await http.post(
         Uri.parse(url),
         body: jsonEncode(data),
         headers: {
           "Content-type": "application/json",
+          // "Content-type": "multipart/form-data",
+
           "X-Requested-With": "XMLHttpRequest",
-          "Accept": "application/json"
+          "Accept": "application/json",
+          'Authorization': 'Bearer $token',
         },
       ).timeout(Duration(seconds: 15));
-
+      // print(response.body);
       return returnResponse(response);
     } on SocketException {
       throw FetchDataException('No internet connection');

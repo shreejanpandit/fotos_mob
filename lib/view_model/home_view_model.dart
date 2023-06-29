@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:fotos_mobile/data/response/api_response.dart';
+import 'package:fotos_mobile/models/gernes_list_model.dart';
 import 'package:fotos_mobile/repository/home_repository.dart';
 
 import '../models/media_model.dart';
@@ -7,10 +8,10 @@ import '../models/media_model.dart';
 class HomeViewModel with ChangeNotifier {
   final _myRepo = HomeRepository();
   bool discoverMore = false;
-  ApiResponse<MediaModel> media = ApiResponse.loading();
+
   List<Map<String, dynamic>> imageList = []; // Updated type
   List<Map<String, dynamic>> newlyAddedImages = []; // Updated type
-
+  ApiResponse<MediaModel> media = ApiResponse.loading();
   setMedia(ApiResponse<MediaModel> response) {
     media = response;
     notifyListeners();
@@ -24,7 +25,9 @@ class HomeViewModel with ChangeNotifier {
         imageList.add({
           'imagePath': mediaItem.imagePath.toString(),
           'isFavourite': mediaItem.isFavourite,
+          'slug': mediaItem.slug
         });
+        // print(imageList);
       }
       setMedia(ApiResponse.completed(value));
     }).onError((error, stackTrace) {
@@ -39,6 +42,7 @@ class HomeViewModel with ChangeNotifier {
         newlyAddedImages.add({
           'imagePath': mediaItem.imagePath.toString(),
           'isFavourite': mediaItem.isFavourite,
+          'slug': mediaItem.slug
         });
       }
       discoverMore = true;

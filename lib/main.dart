@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fotos_mobile/models/image_open_model.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/routes/routes.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/view_model/auth_view_model.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
+import 'package:fotos_mobile/view_model/gerne_view_model.dart';
 import 'package:fotos_mobile/view_model/home_view_model.dart';
+import 'package:fotos_mobile/view_model/image_open_view_model.dart';
 import 'package:fotos_mobile/view_model/image_picker_view_model.dart';
 import 'package:fotos_mobile/view_model/media_view_model.dart';
 import 'package:fotos_mobile/view_model/user_view_model.dart';
@@ -33,6 +36,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => HomeViewModel()),
         ChangeNotifierProvider(create: (_) => ImagePickerModel()),
         ChangeNotifierProvider(create: (_) => MediaViewModel()),
+        ChangeNotifierProvider(create: (_) => GenersViewModel()),
+        ChangeNotifierProvider(create: (_) => ImageOpenViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

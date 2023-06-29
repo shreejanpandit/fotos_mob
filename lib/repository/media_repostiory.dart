@@ -13,7 +13,7 @@ class MediaRepository {
         AppUrl.authMediaUrl,
         data,
       );
-      // print(response.toString());
+      print(response.toString());
 
       return response;
     } catch (e) {

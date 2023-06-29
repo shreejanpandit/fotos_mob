@@ -63,8 +63,9 @@ class AuthViewModel with ChangeNotifier {
           setloading(false);
           final userPreference =
               Provider.of<UserViewModel>(context, listen: false);
-          userPreference
-              .saveUser(UserModel(token: result['accessToken'].toString()));
+          userPreference.saveUser(UserModel(
+              token: result['accessToken'].toString(),
+              userId: result['user']['id']));
           // ignore: use_build_context_synchronously
           Utils.snackBar(
             message: 'Login successful',

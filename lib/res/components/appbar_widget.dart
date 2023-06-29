@@ -4,11 +4,17 @@ import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 import 'package:provider/provider.dart';
 
-AppBar appBar(context, GlobalKey<ScaffoldState> scaffoldKey) {
+import '../../utils/routes/routes_name.dart';
+
+AppBar appBar(context, GlobalKey<ScaffoldState> scaffoldKey,
+    bool automaticallyImplyLeading) {
   final appbarProvider = Provider.of<AppbarViewModel>(context);
   final ValueNotifier<bool> _drawer = appbarProvider.drawerOpenNotifier;
   return AppBar(
-    automaticallyImplyLeading: false,
+    automaticallyImplyLeading: automaticallyImplyLeading,
+    iconTheme: IconThemeData(
+      color: CustomTheme.primaryColor, //change your color here
+    ),
     actions: [
       IconButton(
         icon: const Icon(
@@ -212,8 +218,13 @@ AppBar appBar(context, GlobalKey<ScaffoldState> scaffoldKey) {
             );
           })),
     ],
-    title: Image.asset(
-      'assets/branding/images/logo.png',
+    title: InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, RoutesName.home);
+      },
+      child: Image.asset(
+        'assets/branding/images/logo.png',
+      ),
     ),
     elevation: 0,
   );

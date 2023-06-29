@@ -6,11 +6,16 @@ import 'package:fotos_mobile/res/components/appbar_widget.dart';
 import 'package:fotos_mobile/res/components/drawer_widget.dart';
 import 'package:fotos_mobile/res/components/home_component/gerne_row.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
+import 'package:fotos_mobile/view/home/image_open_screen.dart';
 import 'package:fotos_mobile/view/home/search_result_screen.dart';
+import 'package:fotos_mobile/view/profile/media_screen.dart';
 import 'package:fotos_mobile/view/profile/profile_screen.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 import 'package:fotos_mobile/view_model/home_view_model.dart';
 import 'package:provider/provider.dart';
+
+import '../../view_model/gerne_view_model.dart';
+import '../../view_model/image_open_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -22,7 +27,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController searchController = TextEditingController();
   HomeViewModel homeViewModel = HomeViewModel();
-  // final bool _shouldLoadImages = true;
+  GenersViewModel genersViewModel = GenersViewModel();
   static int currentPage = 1;
   int nextPage = 1;
 
@@ -31,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     // homeViewModel.fetchMoviesListApi();
     homeViewModel.fetchMedia();
+    genersViewModel.fetchGernes();
   }
 
   @override
@@ -46,9 +52,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // final userPreference = Provider.of<UserViewModel>(context);
     final appbarProvider = Provider.of<AppbarViewModel>(context);
-
+    var imageOpenViewModel = Provider.of<ImageOpenViewModel>(context);
+    print(imageOpenViewModel.data);
     return Scaffold(
-      appBar: appBar(context, scaffoldKey),
+      appBar: appBar(context, scaffoldKey, false),
       body: Scaffold(
           key: scaffoldKey,
           drawer: const AppDrawer(),
@@ -167,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               }
                                                               if (searchController
                                                                           .text !=
-                                                                      'null' ||
+                                                                      'null' &&
                                                                   searchController
                                                                       .text
                                                                       .isNotEmpty) {
@@ -176,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     MaterialPageRoute(
                                                                       builder:
                                                                           (context) =>
-                                                                              SearchResultPage(),
+                                                                              const SearchResultPage(),
                                                                     ));
                                                               }
                                                             },
@@ -283,80 +290,48 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 if (index <
                                                     value.imageList.length) {
                                                   // Render existing images
-                                                  return Card(
-                                                    child: Stack(
-                                                      alignment:
-                                                          Alignment.topRight,
-                                                      children: [
-                                                        Image.network(
-                                                          value.imageList[index]
-                                                                  ['imagePath']
-                                                              .toString(),
-                                                          fit: BoxFit.none,
-                                                          errorBuilder:
-                                                              (context, error,
-                                                                  stackTrace) {
-                                                            return const Icon(
-                                                              Icons.error,
-                                                              color: Colors.red,
-                                                            );
-                                                          },
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            value.imageList[
-                                                                        index][
-                                                                    'isFavourite']
-                                                                ? Icon(
-                                                                    Icons
-                                                                        .favorite,
-                                                                    color: Colors
-                                                                        .red,
-                                                                  )
-                                                                : Icon(
-                                                                    Icons
-                                                                        .favorite_outline,
-                                                                    color: Colors
-                                                                        .white,
-                                                                  ),
-                                                            Icon(
-                                                              Icons
-                                                                  .bookmark_add_outlined,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                            Icon(
-                                                              Icons.share,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                } else {
-                                                  final newIndex = index -
-                                                      value.imageList.length;
-                                                  if (newIndex <
-                                                      value.newlyAddedImages
-                                                          .length) {
-                                                    return Card(
+                                                  return InkWell(
+                                                    onTap: () async {
+                                                      final String slug = value
+                                                          .imageList[index]
+                                                              ['slug']
+                                                          .toString();
+                                                      // print(slug);
+                                                      //
+                                                      //
+                                                      await imageOpenViewModel
+                                                          .fetchImageOpenMedia(
+                                                              slug, context);
+
+                                                      if (!imageOpenViewModel
+                                                          .loading) {
+                                                        if (context.mounted) {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        ImageOpenScreen(),
+                                                              ));
+                                                        }
+                                                      }
+                                                    },
+                                                    child: Card(
                                                       child: Stack(
                                                         alignment:
                                                             Alignment.topRight,
                                                         children: [
                                                           Image.network(
-                                                            value.newlyAddedImages[
-                                                                    newIndex]
-                                                                ['imagePath'],
+                                                            value.imageList[
+                                                                    index][
+                                                                    'imagePath']
+                                                                .toString(),
                                                             fit: BoxFit.none,
                                                             errorBuilder:
                                                                 (context, error,
                                                                     stackTrace) {
+                                                              print(error
+                                                                  .toString());
                                                               return const Icon(
                                                                 Icons.error,
                                                                 color:
@@ -369,29 +344,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 MainAxisAlignment
                                                                     .end,
                                                             children: [
-                                                              value.newlyAddedImages[
-                                                                          newIndex]
+                                                              value.imageList[
+                                                                          index]
                                                                       [
                                                                       'isFavourite']
-                                                                  ? Icon(
+                                                                  ? const Icon(
                                                                       Icons
                                                                           .favorite,
                                                                       color: Colors
                                                                           .red,
                                                                     )
-                                                                  : Icon(
+                                                                  : const Icon(
                                                                       Icons
                                                                           .favorite_outline,
                                                                       color: Colors
                                                                           .white,
                                                                     ),
-                                                              Icon(
+                                                              const Icon(
                                                                 Icons
                                                                     .bookmark_add_outlined,
                                                                 color: Colors
                                                                     .white,
                                                               ),
-                                                              Icon(
+                                                              const Icon(
                                                                 Icons.share,
                                                                 color: Colors
                                                                     .white,
@@ -399,6 +374,98 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             ],
                                                           ),
                                                         ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  final newIndex = index -
+                                                      value.imageList.length;
+                                                  if (newIndex <
+                                                      value.newlyAddedImages
+                                                          .length) {
+                                                    return InkWell(
+                                                      onTap: () async {
+                                                        final String slug = value
+                                                            .newlyAddedImages[
+                                                                newIndex]
+                                                                ['slug']
+                                                            .toString();
+
+                                                        await imageOpenViewModel
+                                                            .fetchImageOpenMedia(
+                                                                slug, context);
+                                                        // print(
+                                                        //     "Printing from homescreen: ${imageOpenViewModel.data}");
+                                                        if (!imageOpenViewModel
+                                                            .loading) {
+                                                          if (context.mounted) {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          ImageOpenScreen(),
+                                                                ));
+                                                          }
+                                                        }
+                                                      },
+                                                      child: Card(
+                                                        child: Stack(
+                                                          alignment: Alignment
+                                                              .topRight,
+                                                          children: [
+                                                            Image.network(
+                                                              value.newlyAddedImages[
+                                                                      newIndex]
+                                                                  ['imagePath'],
+                                                              fit: BoxFit.none,
+                                                              errorBuilder:
+                                                                  (context,
+                                                                      error,
+                                                                      stackTrace) {
+                                                                return const Icon(
+                                                                  Icons.error,
+                                                                  color: Colors
+                                                                      .red,
+                                                                );
+                                                              },
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                value.newlyAddedImages[
+                                                                            newIndex]
+                                                                        [
+                                                                        'isFavourite']
+                                                                    ? const Icon(
+                                                                        Icons
+                                                                            .favorite,
+                                                                        color: Colors
+                                                                            .red,
+                                                                      )
+                                                                    : const Icon(
+                                                                        Icons
+                                                                            .favorite_outline,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+                                                                const Icon(
+                                                                  Icons
+                                                                      .bookmark_add_outlined,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                                const Icon(
+                                                                  Icons.share,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     );
                                                   } else {

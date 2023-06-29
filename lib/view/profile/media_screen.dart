@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fotos_mobile/models/media_model.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fotos_mobile/res/components/profile_component/green_and_cancle_button.dart';
 
 import 'package:fotos_mobile/res/typo_theme_data.dart';
+import 'package:fotos_mobile/view_model/gerne_view_model.dart';
 import 'package:fotos_mobile/view_model/media_view_model.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:multiselect_dropdown_flutter/multiselect_dropdown_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import '../../models/image_open_model.dart';
+import '../../models/user_models.dart';
 import '../../view_model/image_picker_view_model.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'dart:io';
+
+import '../../view_model/user_view_model.dart';
 
 class MediaScreen extends StatefulWidget {
   const MediaScreen({super.key});
@@ -33,17 +41,87 @@ class _MediaScreenState extends State<MediaScreen> {
     'assets/photos/seagull.png',
     'assets/photos/tree.jpg',
   ];
-  final ImagePickerModel _imagePickerModel = ImagePickerModel();
+  // final ImagePickerModel _imagePickerModel = ImagePickerModel();
   MediaViewModel _mediaViewModel = MediaViewModel();
+  TextEditingController mediaNameController = TextEditingController();
+  TextEditingController mediaDescriptionController = TextEditingController();
+  Future<UserModel> getUserData() => UserViewModel().getUser();
+  String? token = '';
+
+  Future<bool> postFormData(
+      {required String description,
+      required String mediaList,
+      required String title}) async {
+    var userData = await getUserData();
+    var token = userData.token.toString();
+
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('http://192.168.18.4:8000/api/v1/auth/medias'));
+
+    // Set headers
+    request.headers['Authorization'] =
+        'Bearer $token'; // Replace with your actual token
+    request.headers['Content-Type'] = 'multipart/form-data';
+
+    // Add form fields
+    request.fields['title'] = title;
+    request.fields['description'] = description;
+    request.fields['media_list_id'] = mediaList;
+    request.fields['genres'] = '[1,2]';
+
+    var image =
+        Provider.of<ImagePickerModel>(context, listen: false).pickedImage!.path;
+    print(image);
+    // Add image file
+    var imageFile = File(image);
+    var stream = http.ByteStream(imageFile.openRead());
+    var length = await imageFile.length();
+
+    var multipartFile = http.MultipartFile(
+      'image',
+      stream,
+      length,
+      filename: imageFile.path.split('/').last,
+      contentType: MediaType(
+          'image', 'jpeg'), // Adjust the content type based on your image type
+    );
+
+    // Add the image file to the request
+    request.files.add(multipartFile);
+
+    // Send the request and retrieve the response
+    var response = await request.send();
+
+    // Check the response status code
+    if (response.statusCode == 302) {
+      // Request redirected
+      var redirectUrl = response.headers['location'];
+
+      // Make a new request to the redirected URL
+      var redirectResponse = await http.get(Uri.parse(redirectUrl!));
+
+      // Handle the redirect response
+      if (redirectResponse.statusCode == 200) {
+        // Redirect successful
+        print('Form data sent successfully after redirect!');
+        return true;
+      } else {
+        // Redirect failed
+        print(
+            'Error sending form data after redirect. Status code: ${redirectResponse.statusCode}');
+        return false;
+      }
+    } else if (response.statusCode == 200) {
+      // Request successful
+      print('Form data sent successfully!');
+    } else {
+      // Request failed
+      print('Error sending form data. Status code: ${response.statusCode}');
+    }
+    return false;
+  }
 
   void _showBottomSheet(BuildContext context) {
-    // @override
-    // void initState() {
-    //   print(
-    //       "im priting form the acitivty crreen${_mediaViewModel.mediaListItems}");
-    //   super.initState();
-    // }
-
     showModalBottomSheet(
       context: context,
       isScrollControlled:
@@ -124,6 +202,7 @@ class _MediaScreenState extends State<MediaScreen> {
                                     onTap: () async {
                                       await _imagePickerModel
                                           .pickImage(ImageSource.gallery);
+                                      // .pickImage(ImageSource.gallery);
                                       setState(() {});
                                     },
                                     child: Container(
@@ -257,6 +336,24 @@ class _MediaScreenState extends State<MediaScreen> {
                     ],
                   ),
                 ),
+                Consumer<GenersViewModel>(builder: (context, value, child) {
+                  print("called this ml ${value.geners}");
+                  return MultiSelectDropdown.simpleList(
+                    list: value.geners,
+                    initiallySelected: const [],
+                    onChange: (newList) {
+                      // your logic
+                    },
+                    includeSearch: true,
+                    includeSelectAll: true,
+                    isLarge: true, // Modal size will be a little large
+                    // Give a definite width when rendering this widget in a row
+                    width: 150, // Must be a definite number
+                    boxDecoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  );
+                }),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
                   child: Column(
@@ -280,20 +377,19 @@ class _MediaScreenState extends State<MediaScreen> {
                             color: const Color(0xFFCDECFF),
                           ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 16),
-                              child: Text(
-                                'Enter Media Name',
-                                style: CustomTheme.base.copyWith(
-                                    color: CustomTheme.lightTextColor
-                                        .withOpacity(0.4),
-                                    fontWeight: FontWeight.w300),
-                              ),
+                        child: TextFormField(
+                          controller: mediaNameController,
+                          decoration: InputDecoration(
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 16),
+                            hintText: 'Enter Media Name',
+                            hintStyle: CustomTheme.base.copyWith(
+                              color:
+                                  CustomTheme.lightTextColor.withOpacity(0.4),
+                              fontWeight: FontWeight.w300,
                             ),
-                          ],
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
                     ],
@@ -309,7 +405,9 @@ class _MediaScreenState extends State<MediaScreen> {
                         child: Text(
                           'Media Description',
                           style: CustomTheme.base.copyWith(
-                              fontSize: 17, fontWeight: FontWeight.w200),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w200,
+                          ),
                         ),
                       ),
                       Container(
@@ -323,20 +421,21 @@ class _MediaScreenState extends State<MediaScreen> {
                             color: const Color(0xFFCDECFF),
                           ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 16, top: 3),
-                              child: Text(
-                                'Enter Media Description',
-                                style: CustomTheme.base.copyWith(
-                                    color: CustomTheme.lightTextColor
-                                        .withOpacity(0.4),
-                                    fontWeight: FontWeight.w300),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 16, top: 3),
+                          child: TextField(
+                            controller: mediaDescriptionController,
+                            maxLines: null, // Allow multiple lines of text
+                            decoration: InputDecoration(
+                              hintText: 'Enter Media Description',
+                              hintStyle: CustomTheme.base.copyWith(
+                                color:
+                                    CustomTheme.lightTextColor.withOpacity(0.4),
+                                fontWeight: FontWeight.w300,
                               ),
+                              border: InputBorder.none,
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ],
@@ -344,41 +443,68 @@ class _MediaScreenState extends State<MediaScreen> {
                 ),
                 GreenAndCancleButton(
                   greenButtonText: 'Submit',
-                  onGreenButton: () {
-                    dynamic data = MediaData(
-                      title: '',
-                      description: '',
-                      mediaList: MediaList(id: 1),
-                      imagePath: '',
-                      isFavourite: false,
+                  onGreenButton: () async {
+                    String title = mediaNameController.text;
+                    String description = mediaDescriptionController.text;
+                    var medialistData = MediaList(
+                      id: int.parse(
+                          Provider.of<MediaViewModel>(context, listen: false)
+                              .selectedCollection!),
                     );
+                    String mediaList = medialistData.id.toString();
+                    print(mediaList);
+                    bool res = await postFormData(
+                        title: title,
+                        description: description,
+                        mediaList: mediaList);
+                    // var userId;
+                    // Future<UserModel> getUserData() =>
+                    //     UserViewModel().getUser();
+
+                    // getUserData().then((value) {
+                    //   userId = value.userId.toString();
+                    //   print(userId);
+                    // });
+                    // dynamic data = MediaData(
+
+                    //   mediaList: MediaList(
+                    //     id: int.parse(
+                    //         Provider.of<MediaViewModel>(context, listen: false)
+                    //             .selectedCollection!),
+                    //   ),
+                    //   imagePath:
+                    //       Provider.of<ImagePickerModel>(context, listen: false)
+                    //           .base64String,
+                    //   isFavourite: false,
+                    //   user: userId,
+                    // );
 
                     // var res = _mediaViewModel.createMedia(data, context);
-                    // if (res == 'sucess') {
-                    //   Navigator.pop(context);
-                    //   Alert(
-                    //       style: AlertStyle(
-                    //           titleStyle: TextStyle(color: Colors.white),
-                    //           backgroundColor: CustomTheme.lightGreenColor),
-                    //       context: context,
-                    //       closeFunction: () {
-                    //         Navigator.pop(context);
-                    //       },
-                    //       buttons: [],
-                    //       image: SvgPicture.asset(
-                    //         'assets/branding/home/tick.svg',
-                    //         height: 41,
-                    //         width: 41,
-                    //       ),
-                    //       title: 'Upload Sucessful !',
-                    //       closeIcon: InkWell(
-                    //         child: SvgPicture.asset(
-                    //           'assets/branding/home/close.svg',
-                    //           height: 20,
-                    //           width: 20,
-                    //         ),
-                    //       )).show();
-                    // }
+                    if (res == true) {
+                      Navigator.pop(context);
+                      Alert(
+                          style: AlertStyle(
+                              titleStyle: TextStyle(color: Colors.white),
+                              backgroundColor: CustomTheme.lightGreenColor),
+                          context: context,
+                          closeFunction: () {
+                            Navigator.pop(context);
+                          },
+                          buttons: [],
+                          image: SvgPicture.asset(
+                            'assets/branding/home/tick.svg',
+                            height: 41,
+                            width: 41,
+                          ),
+                          title: 'Upload Sucessful !',
+                          closeIcon: InkWell(
+                            child: SvgPicture.asset(
+                              'assets/branding/home/close.svg',
+                              height: 20,
+                              width: 20,
+                            ),
+                          )).show();
+                    }
                   },
                 ),
               ],
@@ -426,8 +552,12 @@ class _MediaScreenState extends State<MediaScreen> {
                             color: Colors.white,
                           ),
                           onPressed: () async {
+                            await Provider.of<GenersViewModel>(context,
+                                    listen: false)
+                                .fetchGernes();
                             await value.fetchMediaList();
-                            Future.delayed(Duration(seconds: 3));
+
+                            Future.delayed(Duration(seconds: 1));
                             if (!value.loading) {
                               _showBottomSheet(context);
                             }

@@ -27,7 +27,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
       "https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2018/04/24144817/American-Staffordshire-Terrier-lying-outdoors-next-to-a-kitten-that-is-playing-with-the-dogs-nose.jpg",
     ];
     return Scaffold(
-      appBar: appBar(context, scaffoldKey),
+      appBar: appBar(context, scaffoldKey, false),
       body: Scaffold(
         key: scaffoldKey,
         drawer: const AppDrawer(),
