@@ -14,6 +14,7 @@ class AppUrl {
   // static var moviesListUrl = moviesBaseUrl + 'movies_list';
   static var loginUrl = '${baseUrl}login';
   static var mediaUrl = '${baseUrl}medias';
+  static var baseImageStorageUrl = 'http://192.168.18.4:8000/storage/';
   static var mediasMediaUrl = '${baseUrl}medias/';
   static var mediaListUrl = '${baseUrl}media-lists';
   static var gernesListUrl = '${baseUrl}genres';

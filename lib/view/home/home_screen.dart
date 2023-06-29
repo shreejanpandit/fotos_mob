@@ -14,6 +14,7 @@ import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 import 'package:fotos_mobile/view_model/home_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../res/app_urls.dart';
 import '../../view_model/gerne_view_model.dart';
 import '../../view_model/image_open_view_model.dart';
 
@@ -322,21 +323,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             Alignment.topRight,
                                                         children: [
                                                           Image.network(
-                                                            value.imageList[
-                                                                    index][
-                                                                    'imagePath']
-                                                                .toString(),
-                                                            fit: BoxFit.none,
+                                                            '${AppUrl.baseImageStorageUrl}${value.imageList[index]['imagePath'].toString()}',
+                                                            fit: BoxFit
+                                                                .scaleDown,
                                                             errorBuilder:
                                                                 (context, error,
                                                                     stackTrace) {
-                                                              print(error
-                                                                  .toString());
-                                                              return const Icon(
-                                                                Icons.error,
-                                                                color:
-                                                                    Colors.red,
-                                                              );
+                                                              return Image.network(
+                                                                  value.imageList[
+                                                                          index]
+                                                                      [
+                                                                      'imagePath']);
                                                             },
                                                           ),
                                                           Row(

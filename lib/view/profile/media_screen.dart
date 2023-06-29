@@ -71,7 +71,7 @@ class _MediaScreenState extends State<MediaScreen> {
 
     var image =
         Provider.of<ImagePickerModel>(context, listen: false).pickedImage!.path;
-    print(image);
+    // print(image);
     // Add image file
     var imageFile = File(image);
     var stream = http.ByteStream(imageFile.openRead());
@@ -90,8 +90,9 @@ class _MediaScreenState extends State<MediaScreen> {
     request.files.add(multipartFile);
 
     // Send the request and retrieve the response
-    var response = await request.send();
-
+    var response = await request.send().timeout(const Duration(seconds: 20));
+    var result = await http.Response.fromStream(response);
+    print(result.body.toString());
     // Check the response status code
     if (response.statusCode == 302) {
       // Request redirected
@@ -114,6 +115,9 @@ class _MediaScreenState extends State<MediaScreen> {
     } else if (response.statusCode == 200) {
       // Request successful
       print('Form data sent successfully!');
+    } else if (response.statusCode == 500) {
+      // Request successful
+      print(result.body);
     } else {
       // Request failed
       print('Error sending form data. Status code: ${response.statusCode}');
@@ -452,34 +456,13 @@ class _MediaScreenState extends State<MediaScreen> {
                               .selectedCollection!),
                     );
                     String mediaList = medialistData.id.toString();
-                    print(mediaList);
+
+                    // print(mediaList);
                     bool res = await postFormData(
                         title: title,
                         description: description,
                         mediaList: mediaList);
-                    // var userId;
-                    // Future<UserModel> getUserData() =>
-                    //     UserViewModel().getUser();
 
-                    // getUserData().then((value) {
-                    //   userId = value.userId.toString();
-                    //   print(userId);
-                    // });
-                    // dynamic data = MediaData(
-
-                    //   mediaList: MediaList(
-                    //     id: int.parse(
-                    //         Provider.of<MediaViewModel>(context, listen: false)
-                    //             .selectedCollection!),
-                    //   ),
-                    //   imagePath:
-                    //       Provider.of<ImagePickerModel>(context, listen: false)
-                    //           .base64String,
-                    //   isFavourite: false,
-                    //   user: userId,
-                    // );
-
-                    // var res = _mediaViewModel.createMedia(data, context);
                     if (res == true) {
                       Navigator.pop(context);
                       Alert(

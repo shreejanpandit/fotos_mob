@@ -172,7 +172,7 @@ class ToggleButton extends StatelessWidget {
       child: Container(
         height: 40,
         width: MediaQuery.of(context).size.width * 0.45,
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         decoration: BoxDecoration(
           color: isSelected ? Colors.white : null,
           borderRadius: BorderRadius.circular(25),
@@ -180,8 +180,8 @@ class ToggleButton extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: TextStyle(
-              color: isSelected ? Colors.black : Colors.transparent,
+            style: const TextStyle(
+              // color: isSelected ? Colors.black : Colors.transparent,
               fontWeight: FontWeight.bold,
             ),
           ),

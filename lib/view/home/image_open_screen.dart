@@ -8,6 +8,7 @@ import 'package:fotos_mobile/view/profile/profile_screen.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 import 'package:fotos_mobile/view_model/image_open_view_model.dart';
 
+import '../../res/app_urls.dart';
 import '../../res/components/appbar_widget.dart';
 import '../../res/components/drawer_widget.dart';
 
@@ -146,12 +147,20 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                           padding: const EdgeInsets.only(bottom: 8),
                           width: double.infinity,
                           height: 281,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(value.data['image_path']),
-                              fit: BoxFit.fill,
-                            ),
+                          child: Image.network(
+                            value.data['image_path'],
+                            fit: BoxFit.fitWidth,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.network(
+                                  '${AppUrl.baseImageStorageUrl}${value.data['image_path'].toString()}');
+                            },
                           ),
+                          // decoration: BoxDecoration(
+                          //   image: DecorationImage(
+                          //     image: NetworkImage(value.data['image_path']),
+                          //     fit: BoxFit.fill,
+                          //   ),
+                          // ),
                         ),
                         Container(
                           padding: const EdgeInsets.only(left: 5, top: 8),
