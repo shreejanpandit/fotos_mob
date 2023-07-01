@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // final userPreference = Provider.of<UserViewModel>(context);
     final appbarProvider = Provider.of<AppbarViewModel>(context);
     var imageOpenViewModel = Provider.of<ImageOpenViewModel>(context);
-    print(imageOpenViewModel.data);
+    // print(imageOpenViewModel.data);
     return Scaffold(
       appBar: CustomAppBar(
         scaffoldKey: scaffoldKey,
@@ -248,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 sliver: Consumer<GenersViewModel>(
                                     builder: (context, value, child) {
                                   // value.fetchGernes();
-                                  print(value.geners);
+                                  // print(value.geners);
                                   switch (value.gerne.status) {
                                     case Status.LOADING:
                                       return const SliverToBoxAdapter(

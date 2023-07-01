@@ -31,6 +31,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration.zero, () {
+      Provider.of<MediaViewModel>(context, listen: false).fetchAuthMediaList();
+    });
     // mediaViewModel.fetchAuthMediaList();
     // print(mediaViewModel.authMediaListItems);
   }
@@ -200,8 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Consumer<MediaViewModel>(
                   builder: (context, value, child) {
                     return ContainerWithIconTextAndLeading(
-                      ontap: () async {
-                        await value.fetchAuthMediaList();
+                      ontap: () {
                         // print(value.authMediaListItems);
                         if (!value.authLoading) {
                           Navigator.push(
@@ -210,16 +212,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   builder: (context) => CollectionScreen()));
                         }
                         //
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => CollectionScreen()));
                       },
                       bgColor: CustomTheme.yellowColor,
                       imagePath: 'assets/branding/home/collection.svg',
                       text: 'Collections',
                       containerColor: CustomTheme.yellowColor,
-                      containerText: '200+',
+                      containerText: '${value.authMediaListItems.length}',
                     );
                   },
                 ),

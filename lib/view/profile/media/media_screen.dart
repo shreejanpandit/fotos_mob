@@ -42,8 +42,6 @@ class _MediaScreenState extends State<MediaScreen> {
     'assets/photos/seagull.png',
     'assets/photos/tree.jpg',
   ];
-  // final ImagePickerModel _imagePickerModel = ImagePickerModel();
-  MediaViewModel _mediaViewModel = MediaViewModel();
   TextEditingController mediaNameController = TextEditingController();
   TextEditingController mediaDescriptionController = TextEditingController();
   Future<UserModel> getUserData() => UserViewModel().getUser();
@@ -163,10 +161,8 @@ class _MediaScreenState extends State<MediaScreen> {
                         padding: const EdgeInsets.only(bottom: 10),
                         child: Text(
                           'Choose Media',
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w200,
-                          ),
+                          style: CustomTheme.base.copyWith(
+                              fontSize: 17, fontWeight: FontWeight.w200),
                         ),
                       ),
                       Consumer<ImagePickerModel>(
@@ -243,9 +239,13 @@ class _MediaScreenState extends State<MediaScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: Text('Choose Collection'),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          'Choose Collection',
+                          style: CustomTheme.base.copyWith(
+                              fontSize: 17, fontWeight: FontWeight.w200),
+                        ),
                       ),
                       Consumer<MediaViewModel>(
                         builder: (context, value, child) {
@@ -297,24 +297,41 @@ class _MediaScreenState extends State<MediaScreen> {
                     ],
                   ),
                 ),
-                Consumer<GenersViewModel>(builder: (context, value, child) {
-                  // print("called this ml ${value.gerne}");
-                  return MultiSelectDropdown.simpleList(
-                    list: value.geners,
-                    initiallySelected: const [],
-                    onChange: (newList) {
-                      // your logic
-                    },
-                    includeSearch: true,
-                    includeSelectAll: true,
-                    isLarge: true, // Modal size will be a little large
-                    // Give a definite width when rendering this widget in a row
-                    width: 150, // Must be a definite number
-                    boxDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  );
-                }),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          'Select Gerne',
+                          style: CustomTheme.base.copyWith(
+                              fontSize: 17, fontWeight: FontWeight.w200),
+                        ),
+                      ),
+                      Consumer<GenersViewModel>(
+                          builder: (context, value, child) {
+                        // print("called this ml ${value.gerne}");
+                        return MultiSelectDropdown.simpleList(
+                          list: value.geners,
+                          initiallySelected: const [],
+                          onChange: (newList) {
+                            // your logic
+                          },
+                          includeSearch: true,
+                          includeSelectAll: false,
+                          isLarge: true, // Modal size will be a little large
+                          // Give a definite width when rendering this widget in a row
+                          width: double.infinity, // Must be a definite number
+                          boxDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
                   child: Column(

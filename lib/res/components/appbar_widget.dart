@@ -25,20 +25,22 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
-  late UserViewModel _userViewModel;
+  String? token;
   bool isVisible = false;
 
   @override
   void initState() {
     super.initState();
-    _userViewModel = UserViewModel();
-    _checkUserToken();
-  }
-
-  void _checkUserToken() async {
-    UserModel user = await _userViewModel.getUser();
-    setState(() {
-      isVisible = user.token != null && user.token!.isNotEmpty;
+    Future.delayed(Duration.zero, () {
+      var userProvider = Provider.of<UserViewModel>(context, listen: false);
+      userProvider.getUser().then((value) {
+        setState(() {
+          token = value.token;
+          isVisible = token != null;
+        });
+        // print('this is appbar $token');
+        // print('this is appbar $isVisible');
+      });
     });
   }
 
@@ -46,14 +48,14 @@ class _CustomAppBarState extends State<CustomAppBar> {
   Widget build(BuildContext context) {
     final appbarProvider = Provider.of<AppbarViewModel>(context);
     final ValueNotifier<bool> _drawer = appbarProvider.drawerOpenNotifier;
-
+    print('token from app build $token');
     return AppBar(
       automaticallyImplyLeading: widget.automaticallyImplyLeading,
       iconTheme: IconThemeData(
         color: CustomTheme.primaryColor, // change your color here
       ),
       actions: [
-        if (isVisible)
+        if (token != null && token!.length > 4)
           IconButton(
             icon: const Icon(
               Icons.notifications_none,
@@ -63,7 +65,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
               print("notification");
             },
           ),
-        if (isVisible)
+        if (token != null && token!.length > 4)
           InkWell(
             onTap: appbarProvider.toggleBody,
             child: Padding(
