@@ -1,18 +1,20 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:fotos_mobile/data/response/api_response.dart';
-import 'package:fotos_mobile/models/gernes_list_model.dart';
 import 'package:fotos_mobile/repository/home_repository.dart';
 
 import '../models/media_model.dart';
 
 class HomeViewModel with ChangeNotifier {
   final _myRepo = HomeRepository();
-  bool discoverMore = false;
+  bool showDiscoverMore = false;
+  final scrollCtrl = ScrollController();
 
   List<Map<String, dynamic>> imageList = []; // Updated type
   List<Map<String, dynamic>> newlyAddedImages = []; // Updated type
   ApiResponse<MediaModel> media = ApiResponse.loading();
-  setMedia(ApiResponse<MediaModel> response) {
+
+  void setMedia(ApiResponse<MediaModel> response) {
     media = response;
     notifyListeners();
   }
@@ -26,6 +28,8 @@ class HomeViewModel with ChangeNotifier {
     }
   }
 
+  int currentPage = 1; // Track the current page number
+
   Future<void> fetchMedia() async {
     setMedia(ApiResponse.loading());
     _myRepo.fetchMediaApi(1).then((value) {
@@ -33,12 +37,14 @@ class HomeViewModel with ChangeNotifier {
         final mediaItem = value.data![i];
         imageList.add({
           'imagePath': mediaItem.imagePath.toString(),
-          'isFavourite': mediaItem.isFavourite,
+          'isFavorite': mediaItem.isFavourite,
           'slug': mediaItem.slug
         });
-        // print(imageList);
       }
+
       setMedia(ApiResponse.completed(value));
+      showDiscoverMore = true; // Set showDiscoverMore to true
+      notifyListeners();
     }).onError((error, stackTrace) {
       setMedia(ApiResponse.error(error.toString()));
     });
@@ -50,21 +56,45 @@ class HomeViewModel with ChangeNotifier {
         final mediaItem = value.data![i];
         newlyAddedImages.add({
           'imagePath': mediaItem.imagePath.toString(),
-          'isFavourite': mediaItem.isFavourite,
+          'isFavorite': mediaItem.isFavourite,
           'slug': mediaItem.slug
         });
       }
-      discoverMore = true;
+
+      currentPage = newPage;
+      showDiscoverMore = true; // Set showDiscoverMore to true
       notifyListeners();
     }).onError((error, stackTrace) {
       setMedia(ApiResponse.error(error.toString()));
     });
   }
 
+  void _scrollListener() {
+    if (scrollCtrl.position.pixels == scrollCtrl.position.maxScrollExtent) {
+      // Reached the end of the scrollable content
+      if (!showDiscoverMore) {
+        int nextPage = currentPage + 1;
+        loadMoreData(nextPage);
+      }
+    } else {
+      // Hide the "Discover More" container when scrolling
+      if (showDiscoverMore) {
+        showDiscoverMore = false;
+        notifyListeners();
+      }
+    }
+  }
+
   @override
   void dispose() {
+    scrollCtrl.removeListener(_scrollListener);
+    scrollCtrl.dispose();
     imageList = [];
     newlyAddedImages = [];
     super.dispose();
+  }
+
+  HomeViewModel() {
+    scrollCtrl.addListener(_scrollListener);
   }
 }

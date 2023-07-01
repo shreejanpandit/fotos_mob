@@ -12,6 +12,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../models/user_models.dart';
 import '../../res/app_urls.dart';
+import '../../utils/utils.dart';
 import '../../view_model/image_picker_view_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -29,6 +30,7 @@ class CollectionScreen extends StatefulWidget {
 class _CollectionScreenState extends State<CollectionScreen> {
   bool showPersonalInfo = true;
   // MediaViewModel _mediaViewModel = MediaViewModel();
+  bool isImagePicked = false;
   TextEditingController collectionNameController = TextEditingController();
   TextEditingController collectionDescriptionController =
       TextEditingController();
@@ -156,6 +158,9 @@ class _CollectionScreenState extends State<CollectionScreen> {
                       ),
                       Consumer<ImagePickerModel>(
                         builder: (context, _imagePickerModel, child) {
+                          isImagePicked = _imagePickerModel.pickedImage != null
+                              ? true
+                              : false;
                           return Container(
                             width: 336,
                             height: 45.25,
@@ -376,39 +381,46 @@ class _CollectionScreenState extends State<CollectionScreen> {
                     String description = collectionDescriptionController.text;
                     String collectionType =
                         selectedValueNotifier.value.toString();
-                    print(collectionType);
-                    print(title);
-                    print(description);
+                    if (title == '' && title.isEmpty) {
+                      Utils.flushBarErrorMessage(
+                          'Collectoin name can\'t be empty', context);
+                    } else if (description == '' && description.isEmpty) {
+                      Utils.flushBarErrorMessage(
+                          'Description can\'t be empty', context);
+                    } else if (!isImagePicked) {
+                      Utils.flushBarErrorMessage(
+                          'Select media to upload', context);
+                    } else {
+                      bool res = await postCollectionFormData(
+                          title: title.trim(),
+                          description: description.trim(),
+                          collectionType: collectionType);
 
-                    bool res = await postCollectionFormData(
-                        title: title,
-                        description: description,
-                        collectionType: collectionType);
-
-                    if (res == true) {
-                      Navigator.pop(context);
-                      Alert(
-                          style: const AlertStyle(
-                              titleStyle: TextStyle(color: Colors.white),
-                              backgroundColor: CustomTheme.lightGreenColor),
-                          context: context,
-                          closeFunction: () {
-                            Navigator.pop(context);
-                          },
-                          buttons: [],
-                          image: SvgPicture.asset(
-                            'assets/branding/home/tick.svg',
-                            height: 41,
-                            width: 41,
-                          ),
-                          title: 'Upload Sucessful !',
-                          closeIcon: InkWell(
-                            child: SvgPicture.asset(
-                              'assets/branding/home/close.svg',
-                              height: 20,
-                              width: 20,
+                      if (res == true) {
+                        Navigator.pop(context);
+                        Alert(
+                            style: const AlertStyle(
+                                titleStyle: TextStyle(color: Colors.white),
+                                backgroundColor: CustomTheme.lightGreenColor),
+                            context: context,
+                            closeFunction: () {
+                              Navigator.pop(context);
+                            },
+                            buttons: [],
+                            image: SvgPicture.asset(
+                              'assets/branding/home/tick.svg',
+                              height: 41,
+                              width: 41,
                             ),
-                          )).show();
+                            title: 'Upload Sucessful !',
+                            closeIcon: InkWell(
+                              child: SvgPicture.asset(
+                                'assets/branding/home/close.svg',
+                                height: 20,
+                                width: 20,
+                              ),
+                            )).show();
+                      }
                     }
                   },
                 ),

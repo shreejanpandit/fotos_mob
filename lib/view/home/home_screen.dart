@@ -33,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
   UserViewModel userViewModel = UserViewModel();
   static int currentPage = 1;
   int nextPage = 1;
-
   @override
   void initState() {
     super.initState();
@@ -88,6 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         SizedBox(
                           child: CustomScrollView(
+                            controller: homeViewModel.scrollCtrl,
                             slivers: [
                               SliverToBoxAdapter(
                                 child: Container(
@@ -234,14 +234,22 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               SliverToBoxAdapter(
                                 child: Container(
-                                  margin: const EdgeInsets.all(10),
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    'Gerne',
-                                    style: CustomTheme.h6
-                                        .copyWith(fontWeight: FontWeight.w600),
-                                  ),
-                                ),
+                                    margin: const EdgeInsets.all(10),
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Gerne',
+                                          style: CustomTheme.h6.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(Icons.add_card_sharp))
+                                      ],
+                                    )),
                               ),
                               SliverPadding(
                                 padding: EdgeInsets.all(5),
@@ -313,6 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           sliver: SliverMasonryGrid(
                                             delegate:
                                                 SliverChildBuilderDelegate(
+                                              addSemanticIndexes: true,
                                               addRepaintBoundaries: true,
                                               (context, index) {
                                                 if (index <
@@ -381,7 +390,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               value.imageList[
                                                                           index]
                                                                       [
-                                                                      'isFavourite']
+                                                                      'isFavorite']
                                                                   ? const Icon(
                                                                       Icons
                                                                           .favorite,
@@ -481,7 +490,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 value.newlyAddedImages[
                                                                             newIndex]
                                                                         [
-                                                                        'isFavourite']
+                                                                        'isFavorite']
                                                                     ? const Icon(
                                                                         Icons
                                                                             .favorite,
@@ -572,7 +581,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: AnimatedBuilder(
                                 animation: homeViewModel,
                                 builder: (context, child) {
-                                  final isLastItemShown = true;
+                                  final isLastItemShown =
+                                      homeViewModel.showDiscoverMore;
                                   return Visibility(
                                     visible: isLastItemShown,
                                     child: Align(

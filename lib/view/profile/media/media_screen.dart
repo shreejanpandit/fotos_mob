@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fotos_mobile/res/components/profile_component/green_and_cancle_button.dart';
 
 import 'package:fotos_mobile/res/typo_theme_data.dart';
+import 'package:fotos_mobile/utils/utils.dart';
 import 'package:fotos_mobile/view_model/gerne_view_model.dart';
 import 'package:fotos_mobile/view_model/media_view_model.dart';
 import 'package:image_picker/image_picker.dart';
@@ -33,7 +34,7 @@ class _MediaScreenState extends State<MediaScreen> {
   // void initState() {
   //   super.initState();
   // }
-
+  bool isImagePicked = false;
   bool showPersonalInfo = true;
 
   List<String> imageList = [
@@ -91,7 +92,7 @@ class _MediaScreenState extends State<MediaScreen> {
     // Send the request and retrieve the response
     var response = await request.send().timeout(const Duration(seconds: 20));
     var result = await http.Response.fromStream(response);
-    print(result.body.toString());
+    // print(result.body.toString());
     // Check the response status code
     if (response.statusCode == 302) {
       // Request redirected
@@ -114,6 +115,7 @@ class _MediaScreenState extends State<MediaScreen> {
     } else if (response.statusCode == 200) {
       // Request successful
       print('Form data sent successfully!');
+      return true;
     } else if (response.statusCode == 500) {
       // Request successful
       print(result.body);
@@ -122,6 +124,13 @@ class _MediaScreenState extends State<MediaScreen> {
       print('Error sending form data. Status code: ${response.statusCode}');
     }
     return false;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    mediaDescriptionController.dispose();
+    mediaNameController.dispose();
   }
 
   void _showBottomSheet(BuildContext context) {
@@ -167,6 +176,9 @@ class _MediaScreenState extends State<MediaScreen> {
                       ),
                       Consumer<ImagePickerModel>(
                         builder: (context, _imagePickerModel, child) {
+                          isImagePicked = _imagePickerModel.pickedImage != null
+                              ? true
+                              : false;
                           return Container(
                             width: 336,
                             height: 45.25,
@@ -190,7 +202,7 @@ class _MediaScreenState extends State<MediaScreen> {
                                       _imagePickerModel.pickedImage != null
                                           ? _imagePickerModel.pickedImage!.path
                                           : 'Select File',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w300,
                                       ),
@@ -213,7 +225,7 @@ class _MediaScreenState extends State<MediaScreen> {
                                         borderRadius: BorderRadius.circular(10),
                                         color: Colors.blue,
                                       ),
-                                      child: Center(
+                                      child: const Center(
                                         child: Text(
                                           'Upload',
                                           style: TextStyle(
@@ -271,7 +283,7 @@ class _MediaScreenState extends State<MediaScreen> {
                                 // print("object");
 
                                 value.setselectedCollection(newValue!);
-                                print(value.selectedCollection);
+                                // print(value.selectedCollection);
                               },
                               // onChanged: (value) {},
                               items: value.mediaListItems.map((item) {
@@ -431,36 +443,47 @@ class _MediaScreenState extends State<MediaScreen> {
                     );
                     String mediaList = medialistData.id.toString();
 
-                    // print(mediaList);
-                    bool res = await postFormData(
-                        title: title,
-                        description: description,
-                        mediaList: mediaList);
+                    if (title == '' && title.isEmpty) {
+                      Utils.flushBarErrorMessage(
+                          'Title can\'t be empty', context);
+                    } else if (description == '' && description.isEmpty) {
+                      Utils.flushBarErrorMessage(
+                          'Description can\'t be empty', context);
+                    } else if (!isImagePicked) {
+                      Utils.flushBarErrorMessage(
+                          'Select media to upload', context);
+                    } else {
+                      bool res = await postFormData(
+                          title: title.trim(),
+                          description: description.trim(),
+                          mediaList: mediaList);
 
-                    if (res == true) {
-                      Navigator.pop(context);
-                      Alert(
-                          style: AlertStyle(
-                              titleStyle: TextStyle(color: Colors.white),
-                              backgroundColor: CustomTheme.lightGreenColor),
-                          context: context,
-                          closeFunction: () {
-                            Navigator.pop(context);
-                          },
-                          buttons: [],
-                          image: SvgPicture.asset(
-                            'assets/branding/home/tick.svg',
-                            height: 41,
-                            width: 41,
-                          ),
-                          title: 'Upload Sucessful !',
-                          closeIcon: InkWell(
-                            child: SvgPicture.asset(
-                              'assets/branding/home/close.svg',
-                              height: 20,
-                              width: 20,
+                      if (res == true) {
+                        Navigator.pop(context);
+
+                        Alert(
+                            style: const AlertStyle(
+                                titleStyle: TextStyle(color: Colors.white),
+                                backgroundColor: CustomTheme.lightGreenColor),
+                            context: context,
+                            closeFunction: () {
+                              Navigator.pop(context);
+                            },
+                            buttons: [],
+                            image: SvgPicture.asset(
+                              'assets/branding/home/tick.svg',
+                              height: 41,
+                              width: 41,
                             ),
-                          )).show();
+                            title: 'Upload Sucessful !',
+                            closeIcon: InkWell(
+                              child: SvgPicture.asset(
+                                'assets/branding/home/close.svg',
+                                height: 20,
+                                width: 20,
+                              ),
+                            )).show();
+                      }
                     }
                   },
                 ),
@@ -514,7 +537,7 @@ class _MediaScreenState extends State<MediaScreen> {
                             //     .fetchGernes();
                             await value.fetchMediaList();
 
-                            Future.delayed(Duration(seconds: 1));
+                            Future.delayed(const Duration(seconds: 1));
                             if (!value.loading) {
                               _showBottomSheet(context);
                             }
