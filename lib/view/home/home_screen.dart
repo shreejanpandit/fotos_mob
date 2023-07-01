@@ -589,9 +589,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       alignment: Alignment.bottomCenter,
                                       child: InkWell(
                                         onTap: () {
-                                          nextPage = currentPage + 1;
-                                          currentPage = nextPage;
-                                          homeViewModel.loadMoreData(nextPage);
+                                          // nextPage = currentPage + 1;
+                                          // currentPage = nextPage;
+                                          // homeViewModel.loadMoreData(nextPage);
                                         },
                                         child: Container(
                                           width: 390,
