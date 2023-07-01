@@ -11,14 +11,15 @@ import 'package:multiselect_dropdown_flutter/multiselect_dropdown_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-import '../../models/image_open_model.dart';
-import '../../models/user_models.dart';
-import '../../view_model/image_picker_view_model.dart';
+import '../../../models/image_open_model.dart';
+import '../../../models/user_models.dart';
+import '../../../res/app_urls.dart';
+import '../../../view_model/image_picker_view_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'dart:io';
 
-import '../../view_model/user_view_model.dart';
+import '../../../view_model/user_view_model.dart';
 
 class MediaScreen extends StatefulWidget {
   const MediaScreen({super.key});
@@ -56,7 +57,7 @@ class _MediaScreenState extends State<MediaScreen> {
     var token = userData.token.toString();
 
     var request = http.MultipartRequest(
-        'POST', Uri.parse('http://192.168.18.4:8000/api/v1/auth/medias'));
+        'POST', Uri.parse('${AppUrl.baseUrl}auth/medias'));
 
     // Set headers
     request.headers['Authorization'] =
@@ -246,50 +247,6 @@ class _MediaScreenState extends State<MediaScreen> {
                         padding: EdgeInsets.only(bottom: 10),
                         child: Text('Choose Collection'),
                       ),
-                      // Consumer<MediaViewModel>(
-                      //   builder: (context, value, child) {
-                      //     return Container(
-                      //       width: 336,
-                      //       height: 45.25,
-                      //       decoration: BoxDecoration(
-                      //         borderRadius: BorderRadius.circular(10),
-                      //         color: const Color(0xFFF9F9F9),
-                      //         border: Border.all(
-                      //           color: const Color(0xFFCDECFF),
-                      //         ),
-                      //       ),
-                      //       child: DropdownButton<String>(
-                      //         onChanged: (value) {},
-                      //         isExpanded: true,
-                      //         underline:
-                      //             Container(), // Removes the default underline
-                      //         // value: value
-                      //         //     .selectedCollection, // Holds the currently selected collection ID
-                      //         // onChanged: (newValue) {
-                      //         //   setState(() {
-                      //         //     value.selectedCollection = newValue!;
-                      //         //   });
-                      //         // },
-                      //         items: value.mediaListItems.map((item) {
-                      //           return DropdownMenuItem<String>(
-                      //             value: item['id'],
-                      //             child: Padding(
-                      //               padding: const EdgeInsets.only(left: 16),
-                      //               child: Text(
-                      //                 item['name'],
-                      //                 style: CustomTheme.base.copyWith(
-                      //                   color: CustomTheme.lightTextColor
-                      //                       .withOpacity(0.4),
-                      //                   fontWeight: FontWeight.w300,
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           );
-                      //         }).toList(),
-                      //       ),
-                      //     );
-                      //   },
-                      // ),
                       Consumer<MediaViewModel>(
                         builder: (context, value, child) {
                           // print(value.selectedCollection);
@@ -341,7 +298,7 @@ class _MediaScreenState extends State<MediaScreen> {
                   ),
                 ),
                 Consumer<GenersViewModel>(builder: (context, value, child) {
-                  print("called this ml ${value.geners}");
+                  // print("called this ml ${value.gerne}");
                   return MultiSelectDropdown.simpleList(
                     list: value.geners,
                     initiallySelected: const [],
@@ -535,9 +492,9 @@ class _MediaScreenState extends State<MediaScreen> {
                             color: Colors.white,
                           ),
                           onPressed: () async {
-                            await Provider.of<GenersViewModel>(context,
-                                    listen: false)
-                                .fetchGernes();
+                            // await Provider.of<GenersViewModel>(context,
+                            //         listen: false)
+                            //     .fetchGernes();
                             await value.fetchMediaList();
 
                             Future.delayed(Duration(seconds: 1));

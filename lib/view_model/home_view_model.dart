@@ -17,6 +17,15 @@ class HomeViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  bool isImageFavorite(bool isExistingImage, int index) {
+    if (isExistingImage) {
+      return imageList[index]['isFavorite'];
+    } else {
+      int newIndex = index - imageList.length;
+      return newlyAddedImages[newIndex]['isFavorite'];
+    }
+  }
+
   Future<void> fetchMedia() async {
     setMedia(ApiResponse.loading());
     _myRepo.fetchMediaApi(1).then((value) {

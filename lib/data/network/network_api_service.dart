@@ -12,19 +12,24 @@ class NetworkApiService extends BaseApiService {
   String? token = '';
   @override
   Future getGetApiResponse(String url) async {
+    // print(url);
     dynamic responseJson;
     try {
+      await getUserData().then((value) {
+        token = value.token.toString();
+      });
       final response = await http.get(
         Uri.parse(url),
         headers: {
           "Content-type": "application/json",
-          // "X-Requested-With": "XMLHttpRequest",
+          "X-Requested-With": "XMLHttpRequest",
           "Accept": "application/json",
-          // 'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer $token',
         },
-      ).timeout(
-        Duration(seconds: 20),
       );
+      // .timeout(
+      //   Duration(seconds: 20),
+      // );
       // print(response.body);
       responseJson = returnResponse(response);
     } on SocketException {

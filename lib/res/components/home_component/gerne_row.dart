@@ -29,10 +29,14 @@ class Gerne extends StatelessWidget {
                 imagePath,
                 fit: BoxFit.cover,
               ),
-              Text(
-                text,
-                style: CustomTheme.base.copyWith(
-                  color: CustomTheme.whiteTextColor,
+              Padding(
+                padding: const EdgeInsets.only(left: 3),
+                child: Text(
+                  overflow: TextOverflow.ellipsis,
+                  text,
+                  style: CustomTheme.small.copyWith(
+                    color: CustomTheme.whiteTextColor,
+                  ),
                 ),
               ),
             ],

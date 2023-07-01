@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fotos_mobile/models/image_open_model.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/routes/routes.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
@@ -33,10 +32,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => UserViewModel()),
         ChangeNotifierProvider(create: (_) => AppbarViewModel()),
+        ChangeNotifierProvider(create: (_) => GenersViewModel()),
         ChangeNotifierProvider(create: (_) => HomeViewModel()),
         ChangeNotifierProvider(create: (_) => ImagePickerModel()),
         ChangeNotifierProvider(create: (_) => MediaViewModel()),
-        ChangeNotifierProvider(create: (_) => GenersViewModel()),
         ChangeNotifierProvider(create: (_) => ImageOpenViewModel()),
       ],
       child: MaterialApp(

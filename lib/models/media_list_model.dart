@@ -33,8 +33,8 @@ class Data {
   String? name;
   String? slug;
   String? type;
-  Null? description;
-  Null? path;
+  String? description;
+  String? path;
 
   Data({this.id, this.name, this.slug, this.type, this.description, this.path});
 

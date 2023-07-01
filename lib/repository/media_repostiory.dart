@@ -33,4 +33,17 @@ class MediaRepository {
       rethrow;
     }
   }
+
+  Future<List<MediaList>> getAuthMediaListApi() async {
+    try {
+      dynamic response =
+          await _apiService.getGetApiResponse(AppUrl.authMediaListUrl);
+      // print(response);
+      List<dynamic> mediaListData =
+          response; // Assuming response is the list of media objects
+      return mediaListData.map((data) => MediaList.fromJson(data)).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

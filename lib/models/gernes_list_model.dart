@@ -1,9 +1,9 @@
 class GernesListModel {
   int? _id;
   String? _name;
-  Null? _slug;
+  String? _slug;
 
-  GernesListModel({int? id, String? name, Null? slug}) {
+  GernesListModel({int? id, String? name, String? slug}) {
     if (id != null) {
       this._id = id;
     }
@@ -19,8 +19,8 @@ class GernesListModel {
   set id(int? id) => _id = id;
   String? get name => _name;
   set name(String? name) => _name = name;
-  Null? get slug => _slug;
-  set slug(Null? slug) => _slug = slug;
+  String? get slug => _slug;
+  set slug(String? slug) => _slug = slug;
 
   GernesListModel.fromJson(Map<String, dynamic> json) {
     _id = json['id'];

@@ -6,7 +6,7 @@ import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/utils/utils.dart';
 import 'package:fotos_mobile/view/profile/collection_screen.dart';
-import 'package:fotos_mobile/view/profile/media_screen.dart';
+import 'package:fotos_mobile/view/profile/media/media_screen.dart';
 import 'package:fotos_mobile/view/profile/message/message_screen.dart';
 import 'package:fotos_mobile/view/profile/payment/payment_screen.dart';
 import 'package:fotos_mobile/view/profile/user_profile_screen.dart';
@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../models/user_models.dart';
+import '../../view_model/media_view_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({super.key});
@@ -26,6 +27,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  // MediaViewModel mediaViewModel = MediaViewModel();
+  @override
+  void initState() {
+    super.initState();
+    // mediaViewModel.fetchAuthMediaList();
+    // print(mediaViewModel.authMediaListItems);
+  }
+
   @override
   Widget build(BuildContext context) {
     final userPreference = Provider.of<UserViewModel>(context);
@@ -188,18 +197,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   containerColor: CustomTheme.primaryColor,
                   containerText: '100+',
                 ),
-                ContainerWithIconTextAndLeading(
-                  ontap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CollectionScreen()));
+                Consumer<MediaViewModel>(
+                  builder: (context, value, child) {
+                    return ContainerWithIconTextAndLeading(
+                      ontap: () async {
+                        await value.fetchAuthMediaList();
+                        // print(value.authMediaListItems);
+                        if (!value.authLoading) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CollectionScreen()));
+                        }
+                        //
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => CollectionScreen()));
+                      },
+                      bgColor: CustomTheme.yellowColor,
+                      imagePath: 'assets/branding/home/collection.svg',
+                      text: 'Collections',
+                      containerColor: CustomTheme.yellowColor,
+                      containerText: '200+',
+                    );
                   },
-                  bgColor: CustomTheme.yellowColor,
-                  imagePath: 'assets/branding/home/collection.svg',
-                  text: 'Collections',
-                  containerColor: CustomTheme.yellowColor,
-                  containerText: '200+',
                 ),
                 const ContainerWithIconTextAndLeading(
                   bgColor: CustomTheme.lightGreenColor,

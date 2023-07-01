@@ -8,10 +8,11 @@ import 'package:fotos_mobile/res/components/home_component/gerne_row.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/view/home/image_open_screen.dart';
 import 'package:fotos_mobile/view/home/search_result_screen.dart';
-import 'package:fotos_mobile/view/profile/media_screen.dart';
+// import 'package:fotos_mobile/view/profile/media_screen.dart';
 import 'package:fotos_mobile/view/profile/profile_screen.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 import 'package:fotos_mobile/view_model/home_view_model.dart';
+import 'package:fotos_mobile/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../res/app_urls.dart';
@@ -29,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController searchController = TextEditingController();
   HomeViewModel homeViewModel = HomeViewModel();
   GenersViewModel genersViewModel = GenersViewModel();
+  UserViewModel userViewModel = UserViewModel();
   static int currentPage = 1;
   int nextPage = 1;
 
@@ -37,7 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     // homeViewModel.fetchMoviesListApi();
     homeViewModel.fetchMedia();
-    genersViewModel.fetchGernes();
+    Future.delayed(Duration.zero, () {
+      Provider.of<GenersViewModel>(context, listen: false).fetchGernes();
+    });
+    // genersViewModel.fetchGernes();
   }
 
   @override
@@ -56,7 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
     var imageOpenViewModel = Provider.of<ImageOpenViewModel>(context);
     print(imageOpenViewModel.data);
     return Scaffold(
-      appBar: appBar(context, scaffoldKey, false),
+      appBar: CustomAppBar(
+        scaffoldKey: scaffoldKey,
+        automaticallyImplyLeading: false,
+      ),
       body: Scaffold(
           key: scaffoldKey,
           drawer: const AppDrawer(),
@@ -235,38 +243,57 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                               ),
-                              SliverToBoxAdapter(
-                                child: Container(
-                                  margin: const EdgeInsets.only(bottom: 10),
-                                  height: 81,
-                                  child: ListView(
-                                    scrollDirection: Axis.horizontal,
-                                    children: const [
-                                      Gerne(
-                                          text: 'Illustration',
-                                          imagePath:
-                                              'assets/photos/saturn.png'),
-                                      Gerne(
-                                          text: 'Space',
-                                          imagePath: 'assets/photos/space.png'),
-                                      Gerne(
-                                          text: 'Potrait',
-                                          imagePath: 'assets/photos/tree.jpg'),
-                                      Gerne(
-                                          text: 'Documentry',
-                                          imagePath:
-                                              'assets/photos/seagull.png'),
-                                      Gerne(
-                                          text: 'Still Life',
-                                          imagePath: 'assets/photos/space.png'),
-                                    ],
-                                  ),
-                                ),
+                              SliverPadding(
+                                padding: EdgeInsets.all(5),
+                                sliver: Consumer<GenersViewModel>(
+                                    builder: (context, value, child) {
+                                  // value.fetchGernes();
+                                  print(value.geners);
+                                  switch (value.gerne.status) {
+                                    case Status.LOADING:
+                                      return const SliverToBoxAdapter(
+                                        child: Center(
+                                          child: CircularProgressIndicator
+                                              .adaptive(),
+                                        ),
+                                      );
+                                    case Status.ERROR:
+                                      return SliverToBoxAdapter(
+                                        child: Text(
+                                            value.gerne.message.toString()),
+                                      );
+                                    case Status.COMPLETED:
+                                      return
+                                          // print(
+                                          //     "called this ml ${genersViewModel.geners}");
+                                          SliverToBoxAdapter(
+                                        child: Container(
+                                          margin:
+                                              const EdgeInsets.only(bottom: 10),
+                                          height: 81,
+                                          child: ListView.builder(
+                                            itemCount: value.geners.length,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index) {
+                                              return Gerne(
+                                                  imagePath:
+                                                      'assets/photos/tree.jpg',
+                                                  text: value.geners[index]);
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    default:
+                                      return SliverToBoxAdapter(
+                                          child: Container());
+                                  }
+                                }),
                               ),
                               SliverPadding(
                                 padding: const EdgeInsets.all(5),
                                 sliver: Consumer<HomeViewModel>(
                                   builder: (context, value, child) {
+                                    // print(value.media);
                                     switch (value.media.status) {
                                       case Status.LOADING:
                                         return const SliverToBoxAdapter(
@@ -291,15 +318,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 if (index <
                                                     value.imageList.length) {
                                                   // Render existing images
+
+                                                  String imagePath = value
+                                                      .imageList[index]
+                                                          ['imagePath']
+                                                      .toString();
+                                                  String imageUrl;
+
+                                                  if (imagePath
+                                                      .startsWith('http')) {
+                                                    imageUrl = imagePath;
+                                                  } else {
+                                                    imageUrl =
+                                                        '${AppUrl.baseImageStorageUrl}$imagePath';
+                                                  }
+
                                                   return InkWell(
                                                     onTap: () async {
                                                       final String slug = value
                                                           .imageList[index]
                                                               ['slug']
                                                           .toString();
-                                                      // print(slug);
-                                                      //
-                                                      //
+
                                                       await imageOpenViewModel
                                                           .fetchImageOpenMedia(
                                                               slug, context);
@@ -323,17 +363,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             Alignment.topRight,
                                                         children: [
                                                           Image.network(
-                                                            '${AppUrl.baseImageStorageUrl}${value.imageList[index]['imagePath'].toString()}',
+                                                            imageUrl,
                                                             fit: BoxFit
                                                                 .scaleDown,
                                                             errorBuilder:
                                                                 (context, error,
                                                                     stackTrace) {
-                                                              return Image.network(
-                                                                  value.imageList[
-                                                                          index]
-                                                                      [
-                                                                      'imagePath']);
+                                                              return SizedBox
+                                                                  .shrink();
                                                             },
                                                           ),
                                                           Row(
@@ -380,6 +417,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   if (newIndex <
                                                       value.newlyAddedImages
                                                           .length) {
+                                                    String imagePath = value
+                                                        .newlyAddedImages[
+                                                            newIndex]
+                                                            ['imagePath']
+                                                        .toString();
+                                                    String imageUrl;
+
+                                                    if (imagePath
+                                                        .startsWith('http')) {
+                                                      imageUrl = imagePath;
+                                                    } else {
+                                                      imageUrl =
+                                                          '${AppUrl.baseImageStorageUrl}$imagePath';
+                                                    }
+
                                                     return InkWell(
                                                       onTap: () async {
                                                         final String slug = value
@@ -412,19 +464,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               .topRight,
                                                           children: [
                                                             Image.network(
-                                                              value.newlyAddedImages[
-                                                                      newIndex]
-                                                                  ['imagePath'],
+                                                              imageUrl,
                                                               fit: BoxFit.none,
                                                               errorBuilder:
                                                                   (context,
                                                                       error,
                                                                       stackTrace) {
-                                                                return const Icon(
-                                                                  Icons.error,
-                                                                  color: Colors
-                                                                      .red,
-                                                                );
+                                                                return SizedBox();
                                                               },
                                                             ),
                                                             Row(

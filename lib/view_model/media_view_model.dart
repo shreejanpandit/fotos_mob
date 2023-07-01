@@ -8,6 +8,8 @@ class MediaViewModel with ChangeNotifier {
   final _myRepo = MediaRepository();
   bool _loading = false;
   bool get loading => _loading;
+  bool _authLoading = false;
+  bool get authLoading => _authLoading;
   String? selectedCollection = "1";
 
   void setselectedCollection(String newValue) {
@@ -16,6 +18,18 @@ class MediaViewModel with ChangeNotifier {
   }
 
   List<Map<String, dynamic>> mediaListItems = [];
+  List<Map<String, dynamic>> authMediaListItems = [];
+  // List<Map<String, dynamic>> authMediaListItems = [
+  //   {
+  //     "id": 102,
+  //     "name": "test",
+  //     "slug": "test",
+  //     "type": "photo",
+  //     "description": "sfgfn",
+  //     "image_path":
+  //         "1-media-collection\/6xFrhcnOIBsYfDzREppcrKx9bKmUQeIdkP0CXNzY.jpg"
+  //   }
+  // ];
 
   List<String?> ml = [];
 
@@ -56,6 +70,37 @@ class MediaViewModel with ChangeNotifier {
       _loading = false;
       notifyListeners();
       print("I'm getting these items: $mediaListItems");
+    } catch (error) {
+      print(error.toString());
+    }
+  }
+
+  Future fetchAuthMediaList() async {
+    _authLoading = true;
+    ChangeNotifier();
+    try {
+      final value = await _myRepo.getAuthMediaListApi();
+
+      for (var i = 0; i < value.length; i++) {
+        final authMediaListItem = value[i];
+
+        // Check if the item already exists in the list
+        bool itemExists = authMediaListItems
+            .any((item) => item['id'] == authMediaListItem.id.toString());
+
+        // If the item does not exist, add it to the list
+        if (!itemExists) {
+          final newItem = {
+            'id': authMediaListItem.id.toString(),
+            'name': authMediaListItem.name,
+            'image_path': authMediaListItem.path,
+          };
+          authMediaListItems.add(newItem);
+        }
+      }
+      _authLoading = false;
+      notifyListeners();
+      // print("I'm getting these items: $authMediaListItems");
     } catch (error) {
       print(error.toString());
     }
