@@ -7,6 +7,7 @@ import 'package:fotos_mobile/view/drawer_items/privacy_view.dart';
 import 'package:fotos_mobile/view/home/home_screen.dart';
 import 'package:fotos_mobile/view/auth/login_view.dart';
 import 'package:fotos_mobile/view/auth/signup_view.dart';
+import 'package:fotos_mobile/view/profile/profile_screen.dart';
 import 'package:fotos_mobile/view/splash_view.dart';
 import 'package:fotos_mobile/view/drawer_items/terms_and_condition_view.dart';
 
@@ -62,6 +63,9 @@ class Routes {
       case RoutesName.payment:
         return MaterialPageRoute(
             builder: ((BuildContext context) => PaymentScreen()));
+      case RoutesName.profile:
+        return MaterialPageRoute(
+            builder: ((BuildContext context) => ProfileScreen()));
       case RoutesName.about_us:
         return MaterialPageRoute(
             builder: ((BuildContext context) => AboutUsPage()));

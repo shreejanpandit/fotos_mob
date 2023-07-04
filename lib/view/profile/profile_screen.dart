@@ -5,11 +5,6 @@ import 'package:fotos_mobile/res/components/profile_component/green_and_cancle_b
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/utils/utils.dart';
-import 'package:fotos_mobile/view/profile/collection_screen.dart';
-import 'package:fotos_mobile/view/profile/media/media_screen.dart';
-import 'package:fotos_mobile/view/profile/message/message_screen.dart';
-import 'package:fotos_mobile/view/profile/payment/payment_screen.dart';
-import 'package:fotos_mobile/view/profile/user_profile_screen.dart';
 import 'package:fotos_mobile/view_model/image_picker_view_model.dart';
 import 'package:fotos_mobile/view_model/user_view_model.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,6 +12,8 @@ import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../models/user_models.dart';
+import '../../res/components/appbar_widget.dart';
+import '../../res/components/drawer_widget.dart';
 import '../../view_model/media_view_model.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -45,237 +42,260 @@ class _ProfileScreenState extends State<ProfileScreen> {
     double baseWidth = 390;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     // double ffem = fem * 0.97;
-
-    return Container(
-      // homeuser4Sw (38:203)
-      padding: EdgeInsets.fromLTRB(0, 22, 0, 0),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: const Color(0xffffffff),
-        borderRadius: BorderRadius.circular(20 * fem),
-      ),
-      child: SingleChildScrollView(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          InkWell(
-            onTap: () {
-              print('profile clicked');
-              Navigator.pushNamed(context, RoutesName.user_profile);
-            },
-            child: SizedBox(
-              height: 80,
+    GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+    return Scaffold(
+        appBar: CustomAppBar(
+          scaffoldKey: scaffoldKey,
+          automaticallyImplyLeading: false,
+        ),
+        body: Scaffold(
+            key: scaffoldKey,
+            drawer: const AppDrawer(),
+            body: Container(
+              // homeuser4Sw (38:203)
+              padding: EdgeInsets.fromLTRB(0, 22, 0, 0),
               width: double.infinity,
-              child: Container(
-                padding: const EdgeInsets.only(left: 17, right: 26),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: 80,
+              decoration: BoxDecoration(
+                color: const Color(0xffffffff),
+                borderRadius: BorderRadius.circular(20 * fem),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          print('profile clicked');
+                          Navigator.pushNamed(context, RoutesName.user_profile);
+                        },
+                        child: SizedBox(
                           height: 80,
-                          child: const CircleAvatar(
-                            backgroundImage:
-                                AssetImage('assets/branding/images/avatar.png'),
+                          width: double.infinity,
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 17, right: 26),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 80,
+                                      height: 80,
+                                      child: const CircleAvatar(
+                                        backgroundImage: AssetImage(
+                                            'assets/branding/images/avatar.png'),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 13),
+                                    const Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'John Deo',
+                                          style: TextStyle(
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        SizedBox(height: 4),
+                                        Text(
+                                          'Photographer',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w300,
+                                            color: CustomTheme.primaryColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Color(0xFFA7A7A7),
+                                  size: 16,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 13),
-                        const Column(
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(
+                            left: 12, right: 11, bottom: 23, top: 23),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              'John Deo',
-                              style: TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.w500),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 7, left: 21),
+                              child: Text(
+                                'Quick',
+                                style: CustomTheme.base.copyWith(
+                                    color: CustomTheme.faintTextColor,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w300),
+                              ),
                             ),
-                            SizedBox(height: 4),
-                            Text(
-                              'Photographer',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w300,
-                                color: CustomTheme.primaryColor,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                ButtonWithColorIconAndText(
+                                  onTap: () {
+                                    // Inside a widget's build method or an onPressed callback
+                                    _showBottomSheet(context);
+                                  },
+                                  textColor: Colors.white,
+                                  backgroundColor: CustomTheme.yellowColor,
+                                  image: 'assets/branding/home/upload.svg',
+                                  text: 'upload',
+                                  wid: 113,
+                                ),
+                                ButtonWithColorIconAndText(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, RoutesName.payment);
+                                  },
+                                  textColor: Colors.white,
+                                  backgroundColor: CustomTheme.faintGreenColor,
+                                  image: 'assets/branding/home/payments.svg',
+                                  text: 'Payments',
+                                  wid: 113,
+                                ),
+                                ButtonWithColorIconAndText(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, RoutesName.message);
+                                  },
+                                  textColor: Colors.white,
+                                  backgroundColor: CustomTheme.primaryColor,
+                                  image: 'assets/branding/home/messages.svg',
+                                  text: 'Messages',
+                                  wid: 113,
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(
+                            left: 12, right: 11, bottom: 7),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 7, left: 20),
+                              child: Text(
+                                'General',
+                                style: CustomTheme.base.copyWith(
+                                    color: CustomTheme.faintTextColor,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                            ),
+                            ContainerWithIconTextAndLeading(
+                              ontap: () {
+                                Navigator.pushNamed(context, RoutesName.media);
+                              },
+                              bgColor: CustomTheme.primaryColor,
+                              imagePath: 'assets/branding/home/medias.svg',
+                              text: 'My medias',
+                              containerColor: CustomTheme.primaryColor,
+                              containerText: '100+',
+                            ),
+                            Consumer<MediaViewModel>(
+                              builder: (context, value, child) {
+                                return ContainerWithIconTextAndLeading(
+                                  ontap: () {
+                                    // print(value.authMediaListItems);
+                                    if (!value.authLoading) {
+                                      Navigator.pushNamed(
+                                          context, RoutesName.collection);
+                                    }
+                                    //
+                                  },
+                                  bgColor: CustomTheme.yellowColor,
+                                  imagePath:
+                                      'assets/branding/home/collection.svg',
+                                  text: 'Collections',
+                                  containerColor: CustomTheme.yellowColor,
+                                  containerText:
+                                      '${value.authMediaListItems.length}',
+                                );
+                              },
+                            ),
+                            const ContainerWithIconTextAndLeading(
+                              bgColor: CustomTheme.lightGreenColor,
+                              imagePath: 'assets/branding/home/statistic.svg',
+                              text: 'Statistics',
+                              // containerColor: CustomTheme.primaryColor,
+                              // containerText: '100+',
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, RoutesName.favourite);
+                              },
+                              child: const ContainerWithIconTextAndLeading(
+                                bgColor: CustomTheme.pinkColor,
+                                imagePath: 'assets/branding/home/favourite.svg',
+                                text: 'Favourites',
+                                // containerColor: CustomTheme.primaryColor,
+                                // containerText: '100+',
                               ),
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                    const Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFFA7A7A7),
-                      size: 16,
-                    ),
-                  ],
-                ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(left: 12, right: 11),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 7, left: 21),
+                              child: Text(
+                                'Account',
+                                style: CustomTheme.base.copyWith(
+                                    color: CustomTheme.faintTextColor,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                            ),
+                            const ContainerWithIconTextAndLeading(
+                              bgColor: CustomTheme.faintGreenColor,
+                              imagePath: 'assets/branding/home/privacy.svg',
+                              text: 'Privacy',
+                            ),
+                            const ContainerWithIconTextAndLeading(
+                              bgColor: CustomTheme.primaryColor,
+                              imagePath: 'assets/branding/home/switch.svg',
+                              text: 'Switch Account',
+                            ),
+                            ContainerWithIconTextAndLeading(
+                              ontap: () {
+                                userPreference.removeUser();
+                                Navigator.pushNamed(context, RoutesName.login);
+                                Utils.snackBar(
+                                    message: 'Logout sucessfully',
+                                    context: context,
+                                    bgColor: Colors.redAccent);
+                              },
+                              bgColor: CustomTheme.lightRedColor,
+                              imagePath: 'assets/branding/home/logout.svg',
+                              text: 'Log Out',
+                            ),
+                          ],
+                        ),
+                      )
+                    ]),
               ),
-            ),
-          ),
-          Container(
-            padding:
-                const EdgeInsets.only(left: 12, right: 11, bottom: 23, top: 23),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 7, left: 21),
-                  child: Text(
-                    'Quick',
-                    style: CustomTheme.base.copyWith(
-                        color: CustomTheme.faintTextColor,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w300),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ButtonWithColorIconAndText(
-                      onTap: () {
-                        // Inside a widget's build method or an onPressed callback
-                        _showBottomSheet(context);
-                      },
-                      textColor: Colors.white,
-                      backgroundColor: CustomTheme.yellowColor,
-                      image: 'assets/branding/home/upload.svg',
-                      text: 'upload',
-                      wid: 113,
-                    ),
-                    ButtonWithColorIconAndText(
-                      onTap: () {
-                        Navigator.pushNamed(context, RoutesName.payment);
-                      },
-                      textColor: Colors.white,
-                      backgroundColor: CustomTheme.faintGreenColor,
-                      image: 'assets/branding/home/payments.svg',
-                      text: 'Payments',
-                      wid: 113,
-                    ),
-                    ButtonWithColorIconAndText(
-                      onTap: () {
-                        Navigator.pushNamed(context, RoutesName.message);
-                      },
-                      textColor: Colors.white,
-                      backgroundColor: CustomTheme.primaryColor,
-                      image: 'assets/branding/home/messages.svg',
-                      text: 'Messages',
-                      wid: 113,
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 12, right: 11, bottom: 7),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 7, left: 20),
-                  child: Text(
-                    'General',
-                    style: CustomTheme.base.copyWith(
-                        color: CustomTheme.faintTextColor,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w300),
-                  ),
-                ),
-                ContainerWithIconTextAndLeading(
-                  ontap: () {
-                    Navigator.pushNamed(context, RoutesName.media);
-                  },
-                  bgColor: CustomTheme.primaryColor,
-                  imagePath: 'assets/branding/home/medias.svg',
-                  text: 'My medias',
-                  containerColor: CustomTheme.primaryColor,
-                  containerText: '100+',
-                ),
-                Consumer<MediaViewModel>(
-                  builder: (context, value, child) {
-                    return ContainerWithIconTextAndLeading(
-                      ontap: () {
-                        // print(value.authMediaListItems);
-                        if (!value.authLoading) {
-                          Navigator.pushNamed(context, RoutesName.collection);
-                        }
-                        //
-                      },
-                      bgColor: CustomTheme.yellowColor,
-                      imagePath: 'assets/branding/home/collection.svg',
-                      text: 'Collections',
-                      containerColor: CustomTheme.yellowColor,
-                      containerText: '${value.authMediaListItems.length}',
-                    );
-                  },
-                ),
-                const ContainerWithIconTextAndLeading(
-                  bgColor: CustomTheme.lightGreenColor,
-                  imagePath: 'assets/branding/home/statistic.svg',
-                  text: 'Statistics',
-                  // containerColor: CustomTheme.primaryColor,
-                  // containerText: '100+',
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, RoutesName.favourite);
-                  },
-                  child: const ContainerWithIconTextAndLeading(
-                    bgColor: CustomTheme.pinkColor,
-                    imagePath: 'assets/branding/home/favourite.svg',
-                    text: 'Favourites',
-                    // containerColor: CustomTheme.primaryColor,
-                    // containerText: '100+',
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 12, right: 11),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 7, left: 21),
-                  child: Text(
-                    'Account',
-                    style: CustomTheme.base.copyWith(
-                        color: CustomTheme.faintTextColor,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w300),
-                  ),
-                ),
-                const ContainerWithIconTextAndLeading(
-                  bgColor: CustomTheme.faintGreenColor,
-                  imagePath: 'assets/branding/home/privacy.svg',
-                  text: 'Privacy',
-                ),
-                const ContainerWithIconTextAndLeading(
-                  bgColor: CustomTheme.primaryColor,
-                  imagePath: 'assets/branding/home/switch.svg',
-                  text: 'Switch Account',
-                ),
-                ContainerWithIconTextAndLeading(
-                  ontap: () {
-                    userPreference.removeUser();
-                    Navigator.pushNamed(context, RoutesName.login);
-                    Utils.snackBar(
-                        message: 'Logout sucessfully',
-                        context: context,
-                        bgColor: Colors.redAccent);
-                  },
-                  bgColor: CustomTheme.lightRedColor,
-                  imagePath: 'assets/branding/home/logout.svg',
-                  text: 'Log Out',
-                ),
-              ],
-            ),
-          )
-        ]),
-      ),
-    );
+            )));
   }
 }
 

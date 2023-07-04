@@ -151,16 +151,31 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                               ),
                                             ),
                                             Positioned(
-                                              top: 5,
+                                              top: 3,
                                               right: 2,
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.end,
                                                 children: [
                                                   IconButton(
-                                                    onPressed: () {
-                                                      print(
-                                                          'trying to remove from favourite');
+                                                    onPressed: () async {
+                                                      final provider = Provider
+                                                          .of<FavouriteViewModel>(
+                                                              context,
+                                                              listen: false);
+                                                      provider
+                                                          .deleteFavouriteMedia(
+                                                              value
+                                                                  .favouriteMedia
+                                                                  .data![index]
+                                                                  .id
+                                                                  .toString(),
+                                                              context,
+                                                              provider)
+                                                          .catchError((error) {
+                                                        // Handle the error case
+                                                        print(error);
+                                                      });
                                                     },
                                                     icon: const Icon(
                                                       Icons.favorite,

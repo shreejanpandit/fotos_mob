@@ -19,6 +19,7 @@ class RoutesName {
   static const String add_payment = 'add_payment_screen';
   static const String select_payment = 'select_payment_screen';
   static const String payment_detail = 'payment_detail_screen';
+  static const String profile = 'profile_screen';
   static const String user_msg = 'user_msg_screen';
   static const String image_open = 'image_open_screen';
   static const String search_result = 'search_result_screen';

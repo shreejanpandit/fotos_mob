@@ -19,14 +19,14 @@ class HomeViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  bool isImageFavorite(bool isExistingImage, int index) {
-    if (isExistingImage) {
-      return imageList[index]['isFavorite'];
-    } else {
-      int newIndex = index - imageList.length;
-      return newlyAddedImages[newIndex]['isFavorite'];
-    }
-  }
+  // bool isImageFavorite(bool isExistingImage, int index) {
+  //   if (isExistingImage) {
+  //     return imageList[index]['isFavorite'];
+  //   } else {
+  //     int newIndex = index - imageList.length;
+  //     return newlyAddedImages[newIndex]['isFavorite'];
+  //   }
+  // }
 
   int currentPage = 1; // Track the current page number
 
@@ -36,6 +36,7 @@ class HomeViewModel with ChangeNotifier {
       for (var i = 0; i < value.data!.length; i++) {
         final mediaItem = value.data![i];
         imageList.add({
+          'id': mediaItem.id.toString(),
           'imagePath': mediaItem.imagePath.toString(),
           'isFavorite': mediaItem.isFavourite,
           'slug': mediaItem.slug

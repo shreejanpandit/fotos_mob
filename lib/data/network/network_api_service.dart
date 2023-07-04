@@ -64,6 +64,26 @@ class NetworkApiService extends BaseApiService {
     }
   }
 
+  @override
+  Future<dynamic> getDeleteApiResponse(String url) async {
+    print(url.toString());
+    try {
+      getUserData().then((value) {
+        token = value.token.toString();
+        // print(token);
+      }); // Fetch the user token from somewhere
+
+      final response = await http.delete(Uri.parse(url), headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      }).timeout(Duration(seconds: 15));
+      // print(response.body);
+      return response.body;
+    } on SocketException {
+      throw FetchDataException('No internet connection');
+    }
+  }
+
   dynamic returnResponse(http.Response response) {
     switch (response.statusCode) {
       case 200:

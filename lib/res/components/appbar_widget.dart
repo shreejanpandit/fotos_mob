@@ -73,28 +73,44 @@ class _CustomAppBarState extends State<CustomAppBar> {
               child: SizedBox(
                 child: CircleAvatar(
                   backgroundColor: Colors.transparent,
-                  child: appbarProvider.showBody
-                      ? Container(
-                          width: 33.97,
-                          height: 35,
-                          decoration: const ShapeDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                  'assets/branding/images/avatar.png'),
-                              fit: BoxFit.fill,
-                            ),
-                            shape: OvalBorder(),
-                          ),
-                        )
-                      : Container(
-                          width: 33.97,
-                          height: 35,
-                          child: const Icon(
-                            Icons.home_outlined,
-                            color: CustomTheme.primaryColor,
-                            size: 30,
-                          ),
+                  child: InkWell(
+                    onTap: () =>
+                        Navigator.pushNamed(context, RoutesName.profile),
+                    child: Container(
+                      width: 33.97,
+                      height: 35,
+                      decoration: const ShapeDecoration(
+                        image: DecorationImage(
+                          image:
+                              AssetImage('assets/branding/images/avatar.png'),
+                          fit: BoxFit.fill,
                         ),
+                        shape: OvalBorder(),
+                      ),
+                    ),
+                  ),
+                  // child: appbarProvider.showBody
+                  // ? Container(
+                  //     width: 33.97,
+                  //     height: 35,
+                  //     decoration: const ShapeDecoration(
+                  //       image: DecorationImage(
+                  //         image: AssetImage(
+                  //             'assets/branding/images/avatar.png'),
+                  //         fit: BoxFit.fill,
+                  //       ),
+                  //       shape: OvalBorder(),
+                  //     ),
+                  //   )
+                  //     : Container(
+                  //         width: 33.97,
+                  //         height: 35,
+                  //         child: const Icon(
+                  //           Icons.home_outlined,
+                  //           color: CustomTheme.primaryColor,
+                  //           size: 30,
+                  //         ),
+                  //       ),
                 ),
               ),
             ),
