@@ -126,9 +126,12 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                                           children: [
                                             IconButton(
                                                 onPressed: () {},
-                                                icon: const Icon(
+                                                icon: Icon(
                                                   Icons.favorite_rounded,
-                                                  color: Colors.black,
+                                                  color:
+                                                      value.data['is_favourite']
+                                                          ? Colors.red
+                                                          : Colors.black,
                                                 )),
                                             IconButton(
                                                 onPressed: () {},
@@ -177,13 +180,13 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                                 style: CustomTheme.xSmall.copyWith(
                                     color: CustomTheme.faintTextColor),
                               ),
-                              const Icon(Icons.camera_alt,
-                                  color: CustomTheme.faintTextColor),
-                              Text(
-                                'Canon, PowerShot SX530 HS',
-                                style: CustomTheme.xSmall.copyWith(
-                                    color: CustomTheme.faintTextColor),
-                              ),
+                              // const Icon(Icons.camera_alt,
+                              //     color: CustomTheme.faintTextColor),
+                              // Text(
+                              //   'Canon, PowerShot SX530 HS',
+                              //   style: CustomTheme.xSmall.copyWith(
+                              //       color: CustomTheme.faintTextColor),
+                              // ),
                               const Icon(Icons.remove_red_eye,
                                   color: CustomTheme.faintTextColor),
                               Text(

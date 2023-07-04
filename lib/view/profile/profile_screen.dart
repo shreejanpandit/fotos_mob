@@ -59,8 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           InkWell(
             onTap: () {
               print('profile clicked');
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => UserProfileScreen()));
+              Navigator.pushNamed(context, RoutesName.user_profile);
             },
             child: SizedBox(
               height: 80,
@@ -145,10 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     ButtonWithColorIconAndText(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PaymentScreen()));
+                        Navigator.pushNamed(context, RoutesName.payment);
                       },
                       textColor: Colors.white,
                       backgroundColor: CustomTheme.faintGreenColor,
@@ -158,10 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     ButtonWithColorIconAndText(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MessagesScreen()));
+                        Navigator.pushNamed(context, RoutesName.message);
                       },
                       textColor: Colors.white,
                       backgroundColor: CustomTheme.primaryColor,
@@ -191,8 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 ContainerWithIconTextAndLeading(
                   ontap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MediaScreen()));
+                    Navigator.pushNamed(context, RoutesName.media);
                   },
                   bgColor: CustomTheme.primaryColor,
                   imagePath: 'assets/branding/home/medias.svg',
@@ -206,10 +198,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ontap: () {
                         // print(value.authMediaListItems);
                         if (!value.authLoading) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CollectionScreen()));
+                          Navigator.pushNamed(context, RoutesName.collection);
                         }
                         //
                       },
@@ -228,12 +217,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   // containerColor: CustomTheme.primaryColor,
                   // containerText: '100+',
                 ),
-                const ContainerWithIconTextAndLeading(
-                  bgColor: CustomTheme.pinkColor,
-                  imagePath: 'assets/branding/home/favourite.svg',
-                  text: 'Favourites',
-                  // containerColor: CustomTheme.primaryColor,
-                  // containerText: '100+',
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, RoutesName.favourite);
+                  },
+                  child: const ContainerWithIconTextAndLeading(
+                    bgColor: CustomTheme.pinkColor,
+                    imagePath: 'assets/branding/home/favourite.svg',
+                    text: 'Favourites',
+                    // containerColor: CustomTheme.primaryColor,
+                    // containerText: '100+',
+                  ),
                 ),
               ],
             ),

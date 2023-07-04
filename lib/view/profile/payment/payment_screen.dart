@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/view/profile/payment/add_payment_screen.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -78,10 +79,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             InkWell(
               onTap: () {
                 print('Add new payment');
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AddPaymentScreen()));
+                Navigator.pushNamed(context, RoutesName.add_payment);
               },
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 35),

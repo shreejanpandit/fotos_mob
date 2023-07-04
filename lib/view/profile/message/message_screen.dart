@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fotos_mobile/res/components/message_component/new_message_component.dart';
+import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/view/profile/message/user_mesage.dart';
 
 class MessagesScreen extends StatefulWidget {
@@ -98,10 +99,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   children: [
                     NewMessage(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UserMessagesScreen()));
+                        Navigator.pushNamed(context, RoutesName.user_msg);
                       },
                       image: 'assets/branding/images/avatar.png',
                       username: 'John Doe',

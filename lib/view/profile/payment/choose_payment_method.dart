@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fotos_mobile/view/profile/payment/payment_details.dart';
 
+import '../../../utils/routes/routes_name.dart';
+
 class ChoosePaymentMethod extends StatefulWidget {
   const ChoosePaymentMethod({super.key});
 
@@ -102,6 +104,8 @@ class PaymentMethod extends StatelessWidget {
                 PaymentDetailScreen(selectedIndex: selectedIndex),
           ),
         );
+        // Navigator.pushNamed(context, RoutesName.select_payment,
+        //     arguments: selectedIndex);
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 15, left: 7, right: 7),

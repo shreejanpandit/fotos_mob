@@ -39,6 +39,7 @@ class ImageOpenViewModel with ChangeNotifier {
         // print('value is null');
       } else {
         data = value;
+        // print(value);
         loading = false;
         notifyListeners();
       }

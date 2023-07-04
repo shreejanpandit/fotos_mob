@@ -5,6 +5,7 @@ import 'package:fotos_mobile/utils/routes/routes.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/view_model/auth_view_model.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
+import 'package:fotos_mobile/view_model/favourite_view_model.dart';
 import 'package:fotos_mobile/view_model/gerne_view_model.dart';
 import 'package:fotos_mobile/view_model/home_view_model.dart';
 import 'package:fotos_mobile/view_model/image_open_view_model.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ImagePickerModel()),
         ChangeNotifierProvider(create: (_) => MediaViewModel()),
         ChangeNotifierProvider(create: (_) => ImageOpenViewModel()),
+        ChangeNotifierProvider(create: (_) => FavouriteViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

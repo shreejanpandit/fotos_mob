@@ -69,7 +69,7 @@ class MediaViewModel with ChangeNotifier {
 
       _loading = false;
       notifyListeners();
-      print("I'm getting these items: $mediaListItems");
+      // print("I'm getting these items: $mediaListItems");
     } catch (error) {
       print(error.toString());
     }

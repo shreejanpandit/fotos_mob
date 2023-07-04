@@ -6,6 +6,7 @@ import 'package:fotos_mobile/res/components/appbar_widget.dart';
 import 'package:fotos_mobile/res/components/drawer_widget.dart';
 import 'package:fotos_mobile/res/components/home_component/gerne_row.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
+import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/view/home/image_open_screen.dart';
 import 'package:fotos_mobile/view/home/search_result_screen.dart';
 // import 'package:fotos_mobile/view/profile/media_screen.dart';
@@ -187,13 +188,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   searchController
                                                                       .text
                                                                       .isNotEmpty) {
-                                                                Navigator.push(
+                                                                Navigator.pushNamed(
                                                                     context,
-                                                                    MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              const SearchResultPage(),
-                                                                    ));
+                                                                    RoutesName
+                                                                        .search_result);
                                                               }
                                                             },
                                                             child: Container(
@@ -356,13 +354,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       if (!imageOpenViewModel
                                                           .loading) {
                                                         if (context.mounted) {
-                                                          Navigator.push(
+                                                          Navigator.pushNamed(
                                                               context,
-                                                              MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        ImageOpenScreen(),
-                                                              ));
+                                                              RoutesName
+                                                                  .image_open);
                                                         }
                                                       }
                                                     },
@@ -457,13 +452,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         if (!imageOpenViewModel
                                                             .loading) {
                                                           if (context.mounted) {
-                                                            Navigator.push(
+                                                            Navigator.pushNamed(
                                                                 context,
-                                                                MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          ImageOpenScreen(),
-                                                                ));
+                                                                RoutesName
+                                                                    .image_open);
                                                           }
                                                         }
                                                       },

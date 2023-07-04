@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fotos_mobile/res/components/profile_component/green_and_cancle_button.dart';
+import 'package:fotos_mobile/utils/routes/routes_name.dart';
 
 import 'choose_payment_method.dart';
 
@@ -95,11 +96,7 @@ class _AddPaymentScreenState extends State<AddPaymentScreen> {
                 child: GreenAndCancleButton(
                   greenButtonText: 'Next',
                   onGreenButton: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChoosePaymentMethod(),
-                        ));
+                    Navigator.pushNamed(context, RoutesName.select_payment);
                   },
                 ),
               )

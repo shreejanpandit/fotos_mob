@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
+import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/view/profile/edit_profile_screen.dart';
 import 'package:fotos_mobile/view/profile/personal_info.dart';
 import 'package:fotos_mobile/view/profile/work_info%20copy.dart';
@@ -39,10 +40,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditUserProfileScreen()));
+                  Navigator.pushNamed(context, RoutesName.user_profile_edit);
                 },
                 icon: Icon(
                   Icons.edit,
