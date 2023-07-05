@@ -117,6 +117,12 @@ class FavouriteViewModel with ChangeNotifier {
             break;
           }
         }
+        for (var item in homeModel.newlyAddedImages) {
+          if (item['id'] == id) {
+            item['isFavorite'] = false;
+            break;
+          }
+        }
 
         // Notify listeners of the changes
         value.notifyListeners();

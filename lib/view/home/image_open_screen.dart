@@ -54,235 +54,229 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
         automaticallyImplyLeading: true,
       ),
       body: Scaffold(
-        key: scaffoldKey,
-        drawer: const AppDrawer(),
-        body: appbarProvider.showBody
-            ? Container(
-                margin: const EdgeInsets.only(left: 15, right: 15),
-                child:
-                    SingleChildScrollView(child: Consumer<ImageOpenViewModel>(
-                  builder: (context, value, child) {
-                    String formatedDate = formatDate(value.data['created_at']);
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 28, 16, 16),
+          key: scaffoldKey,
+          drawer: const AppDrawer(),
+          body: Container(
+              margin: const EdgeInsets.only(left: 15, right: 15),
+              child: SingleChildScrollView(child: Consumer<ImageOpenViewModel>(
+                builder: (context, value, child) {
+                  String formatedDate = formatDate(value.data['created_at']);
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 28, 16, 16),
+                        child: Container(
                           child: Container(
-                            child: Container(
-                              height: 40,
-                              width: double.infinity,
-                              child: Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 40,
-                                    height: 40,
-                                    child: CircleAvatar(
-                                      // backgroundImage: NetworkImage(value
-                                      //     .mediasMedia.data!.imagePath
-                                      //     .toString())
-                                      backgroundImage: AssetImage(
-                                          'assets/branding/images/avatar.png'),
-                                    ),
+                            height: 40,
+                            width: double.infinity,
+                            child: Row(
+                              children: [
+                                const SizedBox(
+                                  width: 40,
+                                  height: 40,
+                                  child: CircleAvatar(
+                                    // backgroundImage: NetworkImage(value
+                                    //     .mediasMedia.data!.imagePath
+                                    //     .toString())
+                                    backgroundImage: AssetImage(
+                                        'assets/branding/images/avatar.png'),
                                   ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          // mainAxisAlignment:
-                                          //     MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Text(
-                                              value.data['user']['name']
-                                                  .toString(),
-                                              style: const TextStyle(
-                                                color: Color(0xFF000000),
-                                                fontSize: 17,
-                                                fontFamily: 'Poppins',
-                                                fontWeight: FontWeight.w400,
-                                              ),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        // mainAxisAlignment:
+                                        //     MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            value.data['user']['name']
+                                                .toString(),
+                                            style: const TextStyle(
+                                              color: Color(0xFF000000),
+                                              fontSize: 17,
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
                                             ),
-                                            Text(
-                                              value.data['user']
-                                                      ['profession'] ??
-                                                  'Photographer',
-                                              style: const TextStyle(
-                                                color: Color(0xFF239DE9),
-                                                fontSize: 12,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w300,
-                                              ),
+                                          ),
+                                          Text(
+                                            value.data['user']['profession'] ??
+                                                'Photographer',
+                                            style: const TextStyle(
+                                              color: Color(0xFF239DE9),
+                                              fontSize: 12,
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w300,
                                             ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            IconButton(
-                                                onPressed: () {},
-                                                icon: Icon(
-                                                  Icons.favorite_rounded,
-                                                  color:
-                                                      value.data['is_favourite']
-                                                          ? Colors.red
-                                                          : Colors.black,
-                                                )),
-                                            IconButton(
-                                                onPressed: () {},
-                                                icon: const Icon(
-                                                  Icons.file_download_outlined,
-                                                  color: Colors.black,
-                                                ))
-                                          ],
-                                        )
-                                      ],
-                                    ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                              onPressed: () {},
+                                              icon: Icon(
+                                                Icons.favorite_rounded,
+                                                color:
+                                                    value.data['is_favourite']
+                                                        ? Colors.red
+                                                        : Colors.black,
+                                              )),
+                                          IconButton(
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                Icons.file_download_outlined,
+                                                color: Colors.black,
+                                              ))
+                                        ],
+                                      )
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          width: double.infinity,
-                          height: 281,
-                          child: Image.network(
-                            value.data['image_path'],
-                            fit: BoxFit.fitWidth,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.network(
-                                  '${AppUrl.baseImageStorageUrl}${value.data['image_path'].toString()}');
-                            },
-                          ),
-                          // decoration: BoxDecoration(
-                          //   image: DecorationImage(
-                          //     image: NetworkImage(value.data['image_path']),
-                          //     fit: BoxFit.fill,
-                          //   ),
-                          // ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        width: double.infinity,
+                        height: 281,
+                        child: Image.network(
+                          value.data['image_path'],
+                          fit: BoxFit.fitWidth,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.network(
+                                '${AppUrl.baseImageStorageUrl}${value.data['image_path'].toString()}');
+                          },
                         ),
-                        Container(
-                          padding: const EdgeInsets.only(left: 5, top: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const Icon(Icons.calendar_today,
-                                  color: CustomTheme.faintTextColor),
-                              Text(
-                                formatedDate.toString(),
-                                style: CustomTheme.xSmall.copyWith(
-                                    color: CustomTheme.faintTextColor),
-                              ),
-                              // const Icon(Icons.camera_alt,
-                              //     color: CustomTheme.faintTextColor),
-                              // Text(
-                              //   'Canon, PowerShot SX530 HS',
-                              //   style: CustomTheme.xSmall.copyWith(
-                              //       color: CustomTheme.faintTextColor),
-                              // ),
-                              const Icon(Icons.remove_red_eye,
-                                  color: CustomTheme.faintTextColor),
-                              Text(
-                                '12,716,540',
-                                style: CustomTheme.xSmall.copyWith(
-                                    color: CustomTheme.faintTextColor),
-                              ),
-                              const Icon(Icons.file_download_outlined,
-                                  color: CustomTheme.faintTextColor),
-                              Text(
-                                '118,667',
-                                style: CustomTheme.xSmall.copyWith(
-                                    color: CustomTheme.faintTextColor),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(left: 5, top: 8),
-                          child: const Text(
-                            overflow: TextOverflow.visible,
-                            'In New Braunfels, Texas, the deer often flood the golf course and surrounding residential yards around sunset.',
-                            style: TextStyle(
-                              color: CustomTheme.faintTextColor,
-                              fontFamily: 'Poppins',
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(top: 14, bottom: 16),
-                          child: const Text(
-                            'Photo may you like',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Column(
+                        // decoration: BoxDecoration(
+                        //   image: DecorationImage(
+                        //     image: NetworkImage(value.data['image_path']),
+                        //     fit: BoxFit.fill,
+                        //   ),
+                        // ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(left: 5, top: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 13),
-                              child: Wrap(
-                                children: [
-                                  SmallSearchItem(
-                                    text: 'Lion',
-                                  ),
-                                  SmallSearchItem(
-                                    text: 'Cat',
-                                  ),
-                                  SmallSearchItem(
-                                    text: 'Dog',
-                                  ),
-                                  SmallSearchItem(
-                                    text: 'Wolf',
-                                  ),
-                                  SmallSearchItem(
-                                    text: 'Fish',
-                                  ),
-                                  SmallSearchItem(
-                                    text: 'Duck',
-                                  ),
-                                  SmallSearchItem(
-                                    text: 'Monkey',
-                                  ),
-                                ],
-                              ),
+                            const Icon(Icons.calendar_today,
+                                color: CustomTheme.faintTextColor),
+                            Text(
+                              formatedDate.toString(),
+                              style: CustomTheme.xSmall
+                                  .copyWith(color: CustomTheme.faintTextColor),
                             ),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: 3,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    print(
-                                        '${imageList[index]} at index $index');
-                                  },
-                                  child: const SearchImagesList(
-                                    imagePath:
-                                        "https://www.recordnet.com/gcdn/presto/2021/03/22/NRCD/9d9dd9e4-e84a-402e-ba8f-daa659e6e6c5-PhotoWord_003.JPG?width=660&height=425&fit=crop&format=pjpg&auto=webp",
-                                  ),
-                                );
-                              },
+                            // const Icon(Icons.camera_alt,
+                            //     color: CustomTheme.faintTextColor),
+                            // Text(
+                            //   'Canon, PowerShot SX530 HS',
+                            //   style: CustomTheme.xSmall.copyWith(
+                            //       color: CustomTheme.faintTextColor),
+                            // ),
+                            const Icon(Icons.remove_red_eye,
+                                color: CustomTheme.faintTextColor),
+                            Text(
+                              '12,716,540',
+                              style: CustomTheme.xSmall
+                                  .copyWith(color: CustomTheme.faintTextColor),
+                            ),
+                            const Icon(Icons.file_download_outlined,
+                                color: CustomTheme.faintTextColor),
+                            Text(
+                              '118,667',
+                              style: CustomTheme.xSmall
+                                  .copyWith(color: CustomTheme.faintTextColor),
                             ),
                           ],
                         ),
-                      ],
-                    );
-                  },
-                )))
-            : ProfileScreen(),
-      ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(left: 5, top: 8),
+                        child: const Text(
+                          overflow: TextOverflow.visible,
+                          'In New Braunfels, Texas, the deer often flood the golf course and surrounding residential yards around sunset.',
+                          style: TextStyle(
+                            color: CustomTheme.faintTextColor,
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(top: 14, bottom: 16),
+                        child: const Text(
+                          'Photo may you like',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 13),
+                            child: Wrap(
+                              children: [
+                                SmallSearchItem(
+                                  text: 'Lion',
+                                ),
+                                SmallSearchItem(
+                                  text: 'Cat',
+                                ),
+                                SmallSearchItem(
+                                  text: 'Dog',
+                                ),
+                                SmallSearchItem(
+                                  text: 'Wolf',
+                                ),
+                                SmallSearchItem(
+                                  text: 'Fish',
+                                ),
+                                SmallSearchItem(
+                                  text: 'Duck',
+                                ),
+                                SmallSearchItem(
+                                  text: 'Monkey',
+                                ),
+                              ],
+                            ),
+                          ),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: 3,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  print('${imageList[index]} at index $index');
+                                },
+                                child: const SearchImagesList(
+                                  imagePath:
+                                      "https://www.recordnet.com/gcdn/presto/2021/03/22/NRCD/9d9dd9e4-e84a-402e-ba8f-daa659e6e6c5-PhotoWord_003.JPG?width=660&height=425&fit=crop&format=pjpg&auto=webp",
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              )))),
     );
   }
 }

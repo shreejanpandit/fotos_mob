@@ -7,9 +7,12 @@ import 'package:fotos_mobile/data/response/status.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/view_model/favourite_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
+import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
 import '../../models/user_models.dart';
 
+import '../../res/app_urls.dart';
 import '../../utils/routes/routes_name.dart';
 import '../../view_model/appbar_item_view_model.dart';
 import '../../view_model/image_open_view_model.dart';
@@ -89,134 +92,126 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   ),
                 ),
               ),
-              Container(
-                height: MediaQuery.of(context).size.height,
-                child: CustomScrollView(
-                  slivers: [
-                    SliverPadding(
-                      padding: const EdgeInsets.all(5),
-                      sliver: Consumer<FavouriteViewModel>(
-                          builder: (context, value, child) {
-                        print(value.favouriteMedia.status.toString());
-                        print(value.favouriteMedia.data);
 
-                        switch (value.favouriteMedia.status) {
-                          case Status.LOADING:
-                            return const SliverToBoxAdapter(
-                              child: Center(
-                                child: CircularProgressIndicator.adaptive(),
-                              ),
-                            );
-                          case Status.ERROR:
-                            return SliverToBoxAdapter(
-                              child:
-                                  Text(value.favouriteMedia.message.toString()),
-                            );
-                          case Status.COMPLETED:
-                            return value.favouriteMedia.data!.isNotEmpty
-                                ? SliverMasonryGrid(
-                                    delegate: SliverChildBuilderDelegate(
-                                      (context, index) => Card(
-                                        child: Stack(
-                                          alignment: Alignment.topRight,
+              Consumer<FavouriteViewModel>(builder: (context, value, child) {
+                print(value.favouriteMedia.status.toString());
+                print(value.favouriteMedia.data);
+
+                switch (value.favouriteMedia.status) {
+                  case Status.LOADING:
+                    return Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    );
+                  case Status.ERROR:
+                    return Text(value.favouriteMedia.message.toString());
+                  case Status.COMPLETED:
+                    return value.favouriteMedia.data!.isNotEmpty
+                        ? Container(
+                            height: MediaQuery.of(context).size.height,
+                            child: StaggeredGridView.countBuilder(
+                              crossAxisCount: 2,
+                              itemCount: value.favouriteMedia.data!.length,
+                              itemBuilder: (context, index) {
+                                String imagePath = value
+                                    .favouriteMedia.data![index].imagePath
+                                    .toString();
+                                String imageUrl;
+
+                                if (imagePath.startsWith('http')) {
+                                  imageUrl = imagePath;
+                                } else {
+                                  imageUrl =
+                                      '${AppUrl.baseImageStorageUrl}$imagePath';
+                                }
+                                return Card(
+                                  child: Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      InkWell(
+                                        onTap: () async {
+                                          final String slug = value
+                                              .favouriteMedia.data![index].slug
+                                              .toString();
+                                          Provider.of<AppbarViewModel>(context,
+                                                  listen: false)
+                                              .showBody = true;
+                                          await imageOpenViewModel
+                                              .fetchImageOpenMedia(
+                                                  slug, context);
+
+                                          if (!imageOpenViewModel.loading) {
+                                            if (context.mounted) {
+                                              Navigator.pushNamed(context,
+                                                  RoutesName.image_open);
+                                            }
+                                          }
+                                        },
+                                        child: Image.network(
+                                          imageUrl,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 3,
+                                        right: 2,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
                                           children: [
-                                            InkWell(
-                                              onTap: () async {
-                                                final String slug = value
-                                                    .favouriteMedia
-                                                    .data![index]
-                                                    .slug
-                                                    .toString();
-                                                Provider.of<AppbarViewModel>(
+                                            IconButton(
+                                              onPressed: () async {
+                                                final provider = Provider.of<
+                                                        FavouriteViewModel>(
+                                                    context,
+                                                    listen: false);
+                                                provider
+                                                    .deleteFavouriteMedia(
+                                                        value.favouriteMedia
+                                                            .data![index].id
+                                                            .toString(),
                                                         context,
-                                                        listen: false)
-                                                    .showBody = true;
-                                                await imageOpenViewModel
-                                                    .fetchImageOpenMedia(
-                                                        slug, context);
-
-                                                if (!imageOpenViewModel
-                                                    .loading) {
-                                                  if (context.mounted) {
-                                                    Navigator.pushNamed(context,
-                                                        RoutesName.image_open);
-                                                  }
-                                                }
+                                                        provider)
+                                                    .catchError((error) {
+                                                  // Handle the error case
+                                                  print(error);
+                                                });
                                               },
-                                              child: Image.network(
-                                                value.favouriteMedia
-                                                    .data![index].imagePath
-                                                    .toString(),
-                                                fit: BoxFit.cover,
+                                              icon: const Icon(
+                                                Icons.favorite,
+                                                color: Colors.red,
                                               ),
                                             ),
-                                            Positioned(
-                                              top: 3,
-                                              right: 2,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  IconButton(
-                                                    onPressed: () async {
-                                                      final provider = Provider
-                                                          .of<FavouriteViewModel>(
-                                                              context,
-                                                              listen: false);
-                                                      provider
-                                                          .deleteFavouriteMedia(
-                                                              value
-                                                                  .favouriteMedia
-                                                                  .data![index]
-                                                                  .id
-                                                                  .toString(),
-                                                              context,
-                                                              provider)
-                                                          .catchError((error) {
-                                                        // Handle the error case
-                                                        print(error);
-                                                      });
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.favorite,
-                                                      color: Colors.red,
-                                                    ),
-                                                  ),
-                                                  const Icon(
-                                                    Icons.bookmark_add_outlined,
-                                                    color: Colors.white,
-                                                  ),
-                                                  const Icon(
-                                                    Icons.share,
-                                                    color: Colors.white,
-                                                  ),
-                                                ],
-                                              ),
+                                            const Icon(
+                                              Icons.bookmark_add_outlined,
+                                              color: Colors.white,
+                                            ),
+                                            const Icon(
+                                              Icons.share,
+                                              color: Colors.white,
                                             ),
                                           ],
                                         ),
                                       ),
-                                      childCount:
-                                          value.favouriteMedia.data!.length,
-                                    ),
-                                    gridDelegate:
-                                        const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 2))
-                                : SliverToBoxAdapter(
-                                    child: Center(
-                                      child: Container(
-                                          child: const Text(
-                                              'No item added to favourite')),
-                                    ),
-                                  );
-                          default:
-                            return Container();
-                        }
-                      }),
-                    ),
-                  ],
-                ),
-              ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              staggeredTileBuilder: (index) =>
+                                  StaggeredTile.fit(1),
+                              mainAxisSpacing: 8.0,
+                              crossAxisSpacing: 8.0,
+                            ),
+                          )
+                        : Center(
+                            child: Container(
+                                child:
+                                    const Text('No item added to favourite')),
+                          );
+                  default:
+                    return Container();
+                }
+              }),
+
               // const ShowMore(
               //   text: 'Show More',
               // )

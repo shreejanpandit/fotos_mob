@@ -32,115 +32,111 @@ class _SearchResultPageState extends State<SearchResultPage> {
         automaticallyImplyLeading: false,
       ),
       body: Scaffold(
-        key: scaffoldKey,
-        drawer: const AppDrawer(),
-        body: appbarProvider.showBody
-            ? Container(
-                margin: const EdgeInsets.only(left: 25.5, right: 25.5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 15),
-                      padding: const EdgeInsets.only(left: 18, right: 18),
-                      width: double.infinity,
-                      height: 45,
-                      decoration: ShapeDecoration(
-                        color: const Color(0x7AE4E4E4),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                      ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText: 'Search',
-                                hintStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                border: InputBorder.none,
-                              ),
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 13,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500,
-                              ),
+          key: scaffoldKey,
+          drawer: const AppDrawer(),
+          body: Container(
+            margin: const EdgeInsets.only(left: 25.5, right: 25.5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(bottom: 15),
+                  padding: const EdgeInsets.only(left: 18, right: 18),
+                  width: double.infinity,
+                  height: 45,
+                  decoration: ShapeDecoration(
+                    color: const Color(0x7AE4E4E4),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: 'Search',
+                            hintStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 13,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500,
                             ),
+                            border: InputBorder.none,
                           ),
-                          Icon(
-                            Icons.search,
-                            size: 16,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 13,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500,
                           ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 85,
-                      child: Text(
-                        'Animals',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(top: 13),
-                              child: Wrap(
-                                children: [
-                                  SmallSearchItem(
-                                    text: 'Wildlife',
-                                  ),
-                                  SmallSearchItem(
-                                    text: 'Nature',
-                                  ),
-                                  SmallSearchItem(
-                                    text: 'Cat',
-                                  ),
-                                  SmallSearchItem(
-                                    text: 'Dog',
-                                  ),
-                                ],
-                              ),
-                            ),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: imageList.length,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    print(
-                                        '${imageList[index]} at index $index');
-                                  },
-                                  child: SearchImagesList(
-                                    imagePath: imageList[index],
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
+                      Icon(
+                        Icons.search,
+                        size: 16,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              )
-            : ProfileScreen(),
-      ),
+                const SizedBox(
+                  width: 85,
+                  child: Text(
+                    'Animals',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(top: 13),
+                          child: Wrap(
+                            children: [
+                              SmallSearchItem(
+                                text: 'Wildlife',
+                              ),
+                              SmallSearchItem(
+                                text: 'Nature',
+                              ),
+                              SmallSearchItem(
+                                text: 'Cat',
+                              ),
+                              SmallSearchItem(
+                                text: 'Dog',
+                              ),
+                            ],
+                          ),
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: imageList.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                print('${imageList[index]} at index $index');
+                              },
+                              child: SearchImagesList(
+                                imagePath: imageList[index],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )),
     );
   }
 }

@@ -7,10 +7,7 @@ import 'package:fotos_mobile/res/components/drawer_widget.dart';
 import 'package:fotos_mobile/res/components/home_component/gerne_row.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
-import 'package:fotos_mobile/view/home/image_open_screen.dart';
-import 'package:fotos_mobile/view/home/search_result_screen.dart';
 // import 'package:fotos_mobile/view/profile/media_screen.dart';
-import 'package:fotos_mobile/view/profile/profile_screen.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 import 'package:fotos_mobile/view_model/home_view_model.dart';
 import 'package:fotos_mobile/view_model/user_view_model.dart';
@@ -33,7 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
   HomeViewModel homeViewModel = HomeViewModel();
   GenersViewModel genersViewModel = GenersViewModel();
   UserViewModel userViewModel = UserViewModel();
-  static int currentPage = 1;
   int nextPage = 1;
   @override
   void initState() {
@@ -69,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
         automaticallyImplyLeading: false,
       ),
       body: Scaffold(
-          key: scaffoldKey,
+          // key: scaffoldKey,
           drawer: const AppDrawer(),
           body: ChangeNotifierProvider.value(
             value: homeViewModel,
@@ -296,6 +292,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ValueNotifier<List<Map<String, dynamic>>>(
                                       value.imageList);
 
+                              ValueNotifier<List<Map<String, dynamic>>>
+                                  newImageListNotifier;
+
+// Initialize the ValueNotifier with the initial value of the imageList
+                              newImageListNotifier =
+                                  ValueNotifier<List<Map<String, dynamic>>>(
+                                      value.newlyAddedImages);
 // ...
 
                               // print(value.media);
@@ -498,21 +501,60 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             MainAxisAlignment
                                                                 .end,
                                                         children: [
-                                                          value.newlyAddedImages[
-                                                                      newIndex]
-                                                                  ['isFavorite']
-                                                              ? const Icon(
-                                                                  Icons
-                                                                      .favorite,
-                                                                  color: Colors
-                                                                      .red,
-                                                                )
-                                                              : const Icon(
-                                                                  Icons
-                                                                      .favorite_outline,
-                                                                  color: Colors
-                                                                      .white,
+                                                          ValueListenableBuilder<
+                                                              List<
+                                                                  Map<String,
+                                                                      dynamic>>>(
+                                                            valueListenable:
+                                                                newImageListNotifier,
+                                                            builder: (context,
+                                                                newimageList,
+                                                                child) {
+                                                              bool isFavorite = newimageList
+                                                                      .isNotEmpty &&
+                                                                  newimageList[
+                                                                          newIndex]
+                                                                      [
+                                                                      'isFavorite'];
+
+                                                              return IconButton(
+                                                                onPressed:
+                                                                    () async {
+                                                                  if (isFavorite) {
+                                                                    final provider = Provider.of<
+                                                                            FavouriteViewModel>(
+                                                                        context,
+                                                                        listen:
+                                                                            false);
+                                                                    provider
+                                                                        .deleteFavouriteMedia(
+                                                                            value.newlyAddedImages[newIndex][
+                                                                                'id'],
+                                                                            context,
+                                                                            provider)
+                                                                        .catchError(
+                                                                            (error) {
+                                                                      // Handle the error case
+                                                                      print(
+                                                                          error);
+                                                                    });
+                                                                  }
+                                                                },
+                                                                icon: Icon(
+                                                                  isFavorite
+                                                                      ? Icons
+                                                                          .favorite
+                                                                      : Icons
+                                                                          .favorite_outline,
+                                                                  color: isFavorite
+                                                                      ? Colors
+                                                                          .red
+                                                                      : Colors
+                                                                          .white,
                                                                 ),
+                                                              );
+                                                            },
+                                                          ),
                                                           const Icon(
                                                             Icons
                                                                 .bookmark_add_outlined,
@@ -523,7 +565,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             color: Colors.white,
                                                           ),
                                                         ],
-                                                      ),
+                                                      )
                                                     ],
                                                   ),
                                                 ),
@@ -534,7 +576,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                             }
                                           }
                                         },
-                                        addAutomaticKeepAlives: true,
                                         childCount: value.imageList.length +
                                             value.newlyAddedImages.length,
                                       ),
