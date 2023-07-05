@@ -16,7 +16,7 @@ class SplashServices {
       // } else {
       await Future.delayed(Duration(seconds: 2));
 
-      Navigator.pushNamed(context, RoutesName.home);
+      Navigator.pushNamed(context, RoutesName.home, arguments: value.token);
       // }
     }).onError((error, stackTrace) {
       if (kDebugMode) {

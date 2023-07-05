@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -11,6 +12,7 @@ import 'package:fotos_mobile/view_model/image_open_view_model.dart';
 import '../../res/app_urls.dart';
 import '../../res/components/appbar_widget.dart';
 import '../../res/components/drawer_widget.dart';
+import '../../view_model/favourite_view_model.dart';
 
 class ImageOpenScreen extends StatefulWidget {
   const ImageOpenScreen({
@@ -122,7 +124,30 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                                       Row(
                                         children: [
                                           IconButton(
-                                              onPressed: () {},
+                                              onPressed: () async {
+                                                if (value
+                                                    .data['is_favourite']) {
+                                                  print(value.data);
+                                                  final provider = Provider.of<
+                                                          FavouriteViewModel>(
+                                                      context,
+                                                      listen: false);
+                                                  provider
+                                                      .deleteFavouriteMedia(
+                                                          value.data['id']
+                                                              .toString(),
+                                                          context,
+                                                          provider)
+                                                      .catchError((error) {
+                                                    // Handle the error case
+                                                    print(error);
+                                                  });
+                                                  setState(() {
+                                                    value.data['is_favourite'] =
+                                                        false;
+                                                  });
+                                                }
+                                              },
                                               icon: Icon(
                                                 Icons.favorite_rounded,
                                                 color:

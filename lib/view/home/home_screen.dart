@@ -13,7 +13,9 @@ import 'package:fotos_mobile/view_model/home_view_model.dart';
 import 'package:fotos_mobile/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/user_models.dart';
 import '../../res/app_urls.dart';
+import '../../utils/utils.dart';
 import '../../view_model/favourite_view_model.dart';
 import '../../view_model/gerne_view_model.dart';
 import '../../view_model/image_open_view_model.dart';
@@ -29,8 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController searchController = TextEditingController();
   HomeViewModel homeViewModel = HomeViewModel();
   GenersViewModel genersViewModel = GenersViewModel();
-  UserViewModel userViewModel = UserViewModel();
   int nextPage = 1;
+  String? token;
+
   @override
   void initState() {
     super.initState();
@@ -41,7 +44,15 @@ class _HomeScreenState extends State<HomeScreen> {
       Provider.of<FavouriteViewModel>(context, listen: false)
           .fetchFavouriteMedia();
     });
-    // genersViewModel.fetchGernes();
+
+    Future.delayed(Duration.zero, () {
+      var userProvider = Provider.of<UserViewModel>(context, listen: false);
+      userProvider.getUser().then((value) {
+        setState(() {
+          token = value.token;
+        });
+      });
+    });
   }
 
   @override
@@ -54,8 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
-
-    // final userPreference = Provider.of<UserViewModel>(context);
     final appbarProvider = Provider.of<AppbarViewModel>(context);
     var imageOpenViewModel = Provider.of<ImageOpenViewModel>(context);
     // print(imageOpenViewModel.data);
@@ -64,8 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
         scaffoldKey: scaffoldKey,
         automaticallyImplyLeading: false,
       ),
+      // drawer: const AppDrawer(),
       body: Scaffold(
-          // key: scaffoldKey,
+          key: scaffoldKey,
           drawer: const AppDrawer(),
           body: ChangeNotifierProvider.value(
             value: homeViewModel,
@@ -392,7 +402,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             return IconButton(
                                                               onPressed:
                                                                   () async {
-                                                                if (isFavorite) {
+                                                                if (token ==
+                                                                        'null' ||
+                                                                    token ==
+                                                                        '') {
+                                                                  Utils.flushBarErrorMessage(
+                                                                      'Login First to add data on favourite list',
+                                                                      context);
+                                                                } else if (isFavorite) {
                                                                   final provider = Provider.of<
                                                                           FavouriteViewModel>(
                                                                       context,
@@ -400,6 +417,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                           false);
                                                                   provider
                                                                       .deleteFavouriteMedia(
+                                                                          imageList[index]
+                                                                              [
+                                                                              'id'],
+                                                                          context,
+                                                                          provider)
+                                                                      .catchError(
+                                                                          (error) {
+                                                                    // Handle the error case
+                                                                    print(
+                                                                        error);
+                                                                  });
+                                                                } else if (!isFavorite) {
+                                                                  final provider = Provider.of<
+                                                                          FavouriteViewModel>(
+                                                                      context,
+                                                                      listen:
+                                                                          false);
+                                                                  provider
+                                                                      .addFavouriteMedia(
                                                                           imageList[index]
                                                                               [
                                                                               'id'],
@@ -520,7 +556,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               return IconButton(
                                                                 onPressed:
                                                                     () async {
-                                                                  if (isFavorite) {
+                                                                  if (token ==
+                                                                          'null' ||
+                                                                      token ==
+                                                                          '') {
+                                                                    Utils.flushBarErrorMessage(
+                                                                        'Login First to add data on favourite list',
+                                                                        context);
+                                                                  } else if (isFavorite) {
                                                                     final provider = Provider.of<
                                                                             FavouriteViewModel>(
                                                                         context,
@@ -528,6 +571,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                             false);
                                                                     provider
                                                                         .deleteFavouriteMedia(
+                                                                            value.newlyAddedImages[newIndex][
+                                                                                'id'],
+                                                                            context,
+                                                                            provider)
+                                                                        .catchError(
+                                                                            (error) {
+                                                                      // Handle the error case
+                                                                      print(
+                                                                          error);
+                                                                    });
+                                                                  } else if (!isFavorite) {
+                                                                    final provider = Provider.of<
+                                                                            FavouriteViewModel>(
+                                                                        context,
+                                                                        listen:
+                                                                            false);
+                                                                    provider
+                                                                        .addFavouriteMedia(
                                                                             value.newlyAddedImages[newIndex][
                                                                                 'id'],
                                                                             context,

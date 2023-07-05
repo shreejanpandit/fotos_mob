@@ -18,6 +18,7 @@ class AppUrl {
   static var mediasMediaUrl = '${baseUrl}medias/';
   static var mediaListUrl = '${baseUrl}media-lists';
   static var favourite = '${baseUrl}users/favourite';
+  static var addFavourite = '${baseUrl}users/favourite';
   static var authMediaListUrl = '${baseUrl}auth/media-lists';
   static var gernesListUrl = '${baseUrl}genres';
   static var authMediaUrl = '${baseUrl}auth/medias';

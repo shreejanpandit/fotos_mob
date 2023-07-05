@@ -49,10 +49,23 @@ class FavouriteRepository {
   Future<dynamic> deleteFavouriteMediaListApi(String id) async {
     try {
       final String url = '${AppUrl.favourite}/$id';
-      print(url);
+      // print(url);
       String response = await _apiService.getDeleteApiResponse(url);
 
       // print(response);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> addFavouriteMediaApi(String id) async {
+    try {
+      final String url = '${AppUrl.favourite}/$id';
+      print(url);
+      bool response = await _apiService.getGetApiResponse(url);
+
+      print(response);
       return response;
     } catch (e) {
       rethrow;

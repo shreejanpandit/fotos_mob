@@ -30,16 +30,6 @@ class FavouriteViewModel with ChangeNotifier {
     try {
       List<FavouriteModel> favouriteList =
           await _myRepo.getFavouriteMediaListApi();
-      // List<Map<String, dynamic>> favouriteImageList = favouriteList
-      //     .map((favouriteModel) => {
-      //           'id': favouriteModel.id,
-      //           'title': favouriteModel.title,
-      //           'slug': favouriteModel.slug,
-      //           'description': favouriteModel.description,
-      //           'image_path': favouriteModel.imagePath,
-      //           'is_favourite': favouriteModel.isFavourite,
-      //         })
-      //     .toList();
 
       setMedia(ApiResponse.completed(favouriteList));
       notifyListeners();
@@ -48,45 +38,59 @@ class FavouriteViewModel with ChangeNotifier {
     }
   }
 
-  // Future<void> deleteFavouriteMedia(
-  //   String id,
-  //   BuildContext context,
-  //   FavouriteViewModel value,
-  // ) async {
-  //   try {
-  //     final homeModel = Provider.of<HomeViewModel>(context, listen: false);
-  //     var response = await _myRepo.deleteFavouriteMediaListApi(id);
+  Future<void> addFavouriteMedia(
+    String mediaId,
+    BuildContext context,
+    FavouriteViewModel value,
+  ) async {
+    try {
+      final homeModel = Provider.of<HomeViewModel>(context, listen: false);
+      var response = await _myRepo.addFavouriteMediaApi(mediaId);
+      if (response) {
+        // Update favouriteMedia data to reflect the changes
+        // value.favouriteMedia.data
+        //     ?.removeWhere((item) => item.id.toString() == mediaId);
 
-  // if (response == 'true') {
-  //   // Update favouriteMedia data to reflect the changes
-  // value.favouriteMedia.data
-  //     ?.removeWhere((item) => item.id.toString() == id);
+        // Update isFavorite flag to false for the removed item
+        for (var item in value.favouriteMedia.data!) {
+          if (item.id.toString() == mediaId) {
+            item.isFavourite = true;
+            break;
+          }
+        }
 
-  //   // Update isFavorite flag to false for the removed item
-  //   for (var item in value.favouriteMedia.data!) {
-  //     if (item.id.toString() == id) {
-  //       item.isFavourite = false;
-  //       break;
-  //     }
-  //   }
+        // Update the icon color to white for the removed item in the imageList
+        for (var item in homeModel.imageList) {
+          if (item['id'] == mediaId) {
+            item['isFavorite'] = true;
+            break;
+          }
+        }
+        for (var item in homeModel.newlyAddedImages) {
+          if (item['id'] == mediaId) {
+            item['isFavorite'] = true;
+            break;
+          }
+        }
 
-  //       // Remove the item from the imageList
-  //       homeModel.imageList.removeWhere((item) => item['id'] == id);
+        // Notify listeners of the changes
+        value.notifyListeners();
+        homeModel.notifyListeners();
 
-  //       // Notify listeners of the changes
-  //       homeModel.notifyListeners();
-
-  //       Utils.flushBarErrorMessage(
-  //         'Media removed from favourite successfully',
-  //         context,
-  //       );
-  //     } else {
-  //       Utils.flushBarErrorMessage('Error deleting data', context);
-  //     }
-  //   } catch (error) {
-  //     Utils.flushBarErrorMessage(error.toString(), context);
-  //   }
-  // }
+        Utils.flushBarErrorMessage(
+          'Media added to favourite successfully',
+          context,
+        );
+      } else {
+        Utils.flushBarErrorMessage('Error adding data', context);
+      }
+    } catch (error) {
+      Utils.flushBarErrorMessage(error.toString(), context);
+      // Utils.flushBarErrorMessage(
+      //     "Login firts to add item in favourite", context);
+      // print(error.toString());
+    }
+  }
 
   Future<void> deleteFavouriteMedia(
     String id,

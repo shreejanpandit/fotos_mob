@@ -65,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       InkWell(
                         onTap: () {
-                          print('profile clicked');
+                          // print('profile clicked');
                           Navigator.pushNamed(context, RoutesName.user_profile);
                         },
                         child: SizedBox(
