@@ -105,16 +105,16 @@ class MediaList {
   String? _name;
   String? _slug;
   String? _type;
-  Null? _description;
-  Null? _path;
+  String? _description;
+  String? _path;
 
   MediaList(
       {int? id,
       String? name,
       String? slug,
       String? type,
-      Null? description,
-      Null? path}) {
+      String? description,
+      String? path}) {
     if (id != null) {
       this._id = id;
     }
@@ -143,10 +143,10 @@ class MediaList {
   set slug(String? slug) => _slug = slug;
   String? get type => _type;
   set type(String? type) => _type = type;
-  Null? get description => _description;
-  set description(Null? description) => _description = description;
-  Null? get path => _path;
-  set path(Null? path) => _path = path;
+  String? get description => _description;
+  set description(String? description) => _description = description;
+  String? get path => _path;
+  set path(String? path) => _path = path;
 
   MediaList.fromJson(Map<String, dynamic> json) {
     _id = json['id'];

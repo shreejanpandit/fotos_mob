@@ -7,6 +7,7 @@ import 'package:fotos_mobile/repository/home_repository.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/utils/utils.dart';
 import 'package:fotos_mobile/view_model/home_view_model.dart';
+import 'package:fotos_mobile/view_model/media_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../models/media_model.dart';
@@ -45,6 +46,8 @@ class FavouriteViewModel with ChangeNotifier {
   ) async {
     try {
       final homeModel = Provider.of<HomeViewModel>(context, listen: false);
+      final userMediaViewModel =
+          Provider.of<MediaViewModel>(context, listen: false);
       var response = await _myRepo.addFavouriteMediaApi(mediaId);
       if (response) {
         // Update favouriteMedia data to reflect the changes
@@ -59,6 +62,12 @@ class FavouriteViewModel with ChangeNotifier {
           }
         }
 
+        for (var item in userMediaViewModel.userMedia.data!) {
+          if (item.id.toString() == mediaId) {
+            item.isFavourite = true;
+            break;
+          }
+        }
         // Update the icon color to white for the removed item in the imageList
         for (var item in homeModel.imageList) {
           if (item['id'] == mediaId) {
@@ -76,6 +85,7 @@ class FavouriteViewModel with ChangeNotifier {
         // Notify listeners of the changes
         value.notifyListeners();
         homeModel.notifyListeners();
+        userMediaViewModel.notifyListeners();
 
         Utils.flushBarErrorMessage(
           'Media added to favourite successfully',
@@ -100,7 +110,8 @@ class FavouriteViewModel with ChangeNotifier {
     try {
       final homeModel = Provider.of<HomeViewModel>(context, listen: false);
       var response = await _myRepo.deleteFavouriteMediaListApi(id);
-
+      final userMediaViewModel =
+          Provider.of<MediaViewModel>(context, listen: false);
       if (response == 'true') {
         // Update favouriteMedia data to reflect the changes
         value.favouriteMedia.data
@@ -108,6 +119,13 @@ class FavouriteViewModel with ChangeNotifier {
 
         // Update isFavorite flag to false for the removed item
         for (var item in value.favouriteMedia.data!) {
+          if (item.id.toString() == id) {
+            item.isFavourite = false;
+            break;
+          }
+        }
+
+        for (var item in userMediaViewModel.userMedia.data!) {
           if (item.id.toString() == id) {
             item.isFavourite = false;
             break;

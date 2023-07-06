@@ -48,7 +48,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
   Widget build(BuildContext context) {
     final appbarProvider = Provider.of<AppbarViewModel>(context);
     final ValueNotifier<bool> _drawer = appbarProvider.drawerOpenNotifier;
-    // print('token from app build $token');
     return AppBar(
       automaticallyImplyLeading: widget.automaticallyImplyLeading,
       iconTheme: IconThemeData(

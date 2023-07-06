@@ -16,6 +16,7 @@ class AppUrl {
   static var mediaUrl = '${baseUrl}medias';
   static var baseImageStorageUrl = 'http://192.168.18.4:8000/storage/';
   static var mediasMediaUrl = '${baseUrl}medias/';
+  static var userMedia = '${baseUrl}medias/user/';
   static var mediaListUrl = '${baseUrl}media-lists';
   static var favourite = '${baseUrl}users/favourite';
   static var addFavourite = '${baseUrl}users/favourite';

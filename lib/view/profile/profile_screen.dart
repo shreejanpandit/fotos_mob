@@ -25,11 +25,24 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   // MediaViewModel mediaViewModel = MediaViewModel();
+  String? userId;
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
       Provider.of<MediaViewModel>(context, listen: false).fetchAuthMediaList();
+    });
+    Future.delayed(Duration.zero, () {
+      var userProvider = Provider.of<UserViewModel>(context, listen: false);
+      userProvider.getUser().then((value) {
+        setState(() {
+          userId = value.userId.toString();
+        });
+      });
+    });
+    Future.delayed(Duration(seconds: 1), () {
+      Provider.of<MediaViewModel>(context, listen: false)
+          .fetchUserMedia(userId!);
     });
     // mediaViewModel.fetchAuthMediaList();
     // print(mediaViewModel.authMediaListItems);
@@ -197,15 +210,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     fontWeight: FontWeight.w300),
                               ),
                             ),
-                            ContainerWithIconTextAndLeading(
-                              ontap: () {
-                                Navigator.pushNamed(context, RoutesName.media);
+                            Consumer<MediaViewModel>(
+                              builder: (context, value, child) {
+                                return ContainerWithIconTextAndLeading(
+                                  ontap: () {
+                                    Navigator.pushNamed(
+                                        context, RoutesName.media);
+                                  },
+                                  bgColor: CustomTheme.primaryColor,
+                                  imagePath: 'assets/branding/home/medias.svg',
+                                  text: 'My medias',
+                                  containerColor: CustomTheme.primaryColor,
+                                  containerText:
+                                      '${value.userMedia.data?.length}',
+                                );
                               },
-                              bgColor: CustomTheme.primaryColor,
-                              imagePath: 'assets/branding/home/medias.svg',
-                              text: 'My medias',
-                              containerColor: CustomTheme.primaryColor,
-                              containerText: '100+',
                             ),
                             Consumer<MediaViewModel>(
                               builder: (context, value, child) {

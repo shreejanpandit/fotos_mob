@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fotos_mobile/models/media_model.dart';
 import 'package:fotos_mobile/repository/media_repostiory.dart';
 import 'package:fotos_mobile/utils/utils.dart';
+
+import '../data/response/api_response.dart';
 
 class MediaViewModel with ChangeNotifier {
   final _myRepo = MediaRepository();
@@ -103,6 +106,58 @@ class MediaViewModel with ChangeNotifier {
       // print("I'm getting these items: $authMediaListItems");
     } catch (error) {
       print(error.toString());
+    }
+  }
+
+  bool showDiscoverMore = false;
+  final scrollCtrl = ScrollController();
+  bool isMediaDeleted = false;
+  List<Map<String, dynamic>> favouriyeImageList = []; // Updated type
+  ApiResponse<List<MediaData>> userMedia = ApiResponse.loading();
+
+  void setMedia(ApiResponse<List<MediaData>> response) {
+    userMedia = response;
+    notifyListeners();
+  }
+
+  Future<void> fetchUserMedia(String userId) async {
+    setMedia(ApiResponse.loading());
+    try {
+      List<MediaData> userMediaList = await _myRepo.getUserMedia(userId);
+
+      setMedia(ApiResponse.completed(userMediaList));
+      notifyListeners();
+    } catch (error) {
+      setMedia(ApiResponse.error(error.toString()));
+    }
+  }
+
+  Future<void> deleteUserMedia(
+    String mediaId,
+    BuildContext context,
+    MediaViewModel value,
+  ) async {
+    try {
+      // final homeModel = Provider.of<HomeViewModel>(context, listen: false);
+      var response = await _myRepo.deleteUserMediaListApi(mediaId);
+
+      if (response == 'true') {
+        // Update favouriteMedia data to reflect the changes
+        value.userMedia.data
+            ?.removeWhere((item) => item.id.toString() == mediaId);
+
+        // // Notify listeners of the changes
+        value.notifyListeners();
+
+        Utils.flushBarErrorMessage(
+          'User media deleted successfully',
+          context,
+        );
+      } else {
+        Utils.flushBarErrorMessage('Error deleting data', context);
+      }
+    } catch (error) {
+      Utils.flushBarErrorMessage(error.toString(), context);
     }
   }
 

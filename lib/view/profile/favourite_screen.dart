@@ -12,7 +12,6 @@ import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
 import '../../models/user_models.dart';
 
-import '../../res/app_urls.dart';
 import '../../utils/routes/routes_name.dart';
 import '../../view_model/appbar_item_view_model.dart';
 import '../../view_model/image_open_view_model.dart';
@@ -112,17 +111,6 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                               crossAxisCount: 2,
                               itemCount: value.favouriteMedia.data!.length,
                               itemBuilder: (context, index) {
-                                String imagePath = value
-                                    .favouriteMedia.data![index].imagePath
-                                    .toString();
-                                String imageUrl;
-
-                                if (imagePath.startsWith('http')) {
-                                  imageUrl = imagePath;
-                                } else {
-                                  imageUrl =
-                                      '${AppUrl.baseImageStorageUrl}$imagePath';
-                                }
                                 return Card(
                                   child: Stack(
                                     alignment: Alignment.topRight,
@@ -147,7 +135,9 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                           }
                                         },
                                         child: Image.network(
-                                          imageUrl,
+                                          value.favouriteMedia.data![index]
+                                              .imagePath
+                                              .toString(),
                                           fit: BoxFit.cover,
                                         ),
                                       ),

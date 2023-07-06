@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fotos_mobile/models/media_model.dart';
 import 'package:fotos_mobile/res/components/profile_component/green_and_cancle_button.dart';
 
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/utils.dart';
+import 'package:fotos_mobile/view_model/favourite_view_model.dart';
 import 'package:fotos_mobile/view_model/gerne_view_model.dart';
 import 'package:fotos_mobile/view_model/media_view_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multiselect_dropdown_flutter/multiselect_dropdown_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
+import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
-import '../../../models/image_open_model.dart';
+import '../../../data/response/status.dart';
 import '../../../models/user_models.dart';
 import '../../../res/app_urls.dart';
+import '../../../utils/routes/routes_name.dart';
+import '../../../view_model/image_open_view_model.dart';
 import '../../../view_model/image_picker_view_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -36,6 +42,7 @@ class _MediaScreenState extends State<MediaScreen> {
   // }
   bool isImagePicked = false;
   bool showPersonalInfo = true;
+  String? userId;
 
   List<String> imageList = [
     'assets/photos/seagull.png',
@@ -124,6 +131,19 @@ class _MediaScreenState extends State<MediaScreen> {
       print('Error sending form data. Status code: ${response.statusCode}');
     }
     return false;
+  }
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      var userProvider = Provider.of<UserViewModel>(context, listen: false);
+      userProvider.getUser().then((value) {
+        setState(() {
+          userId = value.userId!.toString();
+        });
+      });
+    });
+    super.initState();
   }
 
   @override
@@ -441,7 +461,8 @@ class _MediaScreenState extends State<MediaScreen> {
                           Provider.of<MediaViewModel>(context, listen: false)
                               .selectedCollection!),
                     );
-                    String mediaList = medialistData.id.toString();
+
+                    String mediaList = medialistData.toString();
 
                     if (title == '' && title.isEmpty) {
                       Utils.flushBarErrorMessage(
@@ -497,6 +518,8 @@ class _MediaScreenState extends State<MediaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var imageOpenViewModel = Provider.of<ImageOpenViewModel>(context);
+    var favouriteViewModel = Provider.of<FavouriteViewModel>(context);
     return Container(
       child: Scaffold(
         appBar: AppBar(
@@ -569,57 +592,261 @@ class _MediaScreenState extends State<MediaScreen> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: Container(
-                        height: 296,
-                        child: CustomScrollView(
-                          slivers: [
-                            SliverPadding(
-                              padding: const EdgeInsets.all(5),
-                              sliver: SliverMasonryGrid(
-                                  delegate: SliverChildBuilderDelegate(
-                                    (context, index) => Card(
-                                      child: Stack(
-                                        alignment: Alignment.topRight,
-                                        children: [
-                                          Image.asset(
-                                            imageList[index],
-                                            fit: BoxFit.cover,
-                                          ),
-                                          const Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
+                    Consumer<MediaViewModel>(
+                      builder: (context, value, child) {
+                        switch (value.userMedia.status) {
+                          case Status.LOADING:
+                            return Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            );
+                          case Status.ERROR:
+                            return Text(value.userMedia.message.toString());
+                          case Status.COMPLETED:
+                            return value.userMedia.data!.isNotEmpty
+                                ? Container(
+                                    height: MediaQuery.of(context).size.height,
+                                    child: StaggeredGridView.countBuilder(
+                                      crossAxisCount: 2,
+                                      itemCount: value.userMedia.data!.length,
+                                      itemBuilder: (context, index) {
+                                        String imagePath = value
+                                            .userMedia.data![index].imagePath
+                                            .toString();
+                                        String imageUrl;
+
+                                        if (imagePath.startsWith('http')) {
+                                          imageUrl = imagePath;
+                                        } else {
+                                          imageUrl =
+                                              '${AppUrl.baseImageStorageUrl}$imagePath';
+                                        }
+
+                                        bool isFavorite = value.userMedia
+                                                .data![index].isFavourite ??
+                                            false;
+
+                                        return Card(
+                                          child: Stack(
+                                            alignment: Alignment.topRight,
                                             children: [
-                                              Icon(
-                                                Icons.favorite_border_outlined,
-                                                color: Colors.white,
+                                              InkWell(
+                                                onTap: () async {
+                                                  final String slug = value
+                                                      .userMedia
+                                                      .data![index]
+                                                      .slug
+                                                      .toString();
+                                                  await imageOpenViewModel
+                                                      .fetchImageOpenMedia(
+                                                          slug, context);
+
+                                                  if (!imageOpenViewModel
+                                                      .loading) {
+                                                    if (context.mounted) {
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          RoutesName
+                                                              .image_open);
+                                                    }
+                                                  }
+                                                },
+                                                child: Image.network(
+                                                  imageUrl,
+                                                  fit: BoxFit.cover,
+                                                ),
                                               ),
-                                              Icon(
-                                                Icons.bookmark_add_outlined,
-                                                color: Colors.white,
-                                              ),
-                                              Icon(
-                                                Icons.share_outlined,
-                                                color: Colors.white,
+                                              Positioned(
+                                                top: 3,
+                                                right: 2,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    IconButton(
+                                                      onPressed: () async {
+                                                        if (isFavorite) {
+                                                          final provider = Provider
+                                                              .of<FavouriteViewModel>(
+                                                                  context,
+                                                                  listen:
+                                                                      false);
+                                                          provider
+                                                              .deleteFavouriteMedia(
+                                                                  value
+                                                                      .userMedia
+                                                                      .data![
+                                                                          index]
+                                                                      .id
+                                                                      .toString(),
+                                                                  context,
+                                                                  provider)
+                                                              .catchError(
+                                                                  (error) {
+                                                            // Handle the error case
+                                                            print(error);
+                                                          });
+                                                        } else {
+                                                          final provider = Provider
+                                                              .of<FavouriteViewModel>(
+                                                                  context,
+                                                                  listen:
+                                                                      false);
+                                                          provider
+                                                              .addFavouriteMedia(
+                                                                  value
+                                                                      .userMedia
+                                                                      .data![
+                                                                          index]
+                                                                      .id
+                                                                      .toString(),
+                                                                  context,
+                                                                  provider)
+                                                              .catchError(
+                                                                  (error) {
+                                                            // Handle the error case
+                                                            print(error);
+                                                          });
+                                                        }
+                                                      },
+                                                      icon: Icon(
+                                                        isFavorite
+                                                            ? Icons.favorite
+                                                            : Icons
+                                                                .favorite_outline,
+                                                        color: isFavorite
+                                                            ? Colors.red
+                                                            : Colors.white,
+                                                      ),
+                                                    ),
+                                                    const Icon(
+                                                      Icons.edit,
+                                                      color: Colors.white,
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        final String mediaId =
+                                                            value.userMedia
+                                                                .data![index].id
+                                                                .toString();
+
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return Dialog(
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10.0),
+                                                              ),
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        16.0),
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    Text(
+                                                                      "Are you sure you want to delete this item?",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                        fontSize:
+                                                                            18.0,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            24.0),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceEvenly,
+                                                                      children: [
+                                                                        ElevatedButton(
+                                                                          style:
+                                                                              ButtonStyle(
+                                                                            backgroundColor:
+                                                                                MaterialStateProperty.all(
+                                                                              Colors.grey,
+                                                                            ),
+                                                                          ),
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.of(context).pop(); // Close the dialog
+                                                                          },
+                                                                          child:
+                                                                              Text("Cancel"),
+                                                                        ),
+                                                                        ElevatedButton(
+                                                                          style:
+                                                                              ButtonStyle(
+                                                                            backgroundColor:
+                                                                                MaterialStateProperty.all(
+                                                                              Colors.red,
+                                                                            ),
+                                                                          ),
+                                                                          onPressed:
+                                                                              () {
+                                                                            final provider =
+                                                                                Provider.of<MediaViewModel>(context, listen: false);
+                                                                            provider.deleteUserMedia(
+                                                                              mediaId,
+                                                                              context,
+                                                                              provider,
+                                                                            );
+                                                                            Navigator.of(context).pop(); // Close the dialog
+                                                                            Utils.flushBarErrorMessage(
+                                                                              'User media deleted successfully',
+                                                                              context,
+                                                                            );
+                                                                          },
+                                                                          child:
+                                                                              Text("Delete"),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
+                                                      },
+                                                      child: const Icon(
+                                                        Icons.delete_forever,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ],
                                           ),
-                                        ],
-                                      ),
+                                        );
+                                      },
+                                      staggeredTileBuilder: (index) =>
+                                          StaggeredTile.fit(1),
+                                      mainAxisSpacing: 8.0,
+                                      crossAxisSpacing: 8.0,
                                     ),
-                                    childCount: imageList.length,
-                                  ),
-                                  gridDelegate:
-                                      const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2)),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const ShowMore(
-                      text: 'Show More',
+                                  )
+                                : Center(
+                                    child: Container(
+                                      child: const Text(
+                                          'No item added to favourite'),
+                                    ),
+                                  );
+                          default:
+                            return Container();
+                        }
+                      },
                     )
                   ],
                 ),

@@ -46,4 +46,32 @@ class MediaRepository {
       rethrow;
     }
   }
+
+  Future<List<MediaData>> getUserMedia(String userId) async {
+    try {
+      print('${AppUrl.userMedia}$userId');
+      dynamic response =
+          await _apiService.getGetApiResponse('${AppUrl.userMedia}$userId');
+      List<dynamic> responseData = response as List<dynamic>;
+      List<MediaData> favouriteList =
+          responseData.map((data) => MediaData.fromJson(data)).toList();
+      print(response);
+      return favouriteList;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> deleteUserMediaListApi(String mediaId) async {
+    try {
+      final String url = '${AppUrl.authMediaUrl}/$mediaId';
+      print(url);
+      String response = await _apiService.getDeleteApiResponse(url);
+
+      print(response);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
