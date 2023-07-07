@@ -3,14 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:fotos_mobile/data/response/api_response.dart';
 import 'package:fotos_mobile/models/favourite_model.dart';
 import 'package:fotos_mobile/repository/favourite_repository.dart';
-import 'package:fotos_mobile/repository/home_repository.dart';
-import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/utils/utils.dart';
 import 'package:fotos_mobile/view_model/home_view_model.dart';
 import 'package:fotos_mobile/view_model/media_view_model.dart';
 import 'package:provider/provider.dart';
-
-import '../models/media_model.dart';
 
 class FavouriteViewModel with ChangeNotifier {
   final _myRepo = FavouriteRepository();

@@ -35,7 +35,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       var userProvider = Provider.of<UserViewModel>(context, listen: false);
       userProvider.getUser().then((value) {
         setState(() {
-          token = value.token;
+          token = value.accessToken;
           isVisible = token != null;
         });
         // print('this is appbar $token');

@@ -11,7 +11,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import '../../data/response/status.dart';
 import '../../models/user_models.dart';
+import '../../res/app_urls.dart';
 import '../../res/components/appbar_widget.dart';
 import '../../res/components/drawer_widget.dart';
 import '../../view_model/media_view_model.dart';
@@ -34,11 +36,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
     Future.delayed(Duration.zero, () {
       var userProvider = Provider.of<UserViewModel>(context, listen: false);
-      userProvider.getUser().then((value) {
-        setState(() {
-          userId = value.userId.toString();
-        });
-      });
+      // userProvider.getUser().then((value) {
+      //   setState(() {
+      //     userId = value.user!.id.toString();
+      //   });
+      // });
+
+      userId = userProvider.userData.data!.id.toString();
     });
     Future.delayed(Duration(seconds: 1), () {
       Provider.of<MediaViewModel>(context, listen: false)
@@ -89,41 +93,97 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 80,
-                                      height: 80,
-                                      child: const CircleAvatar(
-                                        backgroundImage: AssetImage(
-                                            'assets/branding/images/avatar.png'),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 13),
-                                    const Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'John Deo',
-                                          style: TextStyle(
-                                              fontSize: 30,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        SizedBox(height: 4),
-                                        Text(
-                                          'Photographer',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w300,
-                                            color: CustomTheme.primaryColor,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                Consumer<UserViewModel>(
+                                  builder: (context, value, child) {
+                                    // print(value.userData.data!.id.toString());
+                                    String imagePath = value
+                                        .userData.data!.imagePath
+                                        .toString();
+                                    String imageUrl;
+
+                                    if (imagePath.startsWith('http')) {
+                                      imageUrl = imagePath;
+                                    } else {
+                                      imageUrl =
+                                          '${AppUrl.baseImageStorageUrl}$imagePath';
+                                    }
+                                    switch (value.userData.status) {
+                                      case Status.LOADING:
+                                        return Center(
+                                          child: CircularProgressIndicator
+                                              .adaptive(),
+                                        );
+                                      case Status.ERROR:
+                                        return Text(
+                                            value.userData.message.toString());
+                                      case Status.COMPLETED:
+                                        return Row(
+                                          children: [
+                                            // Container(
+                                            //   width: 80,
+                                            //   height: 80,
+                                            //   child: const CircleAvatar(
+                                            //     backgroundImage: AssetImage(
+                                            //         'assets/branding/images/avatar.png'),
+                                            //   ),
+                                            // ),
+
+                                            ClipOval(
+                                              child: Container(
+                                                height: 80,
+                                                width: 80,
+                                                decoration:
+                                                    const ShapeDecoration(
+                                                  shape: CircleBorder(),
+                                                ),
+                                                child: Image.network(
+                                                  imageUrl,
+                                                  fit: BoxFit.scaleDown,
+                                                  errorBuilder: (context, error,
+                                                      stackTrace) {
+                                                    return Image.asset(
+                                                      'assets/branding/images/avatar.png',
+                                                      fit: BoxFit.scaleDown,
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 13),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  value.userData.data!.name
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      fontSize: 30,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                SizedBox(height: 4),
+                                                Text(
+                                                  value
+                                                      .userData.data!.profession
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w300,
+                                                    color: CustomTheme
+                                                        .primaryColor,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        );
+                                      default:
+                                        return Container();
+                                    }
+                                  },
                                 ),
                                 const Icon(
                                   Icons.arrow_forward_ios,

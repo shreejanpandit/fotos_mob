@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fotos_mobile/view_model/services/splash_services.dart';
+import 'package:provider/provider.dart';
+
+import '../view_model/user_view_model.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -15,7 +18,10 @@ class _SplashViewState extends State<SplashView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    Future.delayed(Duration.zero, () {
+      var userProvider = Provider.of<UserViewModel>(context, listen: false);
+      userProvider.fetchUserData();
+    });
     splashServices.checkAuthentication(context);
   }
 

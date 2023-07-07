@@ -24,4 +24,5 @@ class AppUrl {
   static var gernesListUrl = '${baseUrl}genres';
   static var authMediaUrl = '${baseUrl}auth/medias';
   static var registerUrl = '${baseUrl}register';
+  static var user = '${baseUrl}users';
 }

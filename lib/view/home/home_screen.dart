@@ -47,11 +47,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
     Future.delayed(Duration.zero, () {
       var userProvider = Provider.of<UserViewModel>(context, listen: false);
-      userProvider.getUser().then((value) {
-        setState(() {
-          token = value.token;
-        });
-      });
+      userProvider.fetchUserData();
+      // userProvider.getUser().then((value) {
+      //   setState(() {
+      //     token = value.accessToken;
+      //   });
+      // });
+      // if (userProvider.userData.status != Status.LOADING) {
+      //   print('is this home ${userProvider.userData.status}');
+      // }
     });
   }
 

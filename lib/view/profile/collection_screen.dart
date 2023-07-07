@@ -42,7 +42,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
       required String collectionType,
       required String title}) async {
     var userData = await getUserData();
-    var token = userData.token.toString();
+    var token = userData.accessToken.toString();
 
     var request = http.MultipartRequest(
         'POST', Uri.parse('${AppUrl.baseUrl}auth/media-lists'));

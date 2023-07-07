@@ -55,7 +55,7 @@ class MediaRepository {
       List<dynamic> responseData = response as List<dynamic>;
       List<MediaData> favouriteList =
           responseData.map((data) => MediaData.fromJson(data)).toList();
-      print(response);
+      // print('user media data media created by this user? $response');
       return favouriteList;
     } catch (e) {
       rethrow;

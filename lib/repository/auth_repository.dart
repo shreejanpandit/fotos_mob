@@ -2,6 +2,8 @@ import 'package:fotos_mobile/data/network/base_api_service.dart';
 import 'package:fotos_mobile/data/network/network_api_service.dart';
 import 'package:fotos_mobile/res/app_urls.dart';
 
+import '../models/user_models.dart';
+
 class AuthRepository {
   BaseApiService _apiService = NetworkApiService();
   Future<dynamic> loginApi(dynamic data) async {
@@ -22,6 +24,16 @@ class AuthRepository {
           await _apiService.getPostApiResponse(AppUrl.registerUrl, data);
       print(response.toString());
       return response;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<User> getUserData() async {
+    try {
+      dynamic response = await _apiService.getGetApiResponse(AppUrl.user);
+      // print(response.toString());
+      return User.fromJson(response);
     } catch (e) {
       throw e;
     }

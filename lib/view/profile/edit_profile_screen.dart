@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fotos_mobile/res/components/profile_component/green_and_cancle_button.dart';
-import 'package:fotos_mobile/view/profile/work_info%20copy.dart';
+import 'package:fotos_mobile/view/profile/work_info.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';

@@ -16,7 +16,7 @@ class NetworkApiService extends BaseApiService {
     dynamic responseJson;
     try {
       await getUserData().then((value) {
-        token = value.token.toString();
+        token = value.accessToken.toString();
       });
       final response = await http.get(
         Uri.parse(url),
@@ -42,7 +42,7 @@ class NetworkApiService extends BaseApiService {
   Future<dynamic> getPostApiResponse(String url, dynamic data) async {
     try {
       getUserData().then((value) {
-        token = value.token.toString();
+        token = value.accessToken.toString();
         print(token);
       });
       http.Response response = await http.post(
@@ -69,7 +69,7 @@ class NetworkApiService extends BaseApiService {
     print(url.toString());
     try {
       getUserData().then((value) {
-        token = value.token.toString();
+        token = value.accessToken.toString();
         // print(token);
       }); // Fetch the user token from somewhere
 

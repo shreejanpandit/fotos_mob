@@ -55,6 +55,7 @@ dependencies:
   multiselect_dropdown_flutter: ^0.0.7
   intl: ^0.18.1
   staggered_grid_view_flutter: ^0.0.4
+  meilisearch: ^0.14.0
 
 dev_dependencies:
   flutter_test:

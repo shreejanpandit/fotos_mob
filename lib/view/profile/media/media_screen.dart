@@ -60,7 +60,7 @@ class _MediaScreenState extends State<MediaScreen> {
       required String mediaList,
       required String title}) async {
     var userData = await getUserData();
-    var token = userData.token.toString();
+    var token = userData.accessToken.toString();
 
     var request = http.MultipartRequest(
         'POST', Uri.parse('${AppUrl.baseUrl}auth/medias'));
@@ -133,13 +133,114 @@ class _MediaScreenState extends State<MediaScreen> {
     return false;
   }
 
+  Future<bool> updateFormData({
+    required String mediaId,
+    required String description,
+    required String mediaList,
+    required dynamic image, // Change the type from 'var' to 'dynamic'
+    required String title,
+    required BuildContext context,
+  }) async {
+    print('$title $description $mediaList');
+    var userData = await getUserData();
+    var token = userData.accessToken.toString();
+
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('${AppUrl.baseUrl}auth/medias/$mediaId'));
+
+    // Set headers
+    request.headers['Authorization'] = 'Bearer $token';
+
+    // Add form fields
+    request.fields['title'] = title;
+    request.fields['description'] = description;
+    request.fields['media_list_id'] = mediaList;
+    request.fields['genres'] = '1';
+    request.fields['_method'] = 'put';
+
+    var pickedImage =
+        Provider.of<ImagePickerModel>(context, listen: false).pickedImage;
+
+    if (pickedImage != null) {
+      // New image is picked
+      var imageFile = File(pickedImage.path);
+
+      var stream = http.ByteStream(imageFile.openRead());
+      var length = await imageFile.length();
+
+      var multipartFile = http.MultipartFile(
+        'image',
+        stream,
+        length,
+        filename: imageFile.path.split('/').last,
+        contentType: MediaType('image', 'jpeg'),
+      );
+
+      // Add the image file to the request
+      request.files.add(multipartFile);
+    } else {
+      // Handle the case when pickedImage is null
+      print('No image selected.');
+
+      // Create a new map to hold the updated form fields
+      var updatedFields = {
+        'title': title,
+        'description': description,
+        'media_list_id': mediaList,
+        'genres': '1',
+        '_method': 'put',
+      };
+
+      // Update only the other values except for the image
+      updatedFields.forEach((key, value) {
+        request.fields[key] = value;
+      });
+    }
+
+    // Send the request and retrieve the response
+    var response = await request.send().timeout(const Duration(seconds: 20));
+    var result = await http.Response.fromStream(response);
+
+    // Check the response status code
+    if (response.statusCode == 302) {
+      // Request redirected
+      var redirectUrl = response.headers['location'];
+
+      // Make a new request to the redirected URL
+      var redirectResponse = await http.get(Uri.parse(redirectUrl!));
+
+      // Handle the redirect response
+      if (redirectResponse.statusCode == 200) {
+        // Redirect successful
+        print('Form data sent successfully after redirect!');
+        return true;
+      } else {
+        // Redirect failed
+        print(
+            'Error sending form data after redirect. Status code: ${redirectResponse.statusCode}');
+        return false;
+      }
+    } else if (response.statusCode == 200) {
+      // Request successful
+      print('Form data sent successfully!');
+      return true;
+    } else if (response.statusCode == 500) {
+      // Request successful
+      print(result.body);
+    } else {
+      // Request failed
+      print('Error sending form data. Status code: ${response.statusCode}');
+    }
+    return false;
+  }
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
       var userProvider = Provider.of<UserViewModel>(context, listen: false);
       userProvider.getUser().then((value) {
         setState(() {
-          userId = value.userId!.toString();
+          userId = value.user!.id.toString();
         });
       });
     });
@@ -153,7 +254,7 @@ class _MediaScreenState extends State<MediaScreen> {
     mediaNameController.dispose();
   }
 
-  void _showBottomSheet(BuildContext context) {
+  void _showBottomSheetPOST(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled:
@@ -165,7 +266,7 @@ class _MediaScreenState extends State<MediaScreen> {
         ),
       ),
       builder: (BuildContext context) {
-        return Container(
+        return SizedBox(
           height: MediaQuery.of(context).size.height *
               0.75, // Adjust the height to take 3/4th of the screen
           child: SingleChildScrollView(
@@ -195,8 +296,8 @@ class _MediaScreenState extends State<MediaScreen> {
                         ),
                       ),
                       Consumer<ImagePickerModel>(
-                        builder: (context, _imagePickerModel, child) {
-                          isImagePicked = _imagePickerModel.pickedImage != null
+                        builder: (context, imagePickerModel, child) {
+                          isImagePicked = imagePickerModel.pickedImage != null
                               ? true
                               : false;
                           return Container(
@@ -214,13 +315,13 @@ class _MediaScreenState extends State<MediaScreen> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(left: 16),
-                                  child: Container(
+                                  child: SizedBox(
                                     width: 200,
                                     child: Text(
                                       overflow: TextOverflow.ellipsis,
                                       // filePath != null ? filePath! :
-                                      _imagePickerModel.pickedImage != null
-                                          ? _imagePickerModel.pickedImage!.path
+                                      imagePickerModel.pickedImage != null
+                                          ? imagePickerModel.pickedImage!.path
                                           : 'Select File',
                                       style: const TextStyle(
                                         color: Colors.black,
@@ -233,7 +334,7 @@ class _MediaScreenState extends State<MediaScreen> {
                                   padding: const EdgeInsets.only(right: 3),
                                   child: InkWell(
                                     onTap: () async {
-                                      await _imagePickerModel
+                                      await imagePickerModel
                                           .pickImage(ImageSource.gallery);
                                       // .pickImage(ImageSource.gallery);
                                       setState(() {});
@@ -516,10 +617,372 @@ class _MediaScreenState extends State<MediaScreen> {
     );
   }
 
+  void _showBottomSheetUpdate(BuildContext context, userData) {
+    TextEditingController mediaNameController =
+        TextEditingController(text: userData['title']);
+    TextEditingController mediaDescriptionController =
+        TextEditingController(text: userData['description']);
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled:
+          true, // Make the bottom sheet take 3/4th of the screen height
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(35),
+          topRight: Radius.circular(35),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height *
+              0.75, // Adjust the height to take 3/4th of the screen
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 77, top: 31, right: 65),
+                  child: Center(
+                      child: Text(
+                    'Update Your Creativity',
+                    style: CustomTheme.base
+                        .copyWith(fontSize: 22, fontWeight: FontWeight.w500),
+                  )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(28, 31, 27, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          'Choose Media',
+                          style: CustomTheme.base.copyWith(
+                              fontSize: 17, fontWeight: FontWeight.w200),
+                        ),
+                      ),
+                      Consumer<ImagePickerModel>(
+                        builder: (context, imagePickerModel, child) {
+                          isImagePicked = imagePickerModel.pickedImage != null
+                              ? true
+                              : false;
+                          return Container(
+                            width: 336,
+                            height: 45.25,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: const Color(0xFFF9F9F9),
+                              border: Border.all(
+                                color: const Color(0xFFCDECFF),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 16),
+                                  child: SizedBox(
+                                    width: 200,
+                                    child: Text(
+                                      overflow: TextOverflow.ellipsis,
+                                      // filePath != null ? filePath! :
+                                      imagePickerModel.pickedImage != null
+                                          ? imagePickerModel.pickedImage!.path
+                                          : userData['image_path'].toString(),
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 3),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await imagePickerModel
+                                          .pickImage(ImageSource.gallery);
+                                      // .pickImage(ImageSource.gallery);
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      width: 86,
+                                      height: 23,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.blue,
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          'Upload',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          'Choose Collection',
+                          style: CustomTheme.base.copyWith(
+                              fontSize: 17, fontWeight: FontWeight.w200),
+                        ),
+                      ),
+                      Consumer<MediaViewModel>(
+                        builder: (context, value, child) {
+                          print('update modal data $userData');
+                          return Container(
+                            width: 336,
+                            height: 45.25,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: const Color(0xFFF9F9F9),
+                              border: Border.all(
+                                color: const Color(0xFFCDECFF),
+                              ),
+                            ),
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              underline:
+                                  Container(), // Removes the default underline
+                              value: userData['media_list']['id'].toString(),
+                              onChanged: (newValue) {
+                                value.setselectedCollection(newValue!);
+                                // Update the value of 'userData['media_list']['id']' to the selected dropdown value
+                                setState(() {
+                                  userData['media_list']['id'] = newValue;
+                                });
+                              },
+                              items: value.authMediaListItems.map((item) {
+                                return DropdownMenuItem<String>(
+                                  value: item['id'],
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 16),
+                                    child: Text(
+                                      item['name'],
+                                      style: CustomTheme.base.copyWith(
+                                        color: CustomTheme.lightTextColor
+                                            .withOpacity(0.4),
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          'Select Gerne',
+                          style: CustomTheme.base.copyWith(
+                              fontSize: 17, fontWeight: FontWeight.w200),
+                        ),
+                      ),
+                      Consumer<GenersViewModel>(
+                          builder: (context, value, child) {
+                        // print("called this ml ${value.gerne}");
+                        return MultiSelectDropdown.simpleList(
+                          list: value.geners,
+                          initiallySelected: const [],
+                          onChange: (newList) {
+                            // your logic
+                          },
+                          includeSearch: true,
+                          includeSelectAll: false,
+                          isLarge: true, // Modal size will be a little large
+                          // Give a definite width when rendering this widget in a row
+                          width: double.infinity, // Must be a definite number
+                          boxDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          'Media Name',
+                          style: CustomTheme.base.copyWith(
+                              fontSize: 17, fontWeight: FontWeight.w200),
+                        ),
+                      ),
+                      Container(
+                        width: 336,
+                        height: 45.25,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color(0xFFF9F9F9),
+                          border: Border.all(
+                            color: const Color(0xFFCDECFF),
+                          ),
+                        ),
+                        child: TextFormField(
+                          // initialValue: userData['title'],
+                          controller: mediaNameController,
+                          decoration: InputDecoration(
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 16),
+                            hintText: 'Enter Media Name',
+                            hintStyle: CustomTheme.base.copyWith(
+                              color:
+                                  CustomTheme.lightTextColor.withOpacity(0.4),
+                              fontWeight: FontWeight.w300,
+                            ),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          'Media Description',
+                          style: CustomTheme.base.copyWith(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w200,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        width: 336,
+                        height: 124,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color(0xFFF9F9F9),
+                          border: Border.all(
+                            color: const Color(0xFFCDECFF),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 16, top: 3),
+                          child: TextFormField(
+                            // initialValue: mediaDescription,
+                            controller: mediaDescriptionController,
+                            maxLines: null, // Allow multiple lines of text
+                            decoration: InputDecoration(
+                              hintText: 'Enter Media Description',
+                              hintStyle: CustomTheme.base.copyWith(
+                                color:
+                                    CustomTheme.lightTextColor.withOpacity(0.4),
+                                fontWeight: FontWeight.w300,
+                              ),
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                GreenAndCancleButton(
+                  greenButtonText: 'Submit',
+                  onGreenButton: () async {
+                    String title = mediaNameController.text;
+                    String description = mediaDescriptionController.text;
+
+                    String mediaList = userData['media_list']['id'].toString();
+
+                    if (title == '' && title.isEmpty) {
+                      Utils.flushBarErrorMessage(
+                          'Title can\'t be empty', context);
+                    } else if (description == '' && description.isEmpty) {
+                      Utils.flushBarErrorMessage(
+                          'Description can\'t be empty', context);
+                    } else {
+                      bool res = await updateFormData(
+                          context: context,
+                          mediaId: userData['id'].toString(),
+                          image: userData['image_path'],
+                          title: title.trim(),
+                          description: description.trim(),
+                          mediaList: mediaList);
+
+                      if (res == true) {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, RoutesName.profile);
+                        Alert(
+                            style: const AlertStyle(
+                                titleStyle: TextStyle(color: Colors.white),
+                                backgroundColor: CustomTheme.lightGreenColor),
+                            context: context,
+                            closeFunction: () {
+                              Navigator.pop(context);
+                            },
+                            buttons: [],
+                            image: SvgPicture.asset(
+                              'assets/branding/home/tick.svg',
+                              height: 41,
+                              width: 41,
+                            ),
+                            title: 'Updated Sucessful !',
+                            closeIcon: InkWell(
+                              child: SvgPicture.asset(
+                                'assets/branding/home/close.svg',
+                                height: 20,
+                                width: 20,
+                              ),
+                            )).show();
+                      }
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var imageOpenViewModel = Provider.of<ImageOpenViewModel>(context);
-    var favouriteViewModel = Provider.of<FavouriteViewModel>(context);
     return Container(
       child: Scaffold(
         appBar: AppBar(
@@ -562,7 +1025,7 @@ class _MediaScreenState extends State<MediaScreen> {
 
                             Future.delayed(const Duration(seconds: 1));
                             if (!value.loading) {
-                              _showBottomSheet(context);
+                              _showBottomSheetPOST(context);
                             }
                           });
                     },
@@ -570,7 +1033,7 @@ class _MediaScreenState extends State<MediaScreen> {
             ),
           ],
         ),
-        body: Container(
+        body: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: SingleChildScrollView(
             child: Column(
@@ -603,7 +1066,7 @@ class _MediaScreenState extends State<MediaScreen> {
                             return Text(value.userMedia.message.toString());
                           case Status.COMPLETED:
                             return value.userMedia.data!.isNotEmpty
-                                ? Container(
+                                ? SizedBox(
                                     height: MediaQuery.of(context).size.height,
                                     child: StaggeredGridView.countBuilder(
                                       crossAxisCount: 2,
@@ -718,9 +1181,43 @@ class _MediaScreenState extends State<MediaScreen> {
                                                             : Colors.white,
                                                       ),
                                                     ),
-                                                    const Icon(
-                                                      Icons.edit,
-                                                      color: Colors.white,
+                                                    InkWell(
+                                                      onTap: () async {
+                                                        await value
+                                                            .fetchAuthMediaList();
+                                                        // print(value
+                                                        //     .authMediaListItems);
+                                                        Future.delayed(
+                                                            const Duration(
+                                                                seconds: 1));
+                                                        print(value.userMedia
+                                                            .data![index].id
+                                                            .toString());
+                                                        final String slug =
+                                                            value
+                                                                .userMedia
+                                                                .data![index]
+                                                                .slug
+                                                                .toString();
+
+                                                        await imageOpenViewModel
+                                                            .fetchImageOpenMedia(
+                                                                slug, context);
+                                                        var userData =
+                                                            imageOpenViewModel
+                                                                .data;
+                                                        print(userData);
+                                                        if (!value
+                                                            .authLoading) {
+                                                          _showBottomSheetUpdate(
+                                                              context,
+                                                              userData);
+                                                        }
+                                                      },
+                                                      child: const Icon(
+                                                        Icons.edit,
+                                                        color: Colors.white,
+                                                      ),
                                                     ),
                                                     InkWell(
                                                       onTap: () {
@@ -869,7 +1366,7 @@ class _MediaScreenState extends State<MediaScreen> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
-                        child: Container(
+                        child: SizedBox(
                           height: 226,
                           child: CustomScrollView(
                             slivers: [
