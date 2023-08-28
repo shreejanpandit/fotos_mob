@@ -273,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Gerne',
+                                      'Genre',
                                       style: CustomTheme.h6.copyWith(
                                           fontWeight: FontWeight.w600),
                                     ),
@@ -288,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             sliver: Consumer<GenersViewModel>(
                                 builder: (context, value, child) {
                               // value.fetchGernes();
-                              // print(value.geners);
+                              print('home gerne ${value.geners}');
                               switch (value.gerne.status) {
                                 case Status.LOADING:
                                   return const SliverToBoxAdapter(
