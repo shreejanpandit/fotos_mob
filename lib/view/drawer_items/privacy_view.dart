@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import '../../res/typo_theme_data.dart';
 
 class PrivacyPage extends StatelessWidget {
+  const PrivacyPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: CustomTheme.primaryColor,
-        title: Text('Privacy Policy'),
+        title: const Text('Privacy Policy'),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

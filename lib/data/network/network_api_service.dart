@@ -16,7 +16,7 @@ class NetworkApiService extends BaseApiService {
     dynamic responseJson;
     try {
       await getUserData().then((value) {
-        token = value.accessToken.toString();
+        token = value.data?.accessToken.toString();
       });
       final response = await http.get(
         Uri.parse(url),
@@ -42,8 +42,8 @@ class NetworkApiService extends BaseApiService {
   Future<dynamic> getPostApiResponse(String url, dynamic data) async {
     try {
       getUserData().then((value) {
-        token = value.accessToken.toString();
-        print(token);
+        token = value.data?.accessToken.toString();
+        print('get token $token');
       });
       http.Response response = await http.post(
         Uri.parse(url),
@@ -56,7 +56,59 @@ class NetworkApiService extends BaseApiService {
           "Accept": "application/json",
           'Authorization': 'Bearer $token',
         },
-      ).timeout(Duration(seconds: 15));
+      ).timeout(const Duration(seconds: 15));
+      // print(response.body);
+      return returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No internet connection');
+    }
+  }
+
+  @override
+  Future<dynamic> getPutApiResponse(String url, dynamic data) async {
+    try {
+      getUserData().then((value) {
+        token = value.data?.accessToken.toString();
+        print('get token $token');
+      });
+      http.Response response = await http.put(
+        Uri.parse(url),
+        body: jsonEncode(data),
+        headers: {
+          "Content-type": "application/json",
+          // "Content-type": "multipart/form-data",
+
+          "X-Requested-With": "XMLHttpRequest",
+          "Accept": "application/json",
+          'Authorization': 'Bearer $token',
+        },
+      ).timeout(const Duration(seconds: 15));
+      // print(response.body);
+      return returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No internet connection');
+    }
+  }
+
+  @override
+  Future<dynamic> getPatchApiResponse(String url, dynamic data) async {
+    try {
+      getUserData().then((value) {
+        token = value.data?.accessToken.toString();
+        print('get token $token');
+      });
+      http.Response response = await http.patch(
+        Uri.parse(url),
+        body: jsonEncode(data),
+        headers: {
+          "Content-type": "application/json",
+          // "Content-type": "multipart/form-data",
+
+          "X-Requested-With": "XMLHttpRequest",
+          "Accept": "application/json",
+          'Authorization': 'Bearer $token',
+        },
+      ).timeout(const Duration(seconds: 15));
       // print(response.body);
       return returnResponse(response);
     } on SocketException {
@@ -66,19 +118,19 @@ class NetworkApiService extends BaseApiService {
 
   @override
   Future<dynamic> getDeleteApiResponse(String url) async {
-    print(url.toString());
+    // print(url.toString());
     try {
       getUserData().then((value) {
-        token = value.accessToken.toString();
-        // print(token);
+        token = value.data?.accessToken.toString();
+        print('delete token $token');
       }); // Fetch the user token from somewhere
 
       final response = await http.delete(Uri.parse(url), headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
-      }).timeout(Duration(seconds: 15));
-      // print(response.body);
-      return response.body;
+      }).timeout(const Duration(seconds: 15));
+      print(response.statusCode);
+      return returnResponse(response);
     } on SocketException {
       throw FetchDataException('No internet connection');
     }
@@ -88,19 +140,19 @@ class NetworkApiService extends BaseApiService {
     switch (response.statusCode) {
       case 200:
         dynamic responseJson = jsonDecode(response.body);
+        // print(responseJson);
         return responseJson;
       case 400:
         throw BadRequestException(response.body.toString());
       case 422:
         dynamic responseJson = jsonDecode(response.body);
-        return responseJson;
+        // Utils.toastMessage(responseJson['message']);
+        throw UnprocessableEntityException(responseJson['message']);
       case 404:
         throw UnauthorizedException(response.body.toString());
       default:
         throw FetchDataException(
-            'Error occurred while communicating with the server ' +
-                'with response code ' +
-                response.statusCode.toString());
+            'Error occurred while communicating with the server with response code ${response.statusCode}');
     }
   }
 }

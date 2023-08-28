@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fotos_mobile/data/response/status.dart';
 
 import 'package:fotos_mobile/res/typo_theme_data.dart';
@@ -12,6 +11,7 @@ import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
 import '../../models/user_models.dart';
 
+import '../../res/app_urls.dart';
 import '../../utils/routes/routes_name.dart';
 import '../../view_model/appbar_item_view_model.dart';
 import '../../view_model/image_open_view_model.dart';
@@ -93,24 +93,41 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
               ),
 
               Consumer<FavouriteViewModel>(builder: (context, value, child) {
-                print(value.favouriteMedia.status.toString());
-                print(value.favouriteMedia.data);
+                // print(value.favouriteMedia.status.toString());
+                // print(value.favouriteMedia.data);
 
                 switch (value.favouriteMedia.status) {
                   case Status.LOADING:
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator.adaptive(),
                     );
                   case Status.ERROR:
                     return Text(value.favouriteMedia.message.toString());
                   case Status.COMPLETED:
                     return value.favouriteMedia.data!.isNotEmpty
-                        ? Container(
+                        ? SizedBox(
                             height: MediaQuery.of(context).size.height,
                             child: StaggeredGridView.countBuilder(
                               crossAxisCount: 2,
                               itemCount: value.favouriteMedia.data!.length,
                               itemBuilder: (context, index) {
+                                // print(
+                                //   value.favouriteMedia.data![index].imagePath
+                                //       .toString(),
+                                // );
+
+                                String imagePath = value
+                                    .favouriteMedia.data![index].imagePath
+                                    .toString();
+                                String imageUrl;
+
+                                if (imagePath.startsWith('http')) {
+                                  imageUrl = imagePath;
+                                } else {
+                                  imageUrl =
+                                      '${AppUrl.baseImageStorageUrl}$imagePath';
+                                }
+
                                 return Card(
                                   child: Stack(
                                     alignment: Alignment.topRight,
@@ -135,9 +152,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                           }
                                         },
                                         child: Image.network(
-                                          value.favouriteMedia.data![index]
-                                              .imagePath
-                                              .toString(),
+                                          imageUrl,
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -187,7 +202,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 );
                               },
                               staggeredTileBuilder: (index) =>
-                                  StaggeredTile.fit(1),
+                                  const StaggeredTile.fit(1),
                               mainAxisSpacing: 8.0,
                               crossAxisSpacing: 8.0,
                             ),

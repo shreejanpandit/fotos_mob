@@ -1,11 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:fotos_mobile/utils/routes/routes_name.dart';
+import 'package:fotos_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 import 'package:fotos_mobile/res/typo_theme_data.dart';
-import 'package:fotos_mobile/view/profile/profile_screen.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 import 'package:fotos_mobile/view_model/image_open_view_model.dart';
 
@@ -13,6 +14,11 @@ import '../../res/app_urls.dart';
 import '../../res/components/appbar_widget.dart';
 import '../../res/components/drawer_widget.dart';
 import '../../view_model/favourite_view_model.dart';
+
+// import 'package:flutter/material.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart ';
 
 class ImageOpenScreen extends StatefulWidget {
   const ImageOpenScreen({
@@ -50,6 +56,47 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
       "https://myrepublica.nagariknetwork.com/uploads/media/2018/September/sadpug.jpg",
       "https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2018/04/24144817/American-Staffordshire-Terrier-lying-outdoors-next-to-a-kitten-that-is-playing-with-the-dogs-nose.jpg",
     ];
+
+    Future<void> _saveImage(BuildContext context, slug, imageFileName) async {
+      String? message;
+      // final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+      try {
+        // Download image
+        String url = '${AppUrl.baseUrl}downloads/$slug';
+        final http.Response response = await http.post(Uri.parse(url));
+
+        // Get temporary directory
+        final dir = await getTemporaryDirectory();
+
+        final timestamp = DateTime.now().millisecondsSinceEpoch;
+        final originalFileName = imageFileName;
+        final originalExtension = originalFileName.split('.').last;
+        final fileName = 'image_$timestamp.$originalExtension';
+        // Create an image name
+
+        var filename = '${dir.path}/$fileName';
+        print(dir.path);
+        // Save to filesystem
+        final file = File(filename);
+        await file.writeAsBytes(response.bodyBytes);
+
+        // Ask the user to save it
+        final params = SaveFileDialogParams(sourceFilePath: file.path);
+        final finalPath = await FlutterFileDialog.saveFile(params: params);
+
+        if (finalPath != null) {
+          message = 'Image saved to disk';
+        }
+      } catch (e) {
+        message = 'An error occurred while saving the image';
+      }
+
+      if (message != null) {
+        Utils.flushBarErrorMessage(message, context);
+      }
+    }
+
     return Scaffold(
       appBar: CustomAppBar(
         scaffoldKey: scaffoldKey,
@@ -62,14 +109,17 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
               margin: const EdgeInsets.only(left: 15, right: 15),
               child: SingleChildScrollView(child: Consumer<ImageOpenViewModel>(
                 builder: (context, value, child) {
-                  String formatedDate = formatDate(value.data['created_at']);
+                  print(value.data);
+                  String formatedDate = value.data['created_at'] != null
+                      ? formatDate(value.data['created_at'])
+                      : '2023:06:23';
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.fromLTRB(8, 28, 16, 16),
                         child: Container(
-                          child: Container(
+                          child: SizedBox(
                             height: 40,
                             width: double.infinity,
                             child: Row(
@@ -100,7 +150,7 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                                         //     MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Text(
-                                            value.data['user']['name']
+                                            value.data['data']['user']['name']
                                                 .toString(),
                                             style: const TextStyle(
                                               color: Color(0xFF000000),
@@ -110,7 +160,8 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                                             ),
                                           ),
                                           Text(
-                                            value.data['user']['profession'] ??
+                                            value.data['data']['user']
+                                                    ['profession'] ??
                                                 'Photographer',
                                             style: const TextStyle(
                                               color: Color(0xFF239DE9),
@@ -125,8 +176,8 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                                         children: [
                                           IconButton(
                                               onPressed: () async {
-                                                if (value
-                                                    .data['is_favourite']) {
+                                                if (value.data['data']
+                                                    ['is_favourite']) {
                                                   print(value.data);
                                                   final provider = Provider.of<
                                                           FavouriteViewModel>(
@@ -134,7 +185,8 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                                                       listen: false);
                                                   provider
                                                       .deleteFavouriteMedia(
-                                                          value.data['id']
+                                                          value.data['data']
+                                                                  ['id']
                                                               .toString(),
                                                           context,
                                                           provider)
@@ -143,20 +195,54 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                                                     print(error);
                                                   });
                                                   setState(() {
-                                                    value.data['is_favourite'] =
+                                                    value.data['data']
+                                                            ['is_favourite'] =
                                                         false;
+                                                  });
+                                                } else if (!value.data['data']
+                                                    ['is_favourite']) {
+                                                  print(value.data);
+                                                  final provider = Provider.of<
+                                                          FavouriteViewModel>(
+                                                      context,
+                                                      listen: false);
+                                                  provider
+                                                      .addFavouriteMedia(
+                                                          value.data['data']
+                                                                  ['id']
+                                                              .toString(),
+                                                          context,
+                                                          provider)
+                                                      .catchError((error) {
+                                                    // Handle the error case
+                                                    print(error);
+                                                  });
+                                                  setState(() {
+                                                    value.data['data']
+                                                        ['is_favourite'] = true;
                                                   });
                                                 }
                                               },
                                               icon: Icon(
                                                 Icons.favorite_rounded,
-                                                color:
-                                                    value.data['is_favourite']
-                                                        ? Colors.red
-                                                        : Colors.black,
+                                                color: value.data['data']
+                                                        ['is_favourite']
+                                                    ? Colors.red
+                                                    : Colors.black,
                                               )),
                                           IconButton(
-                                              onPressed: () {},
+                                              onPressed: () async {
+                                                final provider = Provider.of<
+                                                        ImageOpenViewModel>(
+                                                    context,
+                                                    listen: false);
+                                                var data = provider.data;
+                                                print(data);
+                                                _saveImage(
+                                                    context,
+                                                    data['data']['slug'],
+                                                    data['data']['image_path']);
+                                              },
                                               icon: const Icon(
                                                 Icons.file_download_outlined,
                                                 color: Colors.black,
@@ -176,11 +262,11 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                         width: double.infinity,
                         height: 281,
                         child: Image.network(
-                          value.data['image_path'],
+                          value.data['data']['image_path'],
                           fit: BoxFit.fitWidth,
                           errorBuilder: (context, error, stackTrace) {
                             return Image.network(
-                                '${AppUrl.baseImageStorageUrl}${value.data['image_path'].toString()}');
+                                '${AppUrl.baseImageStorageUrl}${value.data['data']['image_path'].toString()}');
                           },
                         ),
                         // decoration: BoxDecoration(
@@ -252,8 +338,8 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                       ),
                       Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 13),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 13),
                             child: Wrap(
                               children: [
                                 SmallSearchItem(

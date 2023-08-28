@@ -84,7 +84,7 @@ class PaymentDetailScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 40, bottom: 48),
                 child: PaymentMethodRow(selectedIndex: selectedIndex),
               ),
-              Container(
+              SizedBox(
                 height: 85,
                 width: double.infinity,
                 child: Column(
@@ -126,7 +126,7 @@ class PaymentDetailScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 15),
-                child: Container(
+                child: SizedBox(
                   height: 85,
                   width: double.infinity,
                   child: Column(
@@ -177,7 +177,7 @@ class PaymentDetailScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 15),
                 child: Row(
                   children: [
-                    Container(
+                    SizedBox(
                       height: 85,
                       width: MediaQuery.of(context).size.width * 0.4,
                       child: Column(
@@ -244,7 +244,7 @@ class PaymentDetailScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       height: 85,
                       width: MediaQuery.of(context).size.width * 0.4,
                       child: Column(
@@ -311,7 +311,7 @@ class PaymentDetailScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                     height: 85,
                     width: MediaQuery.of(context).size.width * 0.4,
                     child: Column(

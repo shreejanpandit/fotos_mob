@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fotos_mobile/data/response/api_response.dart';
 import 'package:fotos_mobile/models/favourite_model.dart';
@@ -44,6 +43,7 @@ class FavouriteViewModel with ChangeNotifier {
       final homeModel = Provider.of<HomeViewModel>(context, listen: false);
       final userMediaViewModel =
           Provider.of<MediaViewModel>(context, listen: false);
+      print('media id is $mediaId');
       var response = await _myRepo.addFavouriteMediaApi(mediaId);
       if (response) {
         // Update favouriteMedia data to reflect the changes
@@ -83,7 +83,7 @@ class FavouriteViewModel with ChangeNotifier {
         homeModel.notifyListeners();
         userMediaViewModel.notifyListeners();
 
-        Utils.flushBarErrorMessage(
+        Utils.flushBarSucessMessage(
           'Media added to favourite successfully',
           context,
         );
@@ -106,9 +106,10 @@ class FavouriteViewModel with ChangeNotifier {
     try {
       final homeModel = Provider.of<HomeViewModel>(context, listen: false);
       var response = await _myRepo.deleteFavouriteMediaListApi(id);
+      print('response from favourite view modwl is $response');
       final userMediaViewModel =
           Provider.of<MediaViewModel>(context, listen: false);
-      if (response == 'true') {
+      if (response == true) {
         // Update favouriteMedia data to reflect the changes
         value.favouriteMedia.data
             ?.removeWhere((item) => item.id.toString() == id);
@@ -121,6 +122,7 @@ class FavouriteViewModel with ChangeNotifier {
           }
         }
 
+        // Update isFavorite flag to false for the removed item in userMediaViewModel
         for (var item in userMediaViewModel.userMedia.data!) {
           if (item.id.toString() == id) {
             item.isFavourite = false;
@@ -128,13 +130,14 @@ class FavouriteViewModel with ChangeNotifier {
           }
         }
 
-        // Update the icon color to white for the removed item in the imageList
+        // Update the isFavorite flag to false for the removed item in homeModel.imageList
         for (var item in homeModel.imageList) {
           if (item['id'] == id) {
             item['isFavorite'] = false;
             break;
           }
         }
+        // Update the isFavorite flag to false for the removed item in homeModel.newlyAddedImages
         for (var item in homeModel.newlyAddedImages) {
           if (item['id'] == id) {
             item['isFavorite'] = false;
@@ -145,11 +148,14 @@ class FavouriteViewModel with ChangeNotifier {
         // Notify listeners of the changes
         value.notifyListeners();
         homeModel.notifyListeners();
+        userMediaViewModel.notifyListeners();
 
         Utils.flushBarErrorMessage(
           'Media removed from favourite successfully',
           context,
         );
+
+        print('yes');
       } else {
         Utils.flushBarErrorMessage('Error deleting data', context);
       }

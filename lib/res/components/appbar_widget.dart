@@ -4,7 +4,6 @@ import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/user_models.dart';
 import '../../utils/routes/routes_name.dart';
 import '../../view_model/user_view_model.dart';
 
@@ -13,6 +12,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool automaticallyImplyLeading;
 
   const CustomAppBar({
+    super.key,
     required this.scaffoldKey,
     required this.automaticallyImplyLeading,
   });
@@ -35,7 +35,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
       var userProvider = Provider.of<UserViewModel>(context, listen: false);
       userProvider.getUser().then((value) {
         setState(() {
-          token = value.accessToken;
+          token = value.data?.accessToken;
+          print(token);
           isVisible = token != null;
         });
         // print('this is appbar $token');
@@ -47,10 +48,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     final appbarProvider = Provider.of<AppbarViewModel>(context);
-    final ValueNotifier<bool> _drawer = appbarProvider.drawerOpenNotifier;
+    final ValueNotifier<bool> drawer = appbarProvider.drawerOpenNotifier;
     return AppBar(
       automaticallyImplyLeading: widget.automaticallyImplyLeading,
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         color: CustomTheme.primaryColor, // change your color here
       ),
       actions: [
@@ -115,18 +116,18 @@ class _CustomAppBarState extends State<CustomAppBar> {
             ),
           ),
         ValueListenableBuilder(
-          valueListenable: _drawer,
+          valueListenable: drawer,
           builder: (context, value, child) {
             return Container(
               margin: const EdgeInsets.only(right: 10),
               child: InkWell(
                 onTap: () {
-                  if (_drawer.value) {
+                  if (drawer.value) {
                     widget.scaffoldKey.currentState?.openEndDrawer();
                   } else {
                     widget.scaffoldKey.currentState?.openDrawer();
                   }
-                  _drawer.value = !_drawer.value; // Toggle the drawer value
+                  drawer.value = !drawer.value; // Toggle the drawer value
                 },
                 child: SvgPicture.asset('assets/branding/home/drawer.svg'),
               ),
@@ -138,9 +139,14 @@ class _CustomAppBarState extends State<CustomAppBar> {
         onTap: () {
           Navigator.pushNamed(context, RoutesName.home);
         },
-        child: Image.asset(
-          'assets/branding/images/logo.png',
+        child: SvgPicture.asset(
+          'assets/branding/images/logo.svg',
+          // fit: BoxFit.contain,
         ),
+
+        // Image.asset(
+        //   ,
+        // ),
       ),
       elevation: 0,
     );

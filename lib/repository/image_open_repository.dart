@@ -1,6 +1,5 @@
 import 'package:fotos_mobile/data/network/base_api_service.dart';
 import 'package:fotos_mobile/data/network/network_api_service.dart';
-import 'package:fotos_mobile/models/image_open_model.dart';
 import 'package:fotos_mobile/res/app_urls.dart';
 
 class ImageOpenRepository {
@@ -8,9 +7,9 @@ class ImageOpenRepository {
 
   Future fetchMediasMedia(String slug) async {
     try {
-      print('${AppUrl.mediasMediaUrl}${slug}');
+      // print('${AppUrl.mediasMediaUrl}${slug}');
       dynamic response = await _apiService
-          .getGetApiResponse('${AppUrl.mediasMediaUrl}${slug}');
+          .getGetApiResponse('${AppUrl.mediasMediaUrl}$slug');
       // dynamic response = await _apiService.getGetApiResponse(AppUrl.mediaUrl);
       // print(response);
       // return ImageOpenModel.fromJson(response);

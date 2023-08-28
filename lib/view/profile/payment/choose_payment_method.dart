@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fotos_mobile/view/profile/payment/payment_details.dart';
 
-import '../../../utils/routes/routes_name.dart';
 
 class ChoosePaymentMethod extends StatefulWidget {
   const ChoosePaymentMethod({super.key});

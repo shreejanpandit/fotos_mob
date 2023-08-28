@@ -42,7 +42,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
       required String collectionType,
       required String title}) async {
     var userData = await getUserData();
-    var token = userData.accessToken.toString();
+    var token = userData.data?.accessToken.toString();
 
     var request = http.MultipartRequest(
         'POST', Uri.parse('${AppUrl.baseUrl}auth/media-lists'));
@@ -498,14 +498,17 @@ class _CollectionScreenState extends State<CollectionScreen> {
                     builder: (context, value, child) {
                       // print(
                       //     'Hi media view consumer collection screen ${value.authMediaListItems}');
-                      final authMediaListItems = value.authMediaListItems;
-                      final itemCount = authMediaListItems.length;
+                      final authMediaListItems = value.userMediaList.data;
+                      print(
+                          'authMediaListItems length: ${authMediaListItems!.length}');
+
+                      final itemCount = authMediaListItems!.length;
                       final rows = (itemCount / 2).ceil();
 
                       return GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: itemCount,
+                        itemCount: authMediaListItems.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
@@ -515,9 +518,9 @@ class _CollectionScreenState extends State<CollectionScreen> {
                           //     8, // Adjust the aspect ratio to match desired height and width
                         ),
                         itemBuilder: (context, index) {
-                          String imagePath = value.authMediaListItems[index]
-                                  ['image_path']
-                              .toString();
+                          String imagePath =
+                              authMediaListItems[index].path.toString();
+
                           String imageUrl;
 
                           if (imagePath.startsWith('http')) {
@@ -529,7 +532,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
 
                           return CardWithImageAndText(
                             imagePath: imageUrl,
-                            text: authMediaListItems[index]['name'],
+                            text: authMediaListItems[index].name.toString(),
                           );
                         },
                       );

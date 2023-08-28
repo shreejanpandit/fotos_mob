@@ -5,13 +5,13 @@ class GernesListModel {
 
   GernesListModel({int? id, String? name, String? slug}) {
     if (id != null) {
-      this._id = id;
+      _id = id;
     }
     if (name != null) {
-      this._name = name;
+      _name = name;
     }
     if (slug != null) {
-      this._slug = slug;
+      _slug = slug;
     }
   }
 
@@ -29,10 +29,10 @@ class GernesListModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this._id;
-    data['name'] = this._name;
-    data['slug'] = this._slug;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = _id;
+    data['name'] = _name;
+    data['slug'] = _slug;
     return data;
   }
 }

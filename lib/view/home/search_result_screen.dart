@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:fotos_mobile/view/profile/profile_screen.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 
 import '../../res/components/appbar_widget.dart';
@@ -117,7 +116,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
                         ),
                         ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: imageList.length,
                           itemBuilder: (context, index) {
                             return GestureDetector(

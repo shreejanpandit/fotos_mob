@@ -17,6 +17,7 @@ import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
 import '../../../data/response/status.dart';
+import '../../../models/media_list_model.dart';
 import '../../../models/user_models.dart';
 import '../../../res/app_urls.dart';
 import '../../../utils/routes/routes_name.dart';
@@ -60,7 +61,7 @@ class _MediaScreenState extends State<MediaScreen> {
       required String mediaList,
       required String title}) async {
     var userData = await getUserData();
-    var token = userData.accessToken.toString();
+    var token = userData.data?.accessToken.toString();
 
     var request = http.MultipartRequest(
         'POST', Uri.parse('${AppUrl.baseUrl}auth/medias'));
@@ -143,7 +144,7 @@ class _MediaScreenState extends State<MediaScreen> {
   }) async {
     print('$title $description $mediaList');
     var userData = await getUserData();
-    var token = userData.accessToken.toString();
+    var token = userData.data?.accessToken.toString();
 
     var request = http.MultipartRequest(
         'POST', Uri.parse('${AppUrl.baseUrl}auth/medias/$mediaId'));
@@ -240,7 +241,16 @@ class _MediaScreenState extends State<MediaScreen> {
       var userProvider = Provider.of<UserViewModel>(context, listen: false);
       userProvider.getUser().then((value) {
         setState(() {
-          userId = value.user!.id.toString();
+          userId = value.data?.user!.id.toString();
+
+          if (userId != null) {
+            Future.delayed(const Duration(seconds: 1), () {
+              Provider.of<MediaViewModel>(context, listen: false)
+                  .fetchUserMedia(userId!);
+              Provider.of<MediaViewModel>(context, listen: false)
+                  .fetchUserMediaList();
+            });
+          }
         });
       });
     });
@@ -382,8 +392,8 @@ class _MediaScreenState extends State<MediaScreen> {
                       ),
                       Consumer<MediaViewModel>(
                         builder: (context, value, child) {
-                          // print(value.selectedCollection);
-                          // print(value.mediaListItems);
+                          print(value.selectedCollection);
+                          print(value.mediaListItems);
                           return Container(
                             width: 336,
                             height: 45.25,
@@ -407,13 +417,13 @@ class _MediaScreenState extends State<MediaScreen> {
                                 // print(value.selectedCollection);
                               },
                               // onChanged: (value) {},
-                              items: value.mediaListItems.map((item) {
+                              items: value.userMediaList.data!.map((item) {
                                 return DropdownMenuItem<String>(
-                                  value: item['id'],
+                                  value: item.id.toString(),
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 16),
                                     child: Text(
-                                      item['name'],
+                                      item.name.toString(),
                                       style: CustomTheme.base.copyWith(
                                         color: CustomTheme.lightTextColor
                                             .withOpacity(0.4),
@@ -557,13 +567,13 @@ class _MediaScreenState extends State<MediaScreen> {
                   onGreenButton: () async {
                     String title = mediaNameController.text;
                     String description = mediaDescriptionController.text;
-                    var medialistData = MediaList(
+                    var medialistData = MediaListData(
                       id: int.parse(
                           Provider.of<MediaViewModel>(context, listen: false)
                               .selectedCollection!),
                     );
 
-                    String mediaList = medialistData.toString();
+                    String mediaList = medialistData.id.toString();
 
                     if (title == '' && title.isEmpty) {
                       Utils.flushBarErrorMessage(
@@ -579,10 +589,11 @@ class _MediaScreenState extends State<MediaScreen> {
                           title: title.trim(),
                           description: description.trim(),
                           mediaList: mediaList);
-
+                      print('$title $description $mediaList');
                       if (res == true) {
                         Navigator.pop(context);
-
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, RoutesName.media, (route) => true);
                         Alert(
                             style: const AlertStyle(
                                 titleStyle: TextStyle(color: Colors.white),
@@ -619,9 +630,9 @@ class _MediaScreenState extends State<MediaScreen> {
 
   void _showBottomSheetUpdate(BuildContext context, userData) {
     TextEditingController mediaNameController =
-        TextEditingController(text: userData['title']);
+        TextEditingController(text: userData['data']['title']);
     TextEditingController mediaDescriptionController =
-        TextEditingController(text: userData['description']);
+        TextEditingController(text: userData['data']['description']);
 
     showModalBottomSheet(
       context: context,
@@ -690,7 +701,8 @@ class _MediaScreenState extends State<MediaScreen> {
                                       // filePath != null ? filePath! :
                                       imagePickerModel.pickedImage != null
                                           ? imagePickerModel.pickedImage!.path
-                                          : userData['image_path'].toString(),
+                                          : userData['data']['image_path']
+                                              .toString(),
                                       style: const TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w300,
@@ -750,7 +762,8 @@ class _MediaScreenState extends State<MediaScreen> {
                       ),
                       Consumer<MediaViewModel>(
                         builder: (context, value, child) {
-                          print('update modal data $userData');
+                          print(
+                              'update modal data ${userData['data']['media_list']['id']}');
                           return Container(
                             width: 336,
                             height: 45.25,
@@ -765,21 +778,23 @@ class _MediaScreenState extends State<MediaScreen> {
                               isExpanded: true,
                               underline:
                                   Container(), // Removes the default underline
-                              value: userData['media_list']['id'].toString(),
+                              value: userData['data']['media_list']['id']
+                                  .toString(),
                               onChanged: (newValue) {
                                 value.setselectedCollection(newValue!);
-                                // Update the value of 'userData['media_list']['id']' to the selected dropdown value
+                                // Update the value of 'userData['data']['media_list']['id']' to the selected dropdown value
                                 setState(() {
-                                  userData['media_list']['id'] = newValue;
+                                  userData['data']['media_list']['id'] =
+                                      newValue;
                                 });
                               },
-                              items: value.authMediaListItems.map((item) {
+                              items: value.userMediaList.data!.map((item) {
                                 return DropdownMenuItem<String>(
-                                  value: item['id'],
+                                  value: item.id.toString(),
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 16),
                                     child: Text(
-                                      item['name'],
+                                      item.name.toString(),
                                       style: CustomTheme.base.copyWith(
                                         color: CustomTheme.lightTextColor
                                             .withOpacity(0.4),
@@ -926,7 +941,8 @@ class _MediaScreenState extends State<MediaScreen> {
                     String title = mediaNameController.text;
                     String description = mediaDescriptionController.text;
 
-                    String mediaList = userData['media_list']['id'].toString();
+                    String mediaList =
+                        userData['data']['media_list']['id'].toString();
 
                     if (title == '' && title.isEmpty) {
                       Utils.flushBarErrorMessage(
@@ -935,17 +951,18 @@ class _MediaScreenState extends State<MediaScreen> {
                       Utils.flushBarErrorMessage(
                           'Description can\'t be empty', context);
                     } else {
+                      print('media ttile ${title.trim()}');
                       bool res = await updateFormData(
                           context: context,
-                          mediaId: userData['id'].toString(),
-                          image: userData['image_path'],
+                          mediaId: userData['data']['id'].toString(),
+                          image: userData['data']['image_path'],
                           title: title.trim(),
                           description: description.trim(),
                           mediaList: mediaList);
 
                       if (res == true) {
                         Navigator.pop(context);
-                        Navigator.pushNamed(context, RoutesName.profile);
+                        Navigator.pushNamed(context, RoutesName.media);
                         Alert(
                             style: const AlertStyle(
                                 titleStyle: TextStyle(color: Colors.white),
@@ -1021,7 +1038,7 @@ class _MediaScreenState extends State<MediaScreen> {
                             // await Provider.of<GenersViewModel>(context,
                             //         listen: false)
                             //     .fetchGernes();
-                            await value.fetchMediaList();
+                            await value.userMediaList;
 
                             Future.delayed(const Duration(seconds: 1));
                             if (!value.loading) {
@@ -1103,6 +1120,8 @@ class _MediaScreenState extends State<MediaScreen> {
                                                       .fetchImageOpenMedia(
                                                           slug, context);
 
+                                                  print(
+                                                      'media screen image open ${slug}');
                                                   if (!imageOpenViewModel
                                                       .loading) {
                                                     if (context.mounted) {
@@ -1184,15 +1203,15 @@ class _MediaScreenState extends State<MediaScreen> {
                                                     InkWell(
                                                       onTap: () async {
                                                         await value
-                                                            .fetchAuthMediaList();
+                                                            .fetchUserMediaList();
                                                         // print(value
                                                         //     .authMediaListItems);
-                                                        Future.delayed(
-                                                            const Duration(
-                                                                seconds: 1));
-                                                        print(value.userMedia
-                                                            .data![index].id
-                                                            .toString());
+                                                        // Future.delayed(
+                                                        //     const Duration(
+                                                        //         seconds: 1));
+                                                        // print(value.userMedia
+                                                        //     .data![index].id
+                                                        //     .toString());
                                                         final String slug =
                                                             value
                                                                 .userMedia
@@ -1206,13 +1225,19 @@ class _MediaScreenState extends State<MediaScreen> {
                                                         var userData =
                                                             imageOpenViewModel
                                                                 .data;
-                                                        print(userData);
-                                                        if (!value
-                                                            .authLoading) {
+                                                        print(
+                                                            'user data media screen is $userData');
+
+                                                        if (value.userMediaList
+                                                                .status !=
+                                                            Status.LOADING) {
                                                           _showBottomSheetUpdate(
                                                               context,
                                                               userData);
                                                         }
+
+                                                        // if (!value
+                                                        //     .authLoading) {}
                                                       },
                                                       child: const Icon(
                                                         Icons.edit,
@@ -1290,10 +1315,10 @@ class _MediaScreenState extends State<MediaScreen> {
                                                                             ),
                                                                           ),
                                                                           onPressed:
-                                                                              () {
+                                                                              () async {
                                                                             final provider =
                                                                                 Provider.of<MediaViewModel>(context, listen: false);
-                                                                            provider.deleteUserMedia(
+                                                                            await provider.deleteUserMedia(
                                                                               mediaId,
                                                                               context,
                                                                               provider,

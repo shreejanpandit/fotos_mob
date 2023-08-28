@@ -179,7 +179,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                         ),
                         child: Center(
                             child: loading
-                                ? CircularProgressIndicator(
+                                ? const CircularProgressIndicator(
                                     color: CustomTheme.whiteTextColor,
                                   )
                                 : Text('SEND RESET LINK',

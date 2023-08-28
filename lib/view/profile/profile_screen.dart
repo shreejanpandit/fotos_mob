@@ -19,7 +19,7 @@ import '../../res/components/drawer_widget.dart';
 import '../../view_model/media_view_model.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({super.key});
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -28,34 +28,84 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   // MediaViewModel mediaViewModel = MediaViewModel();
   String? userId;
+  dynamic userProvider;
+  late UserModel user;
+  String? userName;
+  String? userProfession;
+  String? profileImagePath;
+  String? imageUrl;
+  bool loaded = false;
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () {
-      Provider.of<MediaViewModel>(context, listen: false).fetchAuthMediaList();
-    });
+
     Future.delayed(Duration.zero, () {
       var userProvider = Provider.of<UserViewModel>(context, listen: false);
-      // userProvider.getUser().then((value) {
-      //   setState(() {
-      //     userId = value.user!.id.toString();
-      //   });
-      // });
+      userProvider.getUser().then((value) {
+        setState(() {
+          loaded = true;
+        });
+      });
+    });
+    // Future.delayed(Duration.zero, () {
+    //   Provider.of<MediaViewModel>(context, listen: false).fetchAuthMediaList();
+    // });
+    // Future.delayed(Duration.zero, () async {
+    //   userProvider = Provider.of<UserViewModel>(context, listen: false);
+    //   user = await userProvider.getUser();
 
-      userId = userProvider.userData.data!.id.toString();
-    });
-    Future.delayed(Duration(seconds: 1), () {
-      Provider.of<MediaViewModel>(context, listen: false)
-          .fetchUserMedia(userId!);
-    });
+    //   if (user.data?.accessToken != null) {
+    //     setState(() {
+    //       // userId = userProvider.userData.data!.id.toString();
+    //       userId = user.data!.user!.id.toString();
+    //       userName = user.data!.user!.name.toString();
+    //       profileImagePath = user.data!.user!.profile_photo_path.toString();
+    //       userProfession = user.data!.user!.profession.toString();
+
+    //       if (profileImagePath!.startsWith('http')) {
+    //         imageUrl = profileImagePath;
+    //       } else {
+    //         imageUrl = '${AppUrl.baseImageStorageUrl}$profileImagePath';
+    //       }
+    //     });
+    //     print('profile screen user id is: $profileImagePath');
+
+    //     // Check if userId is not null
+    //     if (userId != null) {
+    //       Future.delayed(const Duration(seconds: 1), () {
+    //         Provider.of<MediaViewModel>(context, listen: false)
+    //             .fetchUserMedia(userId!);
+    //       });
+    //     }
+    //   }
+    // });
+    // Future.delayed(const Duration(seconds: 1), () {
+    //   Provider.of<MediaViewModel>(context, listen: false).fetchAuthMediaList();
+
+    //   Provider.of<MediaViewModel>(context, listen: false)
+    //       .fetchUserMedia(userId!);
+    // });
     // mediaViewModel.fetchAuthMediaList();
     // print(mediaViewModel.authMediaListItems);
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final userPreference = Provider.of<UserViewModel>(context);
-    Future<UserModel> getUserData() => UserViewModel().getUser();
+    final userPreference = Provider.of<UserViewModel>(context, listen: false);
+    // Future<UserModel> getUserData = UserViewModel().getUser();
+
+    // Future.delayed(Duration.zero, () async {
+    //   userProvider = Provider.of<UserViewModel>(context, listen: false);
+    //   setState(() async {
+    //     user = await userProvider.getUser();
+    //   });
+    // });
     double baseWidth = 390;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     // double ffem = fem * 0.97;
@@ -70,7 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             drawer: const AppDrawer(),
             body: Container(
               // homeuser4Sw (38:203)
-              padding: EdgeInsets.fromLTRB(0, 22, 0, 0),
+              padding: const EdgeInsets.fromLTRB(0, 22, 0, 0),
               width: double.infinity,
               decoration: BoxDecoration(
                 color: const Color(0xffffffff),
@@ -94,94 +144,105 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Consumer<UserViewModel>(
-                                  builder: (context, value, child) {
-                                    // print(value.userData.data!.id.toString());
-                                    String imagePath = value
-                                        .userData.data!.imagePath
-                                        .toString();
-                                    String imageUrl;
-
-                                    if (imagePath.startsWith('http')) {
-                                      imageUrl = imagePath;
+                                  builder: (context, userViewModel, child) {
+                                    User? user =
+                                        userViewModel.currentUser!.data!.user;
+                                    profileImagePath =
+                                        user!.profile_photo_path ?? '.';
+                                    print(profileImagePath);
+                                    if (profileImagePath!.startsWith('http')) {
+                                      imageUrl = profileImagePath;
                                     } else {
                                       imageUrl =
-                                          '${AppUrl.baseImageStorageUrl}$imagePath';
+                                          '${AppUrl.baseImageStorageUrl}$profileImagePath';
                                     }
-                                    switch (value.userData.status) {
-                                      case Status.LOADING:
-                                        return Center(
-                                          child: CircularProgressIndicator
-                                              .adaptive(),
-                                        );
-                                      case Status.ERROR:
-                                        return Text(
-                                            value.userData.message.toString());
-                                      case Status.COMPLETED:
-                                        return Row(
-                                          children: [
-                                            // Container(
-                                            //   width: 80,
-                                            //   height: 80,
-                                            //   child: const CircleAvatar(
-                                            //     backgroundImage: AssetImage(
-                                            //         'assets/branding/images/avatar.png'),
-                                            //   ),
-                                            // ),
-
-                                            ClipOval(
-                                              child: Container(
-                                                height: 80,
-                                                width: 80,
-                                                decoration:
-                                                    const ShapeDecoration(
-                                                  shape: CircleBorder(),
-                                                ),
-                                                child: Image.network(
-                                                  imageUrl,
-                                                  fit: BoxFit.scaleDown,
-                                                  errorBuilder: (context, error,
-                                                      stackTrace) {
-                                                    return Image.asset(
-                                                      'assets/branding/images/avatar.png',
-                                                      fit: BoxFit.scaleDown,
-                                                    );
-                                                  },
-                                                ),
+                                    if (!loaded) {
+                                      return CircularProgressIndicator
+                                          .adaptive();
+                                    } else {
+                                      return Row(
+                                        children: [
+                                          // Container(
+                                          //   width: 80,
+                                          //   height: 80,
+                                          //   child: const CircleAvatar(
+                                          //     backgroundImage: AssetImage(
+                                          //         'assets/branding/images/avatar.png'),
+                                          //   ),
+                                          // ),
+                                          Container(
+                                            height: 80,
+                                            width: 80,
+                                            decoration: const ShapeDecoration(
+                                              shape: CircleBorder(),
+                                            ),
+                                            child: ClipOval(
+                                              child: Image.network(
+                                                imageUrl.toString(),
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error,
+                                                    stackTrace) {
+                                                  return Image.asset(
+                                                    'assets/branding/images/avatar.png',
+                                                    fit: BoxFit.cover,
+                                                  );
+                                                },
                                               ),
                                             ),
-                                            const SizedBox(width: 13),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  value.userData.data!.name
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      fontSize: 30,
-                                                      fontWeight:
-                                                          FontWeight.w500),
+                                          ),
+
+                                          // ClipOval(
+                                          //   child: Container(
+                                          //     height: 80,
+                                          //     width: 80,
+                                          //     decoration:
+                                          //         const ShapeDecoration(
+                                          //       shape: CircleBorder(),
+                                          //     ),
+                                          //     child: Image.network(
+                                          //       imageUrl,
+                                          //       fit: BoxFit.scaleDown,
+                                          //       errorBuilder: (context, error,
+                                          //           stackTrace) {
+                                          //         return Image.asset(
+                                          //           'assets/branding/images/avatar.png',
+                                          //           fit: BoxFit.scaleDown,
+                                          //         );
+                                          //       },
+                                          //     ),
+                                          //   ),
+                                          // ),
+
+                                          const SizedBox(width: 13),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                user.name.toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 30,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                (user.profession != null)
+                                                    ? user.profession.toString()
+                                                    : 'Profession',
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w300,
+                                                  color:
+                                                      CustomTheme.primaryColor,
                                                 ),
-                                                SizedBox(height: 4),
-                                                Text(
-                                                  value
-                                                      .userData.data!.profession
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w300,
-                                                    color: CustomTheme
-                                                        .primaryColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        );
-                                      default:
-                                        return Container();
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
                                     }
                                   },
                                 ),
@@ -281,8 +342,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   imagePath: 'assets/branding/home/medias.svg',
                                   text: 'My medias',
                                   containerColor: CustomTheme.primaryColor,
-                                  containerText:
-                                      '${value.userMedia.data?.length}',
+                                  containerText: value.userMedia.data == null
+                                      ? '...'
+                                      : '${value.userMedia.data!.length}',
                                 );
                               },
                             ),
@@ -302,8 +364,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       'assets/branding/home/collection.svg',
                                   text: 'Collections',
                                   containerColor: CustomTheme.yellowColor,
-                                  containerText:
-                                      '${value.authMediaListItems.length}',
+                                  containerText: value.userMediaList.data ==
+                                          null
+                                      ? '...'
+                                      : '${value.userMediaList.data!.length}',
                                 );
                               },
                             ),
@@ -424,7 +488,7 @@ class ContainerWithIconTextAndLeading extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 13,
                     ),
                     Text(
@@ -474,7 +538,7 @@ void _showBottomSheet(BuildContext context) {
       ),
     ),
     builder: (BuildContext context) {
-      return Container(
+      return SizedBox(
         height: MediaQuery.of(context).size.height *
             0.75, // Adjust the height to take 3/4th of the screen
         child: SingleChildScrollView(
@@ -519,7 +583,7 @@ void _showBottomSheet(BuildContext context) {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(left: 16),
+                              padding: const EdgeInsets.only(left: 16),
                               child: Text(
                                 'Select File',
                                 style: CustomTheme.base.copyWith(
@@ -584,7 +648,7 @@ void _showBottomSheet(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 16),
+                            padding: const EdgeInsets.only(left: 16),
                             child: Text(
                               'Select Collection',
                               style: CustomTheme.base.copyWith(
@@ -632,7 +696,7 @@ void _showBottomSheet(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 16),
+                            padding: const EdgeInsets.only(left: 16),
                             child: Text(
                               'Enter Media Name',
                               style: CustomTheme.base.copyWith(
@@ -675,7 +739,7 @@ void _showBottomSheet(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 16, top: 3),
+                            padding: const EdgeInsets.only(left: 16, top: 3),
                             child: Text(
                               'Enter Media Description',
                               style: CustomTheme.base.copyWith(
@@ -695,7 +759,7 @@ void _showBottomSheet(BuildContext context) {
                 onGreenButton: () {
                   Navigator.pop(context);
                   Alert(
-                      style: AlertStyle(
+                      style: const AlertStyle(
                           titleStyle: TextStyle(color: Colors.white),
                           backgroundColor: CustomTheme.lightGreenColor),
                       context: context,

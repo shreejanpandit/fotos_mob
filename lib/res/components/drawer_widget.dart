@@ -41,10 +41,10 @@ class AppDrawer extends StatelessWidget {
                   } else {
                     final user = snapshot.data;
                     if (kDebugMode) {
-                      print(user?.accessToken.toString());
+                      print(user!.data?.accessToken.toString());
                     }
-                    if (user?.accessToken.toString() == 'null' ||
-                        user?.accessToken == '') {
+                    if (user!.data?.accessToken.toString() == 'null' ||
+                        user.data?.accessToken == '') {
                       return CustomListTile(
                         title: "Login",
                         opacity: 1.0,

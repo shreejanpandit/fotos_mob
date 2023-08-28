@@ -16,9 +16,9 @@ class GenersViewModel with ChangeNotifier {
   Future<void> fetchGernes() async {
     setGerne(ApiResponse.loading());
     _myRepo.fetchGernesApi().then((value) {
-      value.forEach((GernesListModel gerneModel) {
+      for (var gerneModel in value) {
         geners.add(gerneModel.name);
-      });
+      }
 
       setGerne(ApiResponse.completed(value));
     }).onError((error, stackTrace) {

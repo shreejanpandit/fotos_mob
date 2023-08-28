@@ -27,14 +27,14 @@ class FavouriteModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['slug'] = this.slug;
-    data['description'] = this.description;
-    data['image_path'] = this.imagePath;
-    data['created_at'] = this.createdAt;
-    data['is_favourite'] = this.isFavourite;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['slug'] = slug;
+    data['description'] = description;
+    data['image_path'] = imagePath;
+    data['created_at'] = createdAt;
+    data['is_favourite'] = isFavourite;
     return data;
   }
 }

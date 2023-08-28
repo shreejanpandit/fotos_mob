@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
-import 'package:fotos_mobile/view/profile/payment/add_payment_screen.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({Key? key}) : super(key: key);

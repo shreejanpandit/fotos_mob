@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fotos_mobile/models/media_list_model.dart';
 import 'package:fotos_mobile/models/media_model.dart';
 import 'package:fotos_mobile/repository/media_repostiory.dart';
 import 'package:fotos_mobile/utils/utils.dart';
@@ -13,7 +14,7 @@ class MediaViewModel with ChangeNotifier {
   bool get loading => _loading;
   bool _authLoading = false;
   bool get authLoading => _authLoading;
-  String? selectedCollection = "1";
+  String? selectedCollection;
 
   void setselectedCollection(String newValue) {
     selectedCollection = newValue;
@@ -41,73 +42,98 @@ class MediaViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future fetchMediaList() async {
-    _loading = true;
-    ChangeNotifier();
+  // Future fetchMediaList() async {
+  //   _loading = true;
+  //   ChangeNotifier();
+  //   try {
+  //     final value = await _myRepo.getMediaListApi();
+  //     final List<Map<String, dynamic>> newData = [];
+
+  //     for (var i = 0; i < value.data!.length; i++) {
+  //       final mediaListItem = value.data![i];
+  //       final newItem = {
+  //         'id': mediaListItem.id.toString(),
+  //         'name': mediaListItem.name,
+  //       };
+  //       ml.add(mediaListItem.name);
+  //       // print(ml);
+  //       // Check if the item already exists in mediaListItems
+  //       final existingItemIndex = mediaListItems.indexWhere((item) =>
+  //           item['id'] == newItem['id'] && item['name'] == newItem['name']);
+
+  //       if (existingItemIndex == -1) {
+  //         newData.add(newItem);
+  //       }
+  //     }
+
+  //     // Append new data only if mediaListItems is empty or newData is not empty
+  //     if (mediaListItems.isEmpty || newData.isNotEmpty) {
+  //       mediaListItems.addAll(newData);
+  //     }
+
+  //     _loading = false;
+  //     notifyListeners();
+  //     // print("I'm getting these items: $mediaListItems");
+  //   } catch (error) {
+  //     print(error.toString());
+  //   }
+  // }
+  ApiResponse<List<MediaListData>> userMediaList = ApiResponse.loading();
+
+  void setMediaList(ApiResponse<List<MediaListData>> response) {
+    userMediaList = response;
+
+    if (userMediaList.data != null && userMediaList.data!.isNotEmpty) {
+      selectedCollection = userMediaList.data![0].id.toString();
+      print(selectedCollection);
+    }
+    notifyListeners();
+  }
+
+  Future<void> fetchUserMediaList() async {
+    setMediaList(ApiResponse.loading());
     try {
-      final value = await _myRepo.getMediaListApi();
-      final List<Map<String, dynamic>> newData = [];
+      List<MediaListData> userMediaListItem = await _myRepo.getMediaListApi();
 
-      for (var i = 0; i < value.data!.length; i++) {
-        final mediaListItem = value.data![i];
-        final newItem = {
-          'id': mediaListItem.id.toString(),
-          'name': mediaListItem.name,
-        };
-        ml.add(mediaListItem.name);
-        // print(ml);
-        // Check if the item already exists in mediaListItems
-        final existingItemIndex = mediaListItems.indexWhere((item) =>
-            item['id'] == newItem['id'] && item['name'] == newItem['name']);
-
-        if (existingItemIndex == -1) {
-          newData.add(newItem);
-        }
-      }
-
-      // Append new data only if mediaListItems is empty or newData is not empty
-      if (mediaListItems.isEmpty || newData.isNotEmpty) {
-        mediaListItems.addAll(newData);
-      }
-
-      _loading = false;
+      setMediaList(
+          ApiResponse.completed(userMediaListItem.cast<MediaListData>()));
       notifyListeners();
-      // print("I'm getting these items: $mediaListItems");
     } catch (error) {
-      print(error.toString());
+      setMediaList(ApiResponse.error(error.toString()));
     }
   }
 
-  Future fetchAuthMediaList() async {
-    _authLoading = true;
-    ChangeNotifier();
-    try {
-      final value = await _myRepo.getAuthMediaListApi();
+  // Future fetchAuthMediaList() async {
+  //   _authLoading = true;
+  //   ChangeNotifier();
+  //   try {
+  //     final value = await _myRepo.getAuthMediaListApi();
 
-      for (var i = 0; i < value.length; i++) {
-        final authMediaListItem = value[i];
+  //     for (var i = 0; i < value.length; i++) {
+  //       print(value[i].title);
+  //       final authMediaListItem = value[i];
 
-        // Check if the item already exists in the list
-        bool itemExists = authMediaListItems
-            .any((item) => item['id'] == authMediaListItem.id.toString());
+  //       // Check if the item already exists in the list
+  //       bool itemExists = authMediaListItems
+  //           .any((item) => item['id'] == authMediaListItem.id.toString());
 
-        // If the item does not exist, add it to the list
-        if (!itemExists) {
-          final newItem = {
-            'id': authMediaListItem.id.toString(),
-            'name': authMediaListItem.name,
-            'image_path': authMediaListItem.path,
-          };
-          authMediaListItems.add(newItem);
-        }
-      }
-      _authLoading = false;
-      notifyListeners();
-      // print("I'm getting these items: $authMediaListItems");
-    } catch (error) {
-      print(error.toString());
-    }
-  }
+  //       // If the item does not exist, add it to the list
+  //       if (!itemExists) {
+  //         final newItem = {
+  //           'id': authMediaListItem.id.toString(),
+  //           'name': authMediaListItem.title,
+  //           'image_path': authMediaListItem.imagePath,
+  //         };
+  //         authMediaListItems.add(newItem);
+  //       }
+  //     }
+  //     _authLoading = false;
+  //     notifyListeners();
+  //     // print("I'm getting these items: $authMediaListItems");
+  //   } catch (error) {
+  //     print(error.toString());
+  //   }
+  // }
 
   bool showDiscoverMore = false;
   final scrollCtrl = ScrollController();
@@ -140,8 +166,8 @@ class MediaViewModel with ChangeNotifier {
     try {
       // final homeModel = Provider.of<HomeViewModel>(context, listen: false);
       var response = await _myRepo.deleteUserMediaListApi(mediaId);
-
-      if (response == 'true') {
+      print(response['message']);
+      if (response['message'] == 'Updated Successfully') {
         // Update favouriteMedia data to reflect the changes
         value.userMedia.data
             ?.removeWhere((item) => item.id.toString() == mediaId);
@@ -149,15 +175,15 @@ class MediaViewModel with ChangeNotifier {
         // // Notify listeners of the changes
         value.notifyListeners();
 
-        Utils.flushBarErrorMessage(
-          'User media deleted successfully',
-          context,
-        );
+        // Utils.flushBarErrorMessage(
+        //   'User media deleted successfully',
+        //   context,
+        // );
       } else {
-        Utils.flushBarErrorMessage('Error deleting data', context);
+        // Utils.flushBarErrorMessage('Error deleting data', context);
       }
     } catch (error) {
-      Utils.flushBarErrorMessage(error.toString(), context);
+      // Utils.flushBarErrorMessage(error.toString(), context);
     }
   }
 

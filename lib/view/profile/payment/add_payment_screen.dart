@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fotos_mobile/res/components/profile_component/green_and_cancle_button.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
 
-import 'choose_payment_method.dart';
 
 class AddPaymentScreen extends StatefulWidget {
   const AddPaymentScreen({Key? key}) : super(key: key);

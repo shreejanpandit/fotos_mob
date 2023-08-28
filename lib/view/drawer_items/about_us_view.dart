@@ -6,7 +6,7 @@ class AboutUsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> _teamMembers = [
+    List<Map<String, dynamic>> teamMembers = [
       {
         'name': 'Asmit Nepali',
         'position': 'Backend / API',
@@ -44,9 +44,9 @@ class AboutUsPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: ListView.builder(
-          itemCount: _teamMembers.length,
+          itemCount: teamMembers.length,
           itemBuilder: (context, index) {
-            final teamMember = _teamMembers[index];
+            final teamMember = teamMembers[index];
             return InkWell(
               onTap: () {
                 _showMemberModal(context, teamMember);
@@ -56,7 +56,7 @@ class AboutUsPage extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       colors: [
                         CustomTheme.primaryColor,
                         CustomTheme.lightBlackTextColor,
@@ -208,9 +208,9 @@ void _showMemberModal(BuildContext context, Map<String, dynamic> teamMember) {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Text(
+                const Text(
                   'Bio',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -225,9 +225,9 @@ void _showMemberModal(BuildContext context, Map<String, dynamic> teamMember) {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Text(
+                const Text(
                   'Contact Information',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -255,8 +255,7 @@ void _showMemberModal(BuildContext context, Map<String, dynamic> teamMember) {
                     // Handle button press
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: CustomTheme.primaryColor,
-                    onPrimary: Colors.white,
+                    foregroundColor: Colors.white, backgroundColor: CustomTheme.primaryColor,
                     padding: const EdgeInsets.symmetric(
                       vertical: 12,
                       horizontal: 24,

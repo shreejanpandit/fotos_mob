@@ -47,6 +47,30 @@ class Utils {
         )..show(context));
   }
 
+  static void flushBarSucessMessage(String message, BuildContext context) {
+    showFlushbar(
+        context: context,
+        flushbar: Flushbar(
+          forwardAnimationCurve: Curves.decelerate,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.all(15),
+          titleColor: Colors.green,
+          borderRadius: BorderRadius.circular(10),
+          reverseAnimationCurve: Curves.easeOut,
+          flushbarPosition: FlushbarPosition.TOP,
+          positionOffset: 20,
+          message: message,
+          messageColor: Colors.green,
+          icon: const Icon(
+            Icons.error_outline,
+            size: 30,
+            color: Colors.green,
+          ),
+          backgroundColor: Colors.white,
+          duration: const Duration(seconds: 3),
+        )..show(context));
+  }
+
   static snackBar(
       {required String message,
       required BuildContext context,

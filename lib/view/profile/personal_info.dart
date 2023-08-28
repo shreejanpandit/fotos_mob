@@ -3,62 +3,90 @@ import 'package:fotos_mobile/res/components/profile_component/textfield_with_ico
 import 'package:provider/provider.dart';
 
 import '../../data/response/status.dart';
+import '../../models/user_models.dart';
 import '../../view_model/user_view_model.dart';
 
-class PersonalInfo extends StatelessWidget {
+class PersonalInfo extends StatefulWidget {
   final bool isEditable;
-  PersonalInfo({super.key, required this.isEditable});
+  User? userData;
+  PersonalInfo({super.key, required this.isEditable, required this.userData});
+
+  @override
+  State<PersonalInfo> createState() => _PersonalInfoState();
+}
+
+class _PersonalInfoState extends State<PersonalInfo> {
+  dynamic userProvider;
+  // late UserModel user;
+  User? userData;
+
+  bool loaded = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      var userProvider = Provider.of<UserViewModel>(context, listen: false);
+      userProvider.getUser().then((value) {
+        setState(() {
+          loaded = true;
+        });
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    bool isEditable = widget.isEditable;
     return Consumer<UserViewModel>(
-      builder: (context, value, child) {
-        // print(value.userData.data!.id.toString());
+      builder: (context, userViewModel, child) {
+        User? user = userViewModel.currentUser!.data!.user;
 
-        switch (value.userData.status) {
-          case Status.LOADING:
-            return Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          case Status.ERROR:
-            return Text(value.userData.message.toString());
-          case Status.COMPLETED:
-            return Column(
-              children: [
-                TextfieldWithIconAndText(
-                  isEditable: isEditable,
-                  icon: Icons.person,
-                  labelText: 'Name',
-                  initialValue: value.userData.data!.name.toString(),
-                ),
-                TextfieldWithIconAndText(
-                  isEditable: isEditable,
-                  icon: Icons.mail_outline,
-                  labelText: 'Email',
-                  initialValue: value.userData.data!.email.toString(),
-                ),
-                TextfieldWithIconAndText(
-                  isEditable: isEditable,
-                  icon: Icons.call_outlined,
-                  labelText: 'Phone',
-                  initialValue: value.userData.data!.contact.toString(),
-                ),
-                TextfieldWithIconAndText(
-                  isEditable: isEditable,
-                  icon: Icons.location_on_outlined,
-                  labelText: 'Address',
-                  initialValue: value.userData.data!.address.toString(),
-                ),
-                TextfieldWithIconAndText(
-                  isEditable: isEditable,
-                  icon: Icons.calendar_month,
-                  labelText: 'Date of Birth',
-                  initialValue: value.userData.data!.dob.toString(),
-                ),
-              ],
-            );
-          default:
-            return Container();
+        if (!loaded) {
+          return CircularProgressIndicator.adaptive();
+        } else {
+          return Column(
+            children: [
+              TextfieldWithIconAndText(
+                isEditable: isEditable,
+                icon: Icons.person,
+                labelText: 'Name',
+                // initialValue: user.data!.user!.name.toString(),
+                initialValue: user!.name.toString(),
+              ),
+              TextfieldWithIconAndText(
+                isEditable: isEditable,
+                icon: Icons.mail_outline,
+                labelText: 'Email',
+                initialValue: user.email.toString(),
+              ),
+              TextfieldWithIconAndText(
+                isEditable: isEditable,
+                icon: Icons.call_outlined,
+                labelText: 'Phone',
+                initialValue: user.contact.toString(),
+              ),
+              TextfieldWithIconAndText(
+                isEditable: isEditable,
+                icon: Icons.location_on_outlined,
+                labelText: 'Address',
+                initialValue: user.address.toString(),
+              ),
+              TextfieldWithIconAndText(
+                isEditable: isEditable,
+                icon: Icons.calendar_month,
+                labelText: 'Date of Birth',
+                initialValue: user.dob.toString(),
+              ),
+            ],
+          );
         }
       },
     );

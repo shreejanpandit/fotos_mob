@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fotos_mobile/res/components/message_component/new_message_component.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
-import 'package:fotos_mobile/view/profile/message/user_mesage.dart';
 
 class MessagesScreen extends StatefulWidget {
   const MessagesScreen({super.key});
@@ -35,7 +34,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
             ),
           ),
         ),
-        body: Container(
+        body: SizedBox(
           height: MediaQuery.of(context).size.height,
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -108,7 +107,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       online: true,
                       time: '5 min ago',
                     ),
-                    NewMessage(
+                    const NewMessage(
                       image: 'assets/branding/images/avatar.jpg',
                       username: 'Ram Adhikari',
                       message: 'Done Mate!',
@@ -116,7 +115,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       online: false,
                       time: '5 hrs ago',
                     ),
-                    NewMessage(
+                    const NewMessage(
                       image: 'assets/branding/images/avatar.jpg',
                       username: 'Zakhir Khan',
                       message: 'Wah!',
@@ -124,7 +123,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       online: false,
                       time: '24 hrs ago',
                     ),
-                    NewMessage(
+                    const NewMessage(
                       image: 'assets/branding/images/avatar.jpg',
                       username: 'Susan Magar',
                       message: 'See you there.',
@@ -132,7 +131,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       online: true,
                       time: '1 days ago',
                     ),
-                    NewMessage(
+                    const NewMessage(
                       image: 'assets/branding/images/avatar.jpg',
                       username: 'Jasmine',
                       message: 'Nice Arts.',
@@ -140,7 +139,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       online: true,
                       time: '2 days ago',
                     ),
-                    NewMessage(
+                    const NewMessage(
                       image: 'assets/branding/images/avatar.jpg',
                       username: 'Jaya Adhikari',
                       message: 'Done!',
@@ -148,7 +147,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       online: false,
                       time: '3 days ago',
                     ),
-                    NewMessage(
+                    const NewMessage(
                       image: 'assets/branding/images/avatar.jpg',
                       username: 'Shyam D.',
                       message: 'Wah!',

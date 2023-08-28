@@ -1,13 +1,11 @@
 import 'package:fotos_mobile/data/network/base_api_service.dart';
-import 'package:fotos_mobile/models/media_list_model.dart';
 
 import '../data/network/network_api_service.dart';
 import '../models/favourite_model.dart';
-import '../models/media_model.dart';
 import '../res/app_urls.dart';
 
 class FavouriteRepository {
-  BaseApiService _apiService = NetworkApiService();
+  final BaseApiService _apiService = NetworkApiService();
   // Future<dynamic> createMediaApi(dynamic data) async {
   //   try {
   //     dynamic response = await _apiService.getPostApiResponse(
@@ -50,9 +48,9 @@ class FavouriteRepository {
     try {
       final String url = '${AppUrl.favourite}/$id';
       // print(url);
-      String response = await _apiService.getDeleteApiResponse(url);
+      var response = await _apiService.getDeleteApiResponse(url);
 
-      // print(response);
+      print('remove favourite media i.e delete $response');
       return response;
     } catch (e) {
       rethrow;

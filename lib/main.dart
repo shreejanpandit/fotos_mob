@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => FavouriteViewModel()),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
+        // debugShowCheckedModeBanner: false,
         title: 'Fotos',
         theme: CustomTheme.themeData,
         initialRoute: RoutesName.splash,

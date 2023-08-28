@@ -5,12 +5,12 @@ import 'package:fotos_mobile/res/app_urls.dart';
 import '../models/user_models.dart';
 
 class AuthRepository {
-  BaseApiService _apiService = NetworkApiService();
+  final BaseApiService _apiService = NetworkApiService();
   Future<dynamic> loginApi(dynamic data) async {
     try {
       dynamic response =
           await _apiService.getPostApiResponse(AppUrl.loginUrl, data);
-      // print(response.toString());
+      print(response.toString());
 
       return response;
     } catch (e) {
@@ -25,17 +25,18 @@ class AuthRepository {
       print(response.toString());
       return response;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
-  Future<User> getUserData() async {
+  Future<User> getUserData(String id) async {
     try {
-      dynamic response = await _apiService.getGetApiResponse(AppUrl.user);
-      // print(response.toString());
+      dynamic response =
+          await _apiService.getGetApiResponse('${AppUrl.user}/${id}');
+      print('user fetched from getuserdata ${response.toString()}');
       return User.fromJson(response);
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }

@@ -49,7 +49,7 @@ class ButtonWithColorIconAndText extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
             ),
-            SizedBox(width: 5),
+            const SizedBox(width: 5),
             Text(
               text,
               style: TextStyle(

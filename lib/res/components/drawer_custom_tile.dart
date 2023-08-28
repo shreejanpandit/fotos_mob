@@ -24,7 +24,7 @@ class CustomListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListTile(
-        visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+        visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
         title: Text(
           title,
           style: TextStyle(

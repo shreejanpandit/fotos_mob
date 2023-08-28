@@ -31,15 +31,15 @@ class TextfieldWithIconAndText extends StatelessWidget {
                 children: [
                   Icon(
                     icon,
-                    color: Color(0xFF8E8E8E),
+                    color: const Color(0xFF8E8E8E),
                     size: 19,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 7,
                   ),
                   Text(
                     labelText,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF8E8E8E),
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
@@ -54,10 +54,10 @@ class TextfieldWithIconAndText extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 20, top: 0, bottom: 0),
                 child: TextFormField(
                   enabled: isEditable,
-                  initialValue: initialValue,
+                  initialValue: initialValue.isEmpty ? '..' : initialValue,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Colors.black,

@@ -67,7 +67,7 @@ class _UserMessagesScreenState extends State<UserMessagesScreen> {
           ),
         ),
       ),
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,15 +228,15 @@ class _UserMessagesScreenState extends State<UserMessagesScreen> {
                             children: [
                               FittedBox(
                                 child: Container(
-                                  constraints: BoxConstraints(
+                                  constraints: const BoxConstraints(
                                       minWidth: 102, maxWidth: 300),
                                   decoration: ShapeDecoration(
                                     color: const Color(0xFFF2F2F2),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20),
                                     ),
-                                    shadows: [
-                                      const BoxShadow(
+                                    shadows: const [
+                                      BoxShadow(
                                         color: Color(0x19000000),
                                         blurRadius: 0,
                                         offset: Offset(0, 0),
@@ -294,7 +294,7 @@ class _UserMessagesScreenState extends State<UserMessagesScreen> {
                               const SizedBox(width: 10),
                               FittedBox(
                                 child: Container(
-                                  constraints: BoxConstraints(
+                                  constraints: const BoxConstraints(
                                       minWidth: 156, maxWidth: 300),
                                   decoration: ShapeDecoration(
                                     color: const Color(0xFF10B981),
@@ -326,15 +326,15 @@ class _UserMessagesScreenState extends State<UserMessagesScreen> {
                             children: [
                               FittedBox(
                                 child: Container(
-                                  constraints: BoxConstraints(
+                                  constraints: const BoxConstraints(
                                       minWidth: 102, maxWidth: 300),
                                   decoration: ShapeDecoration(
                                     color: const Color(0xFFF2F2F2),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20),
                                     ),
-                                    shadows: [
-                                      const BoxShadow(
+                                    shadows: const [
+                                      BoxShadow(
                                         color: Color(0x19000000),
                                         blurRadius: 0,
                                         offset: Offset(0, 0),

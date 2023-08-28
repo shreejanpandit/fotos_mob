@@ -10,10 +10,10 @@ import 'package:fotos_mobile/utils/routes/routes_name.dart';
 // import 'package:fotos_mobile/view/profile/media_screen.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 import 'package:fotos_mobile/view_model/home_view_model.dart';
+import 'package:fotos_mobile/view_model/media_view_model.dart';
 import 'package:fotos_mobile/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/user_models.dart';
 import '../../res/app_urls.dart';
 import '../../utils/utils.dart';
 import '../../view_model/favourite_view_model.dart';
@@ -33,30 +33,58 @@ class _HomeScreenState extends State<HomeScreen> {
   GenersViewModel genersViewModel = GenersViewModel();
   int nextPage = 1;
   String? token;
+  String? userId;
 
   @override
   void initState() {
     super.initState();
-    // homeViewModel.fetchMoviesListApi();
     homeViewModel.fetchMedia();
+
     Future.delayed(Duration.zero, () {
       Provider.of<GenersViewModel>(context, listen: false).fetchGernes();
       Provider.of<FavouriteViewModel>(context, listen: false)
           .fetchFavouriteMedia();
+      // Provider.of<MediaViewModel>(context, listen: false).fetchUserMedia('1');
+    });
+    Future.delayed(Duration.zero, () async {
+      var userProvider = Provider.of<UserViewModel>(context, listen: false);
+      var user = await userProvider.getUser();
+
+      if (user.data?.accessToken != null) {
+        setState(() {
+          token = user.data!.accessToken;
+          // userId = userProvider.userData.data!.id.toString();
+          userId = user.data!.user!.id.toString();
+        });
+        print('homee screen user id is: $userId');
+        print('homee screen user token is: $token');
+
+        // Check if userId is not null
+        if (userId != null) {
+          Future.delayed(const Duration(seconds: 1), () {
+            Provider.of<MediaViewModel>(context, listen: false)
+                .fetchUserMedia(userId!);
+            Provider.of<MediaViewModel>(context, listen: false)
+                .fetchUserMediaList();
+          });
+        }
+      }
     });
 
-    Future.delayed(Duration.zero, () {
-      var userProvider = Provider.of<UserViewModel>(context, listen: false);
-      userProvider.fetchUserData();
-      // userProvider.getUser().then((value) {
-      //   setState(() {
-      //     token = value.accessToken;
-      //   });
-      // });
-      // if (userProvider.userData.status != Status.LOADING) {
-      //   print('is this home ${userProvider.userData.status}');
-      // }
-    });
+    // Future.delayed(Duration.zero, () async {
+    //   var userProvider = Provider.of<UserViewModel>(context, listen: false);
+    //   var user = await userProvider.getUser();
+    //   setState(() {
+    //     token = user.accessToken;
+    //     userId = userProvider.userData.data!.id.toString();
+    //   });
+    //   print(userId);
+    // });
+
+    // Future.delayed(Duration(seconds: 1), () {
+    //   Provider.of<MediaViewModel>(context, listen: false)
+    //       .fetchUserMedia(userId!);
+    // });
   }
 
   @override
@@ -251,12 +279,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     IconButton(
                                         onPressed: () {},
-                                        icon: Icon(Icons.add_card_sharp))
+                                        icon: const Icon(Icons.add_card_sharp))
                                   ],
                                 )),
                           ),
                           SliverPadding(
-                            padding: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
                             sliver: Consumer<GenersViewModel>(
                                 builder: (context, value, child) {
                               // value.fetchGernes();
@@ -359,140 +387,136 @@ class _HomeScreenState extends State<HomeScreen> {
                                               }
 
                                               return InkWell(
-                                                onTap: () async {
-                                                  final String slug = value
-                                                      .imageList[index]['slug']
-                                                      .toString();
+                                                  onTap: () async {
+                                                    final String slug = value
+                                                        .imageList[index]
+                                                            ['slug']
+                                                        .toString();
 
-                                                  await imageOpenViewModel
-                                                      .fetchImageOpenMedia(
-                                                          slug, context);
+                                                    await imageOpenViewModel
+                                                        .fetchImageOpenMedia(
+                                                            slug, context);
 
-                                                  if (!imageOpenViewModel
-                                                      .loading) {
-                                                    if (context.mounted) {
-                                                      Navigator.pushNamed(
-                                                          context,
-                                                          RoutesName
-                                                              .image_open);
+                                                    if (!imageOpenViewModel
+                                                        .loading) {
+                                                      if (context.mounted) {
+                                                        Navigator.pushNamed(
+                                                            context,
+                                                            RoutesName
+                                                                .image_open);
+                                                      }
                                                     }
-                                                  }
-                                                },
-                                                child: Card(
-                                                  child: Stack(
-                                                    alignment:
-                                                        Alignment.topRight,
-                                                    children: [
-                                                      Image.network(
-                                                        imageUrl,
-                                                        fit: BoxFit.scaleDown,
-                                                        errorBuilder: (context,
-                                                            error, stackTrace) {
-                                                          return SizedBox
-                                                              .shrink();
-                                                        },
-                                                      ),
-                                                      // Create a ValueNotifier to wrap the imageList
-
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .end,
+                                                  },
+                                                  child: Card(
+                                                    elevation:
+                                                        4, // Add elevation for a card-like effect
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15), // Add curved edges
+                                                    ),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15), // Clip the contents with curved edges
+                                                      child: Stack(
+                                                        alignment:
+                                                            Alignment.topRight,
                                                         children: [
-                                                          ValueListenableBuilder<
-                                                              List<
-                                                                  Map<String,
-                                                                      dynamic>>>(
-                                                            valueListenable:
-                                                                imageListNotifier,
-                                                            builder: (context,
-                                                                imageList,
-                                                                child) {
-                                                              bool isFavorite = imageList
-                                                                      .isNotEmpty &&
-                                                                  imageList[
-                                                                          index]
-                                                                      [
-                                                                      'isFavorite'];
-
-                                                              return IconButton(
-                                                                onPressed:
-                                                                    () async {
-                                                                  if (token ==
-                                                                          'null' ||
-                                                                      token ==
-                                                                          '') {
-                                                                    Utils.flushBarErrorMessage(
-                                                                        'Login First to add data on favourite list',
-                                                                        context);
-                                                                  } else if (isFavorite) {
-                                                                    final provider = Provider.of<
-                                                                            FavouriteViewModel>(
-                                                                        context,
-                                                                        listen:
-                                                                            false);
-                                                                    provider
-                                                                        .deleteFavouriteMedia(
-                                                                            imageList[index][
-                                                                                'id'],
-                                                                            context,
-                                                                            provider)
-                                                                        .catchError(
-                                                                            (error) {
-                                                                      // Handle the error case
-                                                                      print(
-                                                                          error);
-                                                                    });
-                                                                  } else if (!isFavorite) {
-                                                                    final provider = Provider.of<
-                                                                            FavouriteViewModel>(
-                                                                        context,
-                                                                        listen:
-                                                                            false);
-                                                                    provider
-                                                                        .addFavouriteMedia(
-                                                                            imageList[index][
-                                                                                'id'],
-                                                                            context,
-                                                                            provider)
-                                                                        .catchError(
-                                                                            (error) {
-                                                                      // Handle the error case
-                                                                      print(
-                                                                          error);
-                                                                    });
-                                                                  }
-                                                                },
-                                                                icon: Icon(
-                                                                  isFavorite
-                                                                      ? Icons
-                                                                          .favorite
-                                                                      : Icons
-                                                                          .favorite_outline,
-                                                                  color: isFavorite
-                                                                      ? Colors
-                                                                          .red
-                                                                      : Colors
-                                                                          .white,
-                                                                ),
-                                                              );
+                                                          Image.network(
+                                                            imageUrl,
+                                                            fit: BoxFit
+                                                                .cover, // Use BoxFit.cover for a better image display
+                                                            errorBuilder:
+                                                                (context, error,
+                                                                    stackTrace) {
+                                                              return const SizedBox
+                                                                  .shrink();
                                                             },
                                                           ),
-                                                          const Icon(
-                                                            Icons
-                                                                .bookmark_add_outlined,
-                                                            color: Colors.white,
-                                                          ),
-                                                          const Icon(
-                                                            Icons.share,
-                                                            color: Colors.white,
+                                                          Positioned(
+                                                            top: 0,
+                                                            right: 10,
+                                                            child: Row(
+                                                              children: [
+                                                                ValueListenableBuilder<
+                                                                    List<
+                                                                        Map<String,
+                                                                            dynamic>>>(
+                                                                  valueListenable:
+                                                                      imageListNotifier,
+                                                                  builder: (context,
+                                                                      imageList,
+                                                                      child) {
+                                                                    bool isFavorite = imageList
+                                                                            .isNotEmpty &&
+                                                                        imageList[index]
+                                                                            [
+                                                                            'isFavorite'];
+
+                                                                    return IconButton(
+                                                                      onPressed:
+                                                                          () async {
+                                                                        if (token ==
+                                                                                'null' ||
+                                                                            token ==
+                                                                                '') {
+                                                                          Utils.flushBarErrorMessage(
+                                                                              'Login First to add data to the favorite list',
+                                                                              context);
+                                                                        } else if (isFavorite) {
+                                                                          final provider = Provider.of<FavouriteViewModel>(
+                                                                              context,
+                                                                              listen: false);
+                                                                          provider
+                                                                              .deleteFavouriteMedia(imageList[index]['id'], context, provider)
+                                                                              .catchError((error) {
+                                                                            // Handle the error case
+                                                                            print(error);
+                                                                          });
+                                                                        } else if (!isFavorite) {
+                                                                          final provider = Provider.of<FavouriteViewModel>(
+                                                                              context,
+                                                                              listen: false);
+                                                                          provider
+                                                                              .addFavouriteMedia(imageList[index]['id'], context, provider)
+                                                                              .catchError((error) {
+                                                                            // Handle the error case
+                                                                            print(error);
+                                                                          });
+                                                                        }
+                                                                      },
+                                                                      icon:
+                                                                          Icon(
+                                                                        isFavorite
+                                                                            ? Icons.favorite
+                                                                            : Icons.favorite_outline,
+                                                                        color: isFavorite
+                                                                            ? Colors.red
+                                                                            : Colors.white,
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                ),
+                                                                const Icon(
+                                                                  Icons
+                                                                      .bookmark_add_outlined,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                                const Icon(
+                                                                  Icons.share,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
+                                                      ),
+                                                    ),
+                                                  ));
                                             } else {
                                               final newIndex = index -
                                                   value.imageList.length;
@@ -514,138 +538,144 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 }
 
                                                 return InkWell(
-                                                  onTap: () async {
-                                                    final String slug = value
-                                                        .newlyAddedImages[
-                                                            newIndex]['slug']
-                                                        .toString();
+                                                    onTap: () async {
+                                                      final String slug = value
+                                                          .newlyAddedImages[
+                                                              newIndex]['slug']
+                                                          .toString();
 
-                                                    await imageOpenViewModel
-                                                        .fetchImageOpenMedia(
-                                                            slug, context);
-                                                    // print(
-                                                    //     "Printing from homescreen: ${imageOpenViewModel.data}");
-                                                    if (!imageOpenViewModel
-                                                        .loading) {
-                                                      if (context.mounted) {
-                                                        Navigator.pushNamed(
-                                                            context,
-                                                            RoutesName
-                                                                .image_open);
+                                                      await imageOpenViewModel
+                                                          .fetchImageOpenMedia(
+                                                              slug, context);
+                                                      // print(
+                                                      //     "Printing from homescreen: ${imageOpenViewModel.data}");
+                                                      if (!imageOpenViewModel
+                                                          .loading) {
+                                                        if (context.mounted) {
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              RoutesName
+                                                                  .image_open);
+                                                        }
                                                       }
-                                                    }
-                                                  },
-                                                  child: Card(
-                                                    child: Stack(
-                                                      alignment:
-                                                          Alignment.topRight,
-                                                      children: [
-                                                        Image.network(
-                                                          imageUrl,
-                                                          fit: BoxFit.none,
-                                                          errorBuilder:
-                                                              (context, error,
-                                                                  stackTrace) {
-                                                            return SizedBox();
-                                                          },
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
+                                                    },
+                                                    child: Card(
+                                                      elevation: 4,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15),
+                                                      ),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15),
+                                                        child: Stack(
+                                                          alignment: Alignment
+                                                              .topRight,
                                                           children: [
-                                                            ValueListenableBuilder<
-                                                                List<
-                                                                    Map<String,
-                                                                        dynamic>>>(
-                                                              valueListenable:
-                                                                  newImageListNotifier,
-                                                              builder: (context,
-                                                                  newimageList,
-                                                                  child) {
-                                                                bool isFavorite = newimageList
-                                                                        .isNotEmpty &&
-                                                                    newimageList[
-                                                                            newIndex]
-                                                                        [
-                                                                        'isFavorite'];
+                                                            Container(
+                                                              height: 200,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                gradient:
+                                                                    LinearGradient(
+                                                                  colors: [
+                                                                    Colors.blue,
+                                                                    Colors.green
+                                                                  ],
+                                                                  begin: Alignment
+                                                                      .topLeft,
+                                                                  end: Alignment
+                                                                      .bottomRight,
+                                                                ),
+                                                              ),
+                                                              child:
+                                                                  Image.network(
+                                                                imageUrl,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                errorBuilder:
+                                                                    (context,
+                                                                        error,
+                                                                        stackTrace) {
+                                                                  return const SizedBox
+                                                                      .shrink();
+                                                                },
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              top: 0,
+                                                              right: 10,
+                                                              child: Row(
+                                                                children: [
+                                                                  ValueListenableBuilder<
+                                                                      List<
+                                                                          Map<String,
+                                                                              dynamic>>>(
+                                                                    valueListenable:
+                                                                        newImageListNotifier,
+                                                                    builder: (context,
+                                                                        newImageList,
+                                                                        child) {
+                                                                      bool isFavorite = newImageList
+                                                                              .isNotEmpty &&
+                                                                          newImageList[newIndex]
+                                                                              [
+                                                                              'isFavorite'];
 
-                                                                return IconButton(
-                                                                  onPressed:
-                                                                      () async {
-                                                                    if (token ==
-                                                                            'null' ||
-                                                                        token ==
-                                                                            '') {
-                                                                      Utils.flushBarErrorMessage(
-                                                                          'Login First to add data on favourite list',
-                                                                          context);
-                                                                    } else if (isFavorite) {
-                                                                      final provider = Provider.of<
-                                                                              FavouriteViewModel>(
-                                                                          context,
-                                                                          listen:
-                                                                              false);
-                                                                      provider
-                                                                          .deleteFavouriteMedia(
-                                                                              value.newlyAddedImages[newIndex]['id'],
-                                                                              context,
-                                                                              provider)
-                                                                          .catchError((error) {
-                                                                        // Handle the error case
-                                                                        print(
-                                                                            error);
-                                                                      });
-                                                                    } else if (!isFavorite) {
-                                                                      final provider = Provider.of<
-                                                                              FavouriteViewModel>(
-                                                                          context,
-                                                                          listen:
-                                                                              false);
-                                                                      provider
-                                                                          .addFavouriteMedia(
-                                                                              value.newlyAddedImages[newIndex]['id'],
-                                                                              context,
-                                                                              provider)
-                                                                          .catchError((error) {
-                                                                        // Handle the error case
-                                                                        print(
-                                                                            error);
-                                                                      });
-                                                                    }
-                                                                  },
-                                                                  icon: Icon(
-                                                                    isFavorite
-                                                                        ? Icons
-                                                                            .favorite
-                                                                        : Icons
-                                                                            .favorite_outline,
-                                                                    color: isFavorite
-                                                                        ? Colors
-                                                                            .red
-                                                                        : Colors
-                                                                            .white,
+                                                                      return IconButton(
+                                                                        onPressed:
+                                                                            () async {
+                                                                          if (token == 'null' ||
+                                                                              token == '') {
+                                                                            Utils.flushBarErrorMessage('Login First to add data to the favorite list',
+                                                                                context);
+                                                                          } else if (isFavorite) {
+                                                                            final provider =
+                                                                                Provider.of<FavouriteViewModel>(context, listen: false);
+                                                                            provider.deleteFavouriteMedia(newImageList[newIndex]['id'], context, provider).catchError((error) {
+                                                                              print(error);
+                                                                            });
+                                                                          } else if (!isFavorite) {
+                                                                            final provider =
+                                                                                Provider.of<FavouriteViewModel>(context, listen: false);
+                                                                            provider.addFavouriteMedia(newImageList[newIndex]['id'], context, provider).catchError((error) {
+                                                                              print(error);
+                                                                            });
+                                                                          }
+                                                                        },
+                                                                        icon:
+                                                                            Icon(
+                                                                          isFavorite
+                                                                              ? Icons.favorite
+                                                                              : Icons.favorite_outline,
+                                                                          color: isFavorite
+                                                                              ? Colors.red
+                                                                              : Colors.white,
+                                                                        ),
+                                                                      );
+                                                                    },
                                                                   ),
-                                                                );
-                                                              },
-                                                            ),
-                                                            const Icon(
-                                                              Icons
-                                                                  .bookmark_add_outlined,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                            const Icon(
-                                                              Icons.share,
-                                                              color:
-                                                                  Colors.white,
+                                                                  Icon(
+                                                                    Icons
+                                                                        .bookmark_add_outlined,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                  Icon(
+                                                                    Icons.share,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
                                                           ],
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
+                                                        ),
+                                                      ),
+                                                    ));
                                               } else {
                                                 // This case should not be reached, but added for completeness
                                                 return const SizedBox();

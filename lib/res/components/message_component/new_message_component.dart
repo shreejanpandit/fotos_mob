@@ -10,7 +10,7 @@ class NewMessage extends StatelessWidget {
   final bool? online;
   final VoidCallback? onTap;
 
-  NewMessage({
+  const NewMessage({
     Key? key,
     required this.image,
     required this.username,

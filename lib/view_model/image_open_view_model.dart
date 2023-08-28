@@ -5,6 +5,7 @@ class ImageOpenViewModel with ChangeNotifier {
   final _myRepo = ImageOpenRepository();
   bool loading = false;
   Map<String, dynamic> data = {};
+  String? slugData;
   // Map<String, dynamic> get data => _data;
   // set data(Map<String, dynamic> newData) {
   //   _data = newData;
@@ -33,6 +34,8 @@ class ImageOpenViewModel with ChangeNotifier {
     ChangeNotifier();
 
     try {
+      slugData = slug;
+      ChangeNotifier();
       final value = await _myRepo.fetchMediasMedia(slug);
       // Update status to COMPLETED
       if (value == null) {

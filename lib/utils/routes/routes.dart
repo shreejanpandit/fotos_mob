@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fotos_mobile/test.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
 import 'package:fotos_mobile/view/auth/forget_password_view.dart';
 import 'package:fotos_mobile/view/drawer_items/about_us_view.dart';
@@ -45,45 +44,43 @@ class Routes {
             builder: ((BuildContext context) => const SplashView()));
       case RoutesName.terms_And_condition:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => TermsAndConditionsPage()));
+            builder: ((BuildContext context) =>
+                const TermsAndConditionsPage()));
       case RoutesName.privacy:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => PrivacyPage()));
+            builder: ((BuildContext context) => const PrivacyPage()));
       case RoutesName.about_us:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => AboutUsPage()));
+            builder: ((BuildContext context) => const AboutUsPage()));
       case RoutesName.user_profile_edit:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => EditUserProfileScreen()));
+            builder: ((BuildContext context) => const EditUserProfileScreen()));
 
       case RoutesName.user_profile:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => UserProfileScreen()));
+            builder: ((BuildContext context) => const UserProfileScreen()));
 
       case RoutesName.payment:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => PaymentScreen()));
+            builder: ((BuildContext context) => const PaymentScreen()));
       case RoutesName.profile:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => ProfileScreen()));
-      case RoutesName.about_us:
-        return MaterialPageRoute(
-            builder: ((BuildContext context) => AboutUsPage()));
+            builder: ((BuildContext context) => const ProfileScreen()));
       case RoutesName.message:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => MessagesScreen()));
+            builder: ((BuildContext context) => const MessagesScreen()));
       case RoutesName.media:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => MediaScreen()));
+            builder: ((BuildContext context) => const MediaScreen()));
       case RoutesName.collection:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => CollectionScreen()));
+            builder: ((BuildContext context) => const CollectionScreen()));
       case RoutesName.favourite:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => FavouriteScreen()));
+            builder: ((BuildContext context) => const FavouriteScreen()));
       case RoutesName.add_payment:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => AddPaymentScreen()));
+            builder: ((BuildContext context) => const AddPaymentScreen()));
       case RoutesName.payment_detail:
         int selectedIndex = 0; // Initialize selectedIndex with a default value
         return MaterialPageRoute(
@@ -97,17 +94,17 @@ class Routes {
             builder: ((
           BuildContext context,
         ) =>
-                ChoosePaymentMethod()));
+                const ChoosePaymentMethod()));
 
       case RoutesName.user_msg:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => UserMessagesScreen()));
+            builder: ((BuildContext context) => const UserMessagesScreen()));
       case RoutesName.image_open:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => ImageOpenScreen()));
+            builder: ((BuildContext context) => const ImageOpenScreen()));
       case RoutesName.search_result:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => SearchResultPage()));
+            builder: ((BuildContext context) => const SearchResultPage()));
 
       // case RoutesName.test:
       //   return MaterialPageRoute(builder: ((BuildContext context) => Test()));

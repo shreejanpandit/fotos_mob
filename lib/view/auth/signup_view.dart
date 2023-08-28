@@ -114,29 +114,10 @@ class _SignUpViewState extends State<SignUpView> {
                       margin: EdgeInsets.fromLTRB(
                           126 * fem, 0 * fem, 125 * fem, 13 * fem),
                       width: double.infinity,
-
-                      child: Row(
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            // logorNj (265:186)
-                            margin: EdgeInsets.fromLTRB(
-                                0 * fem, 0.25 * fem, 10.89 * fem, 0 * fem),
-                            width: 25.11 * fem,
-                            height: 28.25 * fem,
-                            child: Image.asset(
-                              'assets/branding/images/logo.png',
-                            ),
+                      child: SvgPicture.asset(
+                          'assets/branding/images/logo_white.svg'
+                          // fit: BoxFit.contain,
                           ),
-                          Text('Fotos',
-                              style: GoogleFonts.lobster().copyWith(
-                                fontSize: 40 * ffem,
-                                fontWeight: FontWeight.w400,
-                                height: 1.25 * ffem / fem,
-                                color: CustomTheme.whiteTextColor,
-                              )),
-                        ],
-                      ),
                     ),
                     Container(
                       // yourmemoriesmarketplaceUuu (265:294)
@@ -454,564 +435,564 @@ class _SignUpViewState extends State<SignUpView> {
                             ),
                           );
                         })),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(
-                          19 * fem, 0 * fem, 18 * fem, 5 * fem),
-                      padding: const EdgeInsets.only(right: 0, bottom: 0),
-                      width: double.infinity,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              margin: EdgeInsets.only(right: 5 * fem),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                      style: BorderStyle.solid,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.public, color: Colors.white),
-                                  Expanded(
-                                    child: TextFormField(
-                                      textInputAction: TextInputAction.next,
-                                      controller: _countryController,
-                                      keyboardType: TextInputType.multiline,
-                                      focusNode: countryFocusNode,
-                                      onFieldSubmitted: (value) =>
-                                          Utils.fieldFocusChange(context,
-                                              countryFocusNode, cityFocusNode),
-                                      decoration: const InputDecoration(
-                                        hintText: "Country",
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        disabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        hintStyle: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      style: CustomTheme.base.copyWith(
-                                        color: CustomTheme.whiteTextColor,
-                                        fontFamily: 'Avenir',
-                                      ),
-                                      autocorrect: false,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                      style: BorderStyle.solid,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              margin: EdgeInsets.only(left: 5 * fem),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.location_city,
-                                      color: Colors.white),
-                                  Expanded(
-                                    child: TextFormField(
-                                      textInputAction: TextInputAction.next,
-                                      controller: _cityController,
-                                      keyboardType: TextInputType.emailAddress,
-                                      focusNode: cityFocusNode,
-                                      onFieldSubmitted: (value) =>
-                                          Utils.fieldFocusChange(context,
-                                              cityFocusNode, stateFocusNode),
-                                      decoration: const InputDecoration(
-                                        hintText: "City",
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        disabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        hintStyle: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      style: CustomTheme.base.copyWith(
-                                        color: CustomTheme.whiteTextColor,
-                                        fontFamily: 'Avenir',
-                                      ),
-                                      autocorrect: false,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(
-                          19 * fem, 0 * fem, 18 * fem, 5 * fem),
-                      padding: const EdgeInsets.only(right: 0, bottom: 0),
-                      width: double.infinity,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              margin: EdgeInsets.only(right: 5 * fem),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                      style: BorderStyle.solid,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.holiday_village_outlined,
-                                      color: Colors.white),
-                                  Expanded(
-                                    child: TextFormField(
-                                      textInputAction: TextInputAction.next,
-                                      controller: _stateController,
-                                      keyboardType: TextInputType.emailAddress,
-                                      focusNode: stateFocusNode,
-                                      onFieldSubmitted: (value) =>
-                                          Utils.fieldFocusChange(context,
-                                              stateFocusNode, zipCodeFocusNode),
-                                      decoration: const InputDecoration(
-                                        hintText: "State",
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        disabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        hintStyle: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      style: CustomTheme.base.copyWith(
-                                        color: CustomTheme.whiteTextColor,
-                                        fontFamily: 'Avenir',
-                                      ),
-                                      autocorrect: false,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                      style: BorderStyle.solid,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              margin: EdgeInsets.only(left: 5 * fem),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.code_rounded,
-                                      color: Colors.white),
-                                  Expanded(
-                                    child: TextFormField(
-                                      textInputAction: TextInputAction.next,
-                                      controller: _zipCodeController,
-                                      keyboardType: TextInputType.emailAddress,
-                                      focusNode: zipCodeFocusNode,
-                                      onFieldSubmitted: (value) =>
-                                          Utils.fieldFocusChange(
-                                              context,
-                                              zipCodeFocusNode,
-                                              addressFocusNode),
-                                      decoration: const InputDecoration(
-                                        hintText: "Zip Code",
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        disabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        hintStyle: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      style: CustomTheme.base.copyWith(
-                                        color: CustomTheme.whiteTextColor,
-                                        fontFamily: 'Avenir',
-                                      ),
-                                      autocorrect: false,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(
-                          19 * fem, 0 * fem, 18 * fem, 5 * fem),
-                      padding: const EdgeInsets.only(right: 0, bottom: 0),
-                      width: double.infinity,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              margin: EdgeInsets.only(right: 5 * fem),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                      style: BorderStyle.solid,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.maps_home_work_outlined,
-                                      color: Colors.white),
-                                  Expanded(
-                                    child: TextFormField(
-                                      textInputAction: TextInputAction.next,
-                                      controller: _addressController,
-                                      keyboardType: TextInputType.emailAddress,
-                                      focusNode: addressFocusNode,
-                                      onFieldSubmitted: (value) =>
-                                          Utils.fieldFocusChange(
-                                              context,
-                                              addressFocusNode,
-                                              contactFocusNode),
-                                      decoration: const InputDecoration(
-                                        hintText: "Address",
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        disabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        hintStyle: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      style: CustomTheme.base.copyWith(
-                                        color: CustomTheme.whiteTextColor,
-                                        fontFamily: 'Avenir',
-                                      ),
-                                      autocorrect: false,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                      style: BorderStyle.solid,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              margin: EdgeInsets.only(left: 5 * fem),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.contact_phone_outlined,
-                                      color: Colors.white),
-                                  Expanded(
-                                    child: TextFormField(
-                                      textInputAction: TextInputAction.next,
-                                      controller: _contactController,
-                                      keyboardType: TextInputType.emailAddress,
-                                      focusNode: contactFocusNode,
-                                      onFieldSubmitted: (value) =>
-                                          Utils.fieldFocusChange(
-                                              context,
-                                              contactFocusNode,
-                                              professionFocusNode),
-                                      decoration: const InputDecoration(
-                                        hintText: "Contact",
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        disabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        hintStyle: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      style: CustomTheme.base.copyWith(
-                                        color: CustomTheme.whiteTextColor,
-                                        fontFamily: 'Avenir',
-                                      ),
-                                      autocorrect: false,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(
-                          19 * fem, 0 * fem, 18 * fem, 10 * fem),
-                      padding: const EdgeInsets.only(right: 0, bottom: 0),
-                      width: double.infinity,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              margin: EdgeInsets.only(right: 5 * fem),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                      style: BorderStyle.solid,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.work_outline,
-                                      color: Colors.white),
-                                  Expanded(
-                                    child: TextFormField(
-                                      textInputAction: TextInputAction.next,
-                                      controller: _professionController,
-                                      keyboardType: TextInputType.emailAddress,
-                                      focusNode: professionFocusNode,
-                                      onFieldSubmitted: (_) =>
-                                          FocusScope.of(context).unfocus(),
-                                      decoration: const InputDecoration(
-                                        hintText: "Profession",
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        disabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        hintStyle: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      style: CustomTheme.base.copyWith(
-                                        color: CustomTheme.whiteTextColor,
-                                        fontFamily: 'Avenir',
-                                      ),
-                                      autocorrect: false,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                      style: BorderStyle.solid,
-                                      color: Colors.white),
-                                ),
-                              ),
-                              // margin: EdgeInsets.only(left: 5 * fem),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.file_upload,
-                                      color: Colors.white),
-                                  Expanded(child: Consumer<ImagePickerModel>(
-                                    builder:
-                                        (context, imagePickerModel, child) {
-                                      isImagePicked =
-                                          imagePickerModel.pickedImage != null
-                                              ? true
-                                              : false;
-                                      return Container(
-                                        // width: 336,
-                                        height: 45.25,
+                    // Container(
+                    //   margin: EdgeInsets.fromLTRB(
+                    //       19 * fem, 0 * fem, 18 * fem, 5 * fem),
+                    //   padding: const EdgeInsets.only(right: 0, bottom: 0),
+                    //   width: double.infinity,
+                    //   child: Row(
+                    //     crossAxisAlignment: CrossAxisAlignment.center,
+                    //     children: [
+                    //       Expanded(
+                    //         child: Container(
+                    //           margin: EdgeInsets.only(right: 5 * fem),
+                    //           decoration: const BoxDecoration(
+                    //             border: Border(
+                    //               bottom: BorderSide(
+                    //                   style: BorderStyle.solid,
+                    //                   color: Colors.white),
+                    //             ),
+                    //           ),
+                    //           child: Row(
+                    //             crossAxisAlignment: CrossAxisAlignment.center,
+                    //             children: [
+                    //               const Icon(Icons.public, color: Colors.white),
+                    //               Expanded(
+                    //                 child: TextFormField(
+                    //                   textInputAction: TextInputAction.next,
+                    //                   controller: _countryController,
+                    //                   keyboardType: TextInputType.multiline,
+                    //                   focusNode: countryFocusNode,
+                    //                   onFieldSubmitted: (value) =>
+                    //                       Utils.fieldFocusChange(context,
+                    //                           countryFocusNode, cityFocusNode),
+                    //                   decoration: const InputDecoration(
+                    //                     hintText: "Country",
+                    //                     border: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     enabledBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     disabledBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     focusedBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     hintStyle: TextStyle(
+                    //                       color: Colors.white,
+                    //                     ),
+                    //                   ),
+                    //                   style: CustomTheme.base.copyWith(
+                    //                     color: CustomTheme.whiteTextColor,
+                    //                     fontFamily: 'Avenir',
+                    //                   ),
+                    //                   autocorrect: false,
+                    //                 ),
+                    //               )
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       const SizedBox(
+                    //         width: 10,
+                    //       ),
+                    //       Expanded(
+                    //         child: Container(
+                    //           decoration: const BoxDecoration(
+                    //             border: Border(
+                    //               bottom: BorderSide(
+                    //                   style: BorderStyle.solid,
+                    //                   color: Colors.white),
+                    //             ),
+                    //           ),
+                    //           margin: EdgeInsets.only(left: 5 * fem),
+                    //           child: Row(
+                    //             crossAxisAlignment: CrossAxisAlignment.center,
+                    //             children: [
+                    //               const Icon(Icons.location_city,
+                    //                   color: Colors.white),
+                    //               Expanded(
+                    //                 child: TextFormField(
+                    //                   textInputAction: TextInputAction.next,
+                    //                   controller: _cityController,
+                    //                   keyboardType: TextInputType.emailAddress,
+                    //                   focusNode: cityFocusNode,
+                    //                   onFieldSubmitted: (value) =>
+                    //                       Utils.fieldFocusChange(context,
+                    //                           cityFocusNode, stateFocusNode),
+                    //                   decoration: const InputDecoration(
+                    //                     hintText: "City",
+                    //                     border: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     enabledBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     disabledBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     focusedBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     hintStyle: TextStyle(
+                    //                       color: Colors.white,
+                    //                     ),
+                    //                   ),
+                    //                   style: CustomTheme.base.copyWith(
+                    //                     color: CustomTheme.whiteTextColor,
+                    //                     fontFamily: 'Avenir',
+                    //                   ),
+                    //                   autocorrect: false,
+                    //                 ),
+                    //               )
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // Container(
+                    //   margin: EdgeInsets.fromLTRB(
+                    //       19 * fem, 0 * fem, 18 * fem, 5 * fem),
+                    //   padding: const EdgeInsets.only(right: 0, bottom: 0),
+                    //   width: double.infinity,
+                    //   child: Row(
+                    //     crossAxisAlignment: CrossAxisAlignment.center,
+                    //     children: [
+                    //       Expanded(
+                    //         child: Container(
+                    //           margin: EdgeInsets.only(right: 5 * fem),
+                    //           decoration: const BoxDecoration(
+                    //             border: Border(
+                    //               bottom: BorderSide(
+                    //                   style: BorderStyle.solid,
+                    //                   color: Colors.white),
+                    //             ),
+                    //           ),
+                    //           child: Row(
+                    //             crossAxisAlignment: CrossAxisAlignment.center,
+                    //             children: [
+                    //               const Icon(Icons.holiday_village_outlined,
+                    //                   color: Colors.white),
+                    //               Expanded(
+                    //                 child: TextFormField(
+                    //                   textInputAction: TextInputAction.next,
+                    //                   controller: _stateController,
+                    //                   keyboardType: TextInputType.emailAddress,
+                    //                   focusNode: stateFocusNode,
+                    //                   onFieldSubmitted: (value) =>
+                    //                       Utils.fieldFocusChange(context,
+                    //                           stateFocusNode, zipCodeFocusNode),
+                    //                   decoration: const InputDecoration(
+                    //                     hintText: "State",
+                    //                     border: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     enabledBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     disabledBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     focusedBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     hintStyle: TextStyle(
+                    //                       color: Colors.white,
+                    //                     ),
+                    //                   ),
+                    //                   style: CustomTheme.base.copyWith(
+                    //                     color: CustomTheme.whiteTextColor,
+                    //                     fontFamily: 'Avenir',
+                    //                   ),
+                    //                   autocorrect: false,
+                    //                 ),
+                    //               )
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       const SizedBox(
+                    //         width: 10,
+                    //       ),
+                    //       Expanded(
+                    //         child: Container(
+                    //           decoration: const BoxDecoration(
+                    //             border: Border(
+                    //               bottom: BorderSide(
+                    //                   style: BorderStyle.solid,
+                    //                   color: Colors.white),
+                    //             ),
+                    //           ),
+                    //           margin: EdgeInsets.only(left: 5 * fem),
+                    //           child: Row(
+                    //             crossAxisAlignment: CrossAxisAlignment.center,
+                    //             children: [
+                    //               const Icon(Icons.code_rounded,
+                    //                   color: Colors.white),
+                    //               Expanded(
+                    //                 child: TextFormField(
+                    //                   textInputAction: TextInputAction.next,
+                    //                   controller: _zipCodeController,
+                    //                   keyboardType: TextInputType.emailAddress,
+                    //                   focusNode: zipCodeFocusNode,
+                    //                   onFieldSubmitted: (value) =>
+                    //                       Utils.fieldFocusChange(
+                    //                           context,
+                    //                           zipCodeFocusNode,
+                    //                           addressFocusNode),
+                    //                   decoration: const InputDecoration(
+                    //                     hintText: "Zip Code",
+                    //                     border: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     enabledBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     disabledBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     focusedBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     hintStyle: TextStyle(
+                    //                       color: Colors.white,
+                    //                     ),
+                    //                   ),
+                    //                   style: CustomTheme.base.copyWith(
+                    //                     color: CustomTheme.whiteTextColor,
+                    //                     fontFamily: 'Avenir',
+                    //                   ),
+                    //                   autocorrect: false,
+                    //                 ),
+                    //               )
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // Container(
+                    //   margin: EdgeInsets.fromLTRB(
+                    //       19 * fem, 0 * fem, 18 * fem, 5 * fem),
+                    //   padding: const EdgeInsets.only(right: 0, bottom: 0),
+                    //   width: double.infinity,
+                    //   child: Row(
+                    //     crossAxisAlignment: CrossAxisAlignment.center,
+                    //     children: [
+                    //       Expanded(
+                    //         child: Container(
+                    //           margin: EdgeInsets.only(right: 5 * fem),
+                    //           decoration: const BoxDecoration(
+                    //             border: Border(
+                    //               bottom: BorderSide(
+                    //                   style: BorderStyle.solid,
+                    //                   color: Colors.white),
+                    //             ),
+                    //           ),
+                    //           child: Row(
+                    //             crossAxisAlignment: CrossAxisAlignment.center,
+                    //             children: [
+                    //               const Icon(Icons.maps_home_work_outlined,
+                    //                   color: Colors.white),
+                    //               Expanded(
+                    //                 child: TextFormField(
+                    //                   textInputAction: TextInputAction.next,
+                    //                   controller: _addressController,
+                    //                   keyboardType: TextInputType.emailAddress,
+                    //                   focusNode: addressFocusNode,
+                    //                   onFieldSubmitted: (value) =>
+                    //                       Utils.fieldFocusChange(
+                    //                           context,
+                    //                           addressFocusNode,
+                    //                           contactFocusNode),
+                    //                   decoration: const InputDecoration(
+                    //                     hintText: "Address",
+                    //                     border: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     enabledBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     disabledBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     focusedBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     hintStyle: TextStyle(
+                    //                       color: Colors.white,
+                    //                     ),
+                    //                   ),
+                    //                   style: CustomTheme.base.copyWith(
+                    //                     color: CustomTheme.whiteTextColor,
+                    //                     fontFamily: 'Avenir',
+                    //                   ),
+                    //                   autocorrect: false,
+                    //                 ),
+                    //               )
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       const SizedBox(
+                    //         width: 10,
+                    //       ),
+                    //       Expanded(
+                    //         child: Container(
+                    //           decoration: const BoxDecoration(
+                    //             border: Border(
+                    //               bottom: BorderSide(
+                    //                   style: BorderStyle.solid,
+                    //                   color: Colors.white),
+                    //             ),
+                    //           ),
+                    //           margin: EdgeInsets.only(left: 5 * fem),
+                    //           child: Row(
+                    //             crossAxisAlignment: CrossAxisAlignment.center,
+                    //             children: [
+                    //               const Icon(Icons.contact_phone_outlined,
+                    //                   color: Colors.white),
+                    //               Expanded(
+                    //                 child: TextFormField(
+                    //                   textInputAction: TextInputAction.next,
+                    //                   controller: _contactController,
+                    //                   keyboardType: TextInputType.emailAddress,
+                    //                   focusNode: contactFocusNode,
+                    //                   onFieldSubmitted: (value) =>
+                    //                       Utils.fieldFocusChange(
+                    //                           context,
+                    //                           contactFocusNode,
+                    //                           professionFocusNode),
+                    //                   decoration: const InputDecoration(
+                    //                     hintText: "Contact",
+                    //                     border: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     enabledBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     disabledBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     focusedBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     hintStyle: TextStyle(
+                    //                       color: Colors.white,
+                    //                     ),
+                    //                   ),
+                    //                   style: CustomTheme.base.copyWith(
+                    //                     color: CustomTheme.whiteTextColor,
+                    //                     fontFamily: 'Avenir',
+                    //                   ),
+                    //                   autocorrect: false,
+                    //                 ),
+                    //               )
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // Container(
+                    //   margin: EdgeInsets.fromLTRB(
+                    //       19 * fem, 0 * fem, 18 * fem, 10 * fem),
+                    //   padding: const EdgeInsets.only(right: 0, bottom: 0),
+                    //   width: double.infinity,
+                    //   child: Row(
+                    //     crossAxisAlignment: CrossAxisAlignment.center,
+                    //     children: [
+                    //       Expanded(
+                    //         child: Container(
+                    //           margin: EdgeInsets.only(right: 5 * fem),
+                    //           decoration: const BoxDecoration(
+                    //             border: Border(
+                    //               bottom: BorderSide(
+                    //                   style: BorderStyle.solid,
+                    //                   color: Colors.white),
+                    //             ),
+                    //           ),
+                    //           child: Row(
+                    //             crossAxisAlignment: CrossAxisAlignment.center,
+                    //             children: [
+                    //               const Icon(Icons.work_outline,
+                    //                   color: Colors.white),
+                    //               Expanded(
+                    //                 child: TextFormField(
+                    //                   textInputAction: TextInputAction.next,
+                    //                   controller: _professionController,
+                    //                   keyboardType: TextInputType.emailAddress,
+                    //                   focusNode: professionFocusNode,
+                    //                   onFieldSubmitted: (_) =>
+                    //                       FocusScope.of(context).unfocus(),
+                    //                   decoration: const InputDecoration(
+                    //                     hintText: "Profession",
+                    //                     border: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     enabledBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     disabledBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     focusedBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(
+                    //                           color: Colors.transparent),
+                    //                     ),
+                    //                     hintStyle: TextStyle(
+                    //                       color: Colors.white,
+                    //                     ),
+                    //                   ),
+                    //                   style: CustomTheme.base.copyWith(
+                    //                     color: CustomTheme.whiteTextColor,
+                    //                     fontFamily: 'Avenir',
+                    //                   ),
+                    //                   autocorrect: false,
+                    //                 ),
+                    //               )
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       const SizedBox(
+                    //         width: 10,
+                    //       ),
+                    //       Expanded(
+                    //         child: Container(
+                    //           decoration: const BoxDecoration(
+                    //             border: Border(
+                    //               bottom: BorderSide(
+                    //                   style: BorderStyle.solid,
+                    //                   color: Colors.white),
+                    //             ),
+                    //           ),
+                    //           // margin: EdgeInsets.only(left: 5 * fem),
+                    //           child: Row(
+                    //             crossAxisAlignment: CrossAxisAlignment.center,
+                    //             children: [
+                    //               const Icon(Icons.file_upload,
+                    //                   color: Colors.white),
+                    //               Expanded(child: Consumer<ImagePickerModel>(
+                    //                 builder:
+                    //                     (context, imagePickerModel, child) {
+                    //                   isImagePicked =
+                    //                       imagePickerModel.pickedImage != null
+                    //                           ? true
+                    //                           : false;
+                    //                   return SizedBox(
+                    //                     // width: 336,
+                    //                     height: 45.25,
 
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 5),
-                                              child: SizedBox(
-                                                width: 80,
-                                                child: Text(
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  // filePath != null ? filePath! :
-                                                  imagePickerModel
-                                                              .pickedImage !=
-                                                          null
-                                                      ? imagePickerModel
-                                                          .pickedImage!.path
-                                                      : 'Select File',
+                    //                     child: Row(
+                    //                       mainAxisAlignment:
+                    //                           MainAxisAlignment.spaceBetween,
+                    //                       children: [
+                    //                         Padding(
+                    //                           padding: const EdgeInsets.only(
+                    //                               left: 5),
+                    //                           child: SizedBox(
+                    //                             width: 80,
+                    //                             child: Text(
+                    //                               overflow:
+                    //                                   TextOverflow.ellipsis,
+                    //                               // filePath != null ? filePath! :
+                    //                               imagePickerModel
+                    //                                           .pickedImage !=
+                    //                                       null
+                    //                                   ? imagePickerModel
+                    //                                       .pickedImage!.path
+                    //                                   : 'Select File',
 
-                                                  style:
-                                                      CustomTheme.base.copyWith(
-                                                    color: CustomTheme
-                                                        .whiteTextColor,
-                                                    fontFamily: 'Avenir',
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 3),
-                                              child: InkWell(
-                                                onTap: () async {
-                                                  await imagePickerModel
-                                                      .pickImage(
-                                                          ImageSource.gallery);
-                                                  // .pickImage(ImageSource.gallery);
-                                                  setState(() {});
-                                                },
-                                                child: Container(
-                                                  width: 56,
-                                                  height: 23,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    color: Colors.white,
-                                                  ),
-                                                  child: const Center(
-                                                    child: Text(
-                                                      'Upload',
-                                                      style: TextStyle(
-                                                        color: CustomTheme
-                                                            .primaryColor,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ))
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    //                               style:
+                    //                                   CustomTheme.base.copyWith(
+                    //                                 color: CustomTheme
+                    //                                     .whiteTextColor,
+                    //                                 fontFamily: 'Avenir',
+                    //                               ),
+                    //                             ),
+                    //                           ),
+                    //                         ),
+                    //                         Padding(
+                    //                           padding: const EdgeInsets.only(
+                    //                               right: 3),
+                    //                           child: InkWell(
+                    //                             onTap: () async {
+                    //                               await imagePickerModel
+                    //                                   .pickImage(
+                    //                                       ImageSource.gallery);
+                    //                               // .pickImage(ImageSource.gallery);
+                    //                               setState(() {});
+                    //                             },
+                    //                             child: Container(
+                    //                               width: 56,
+                    //                               height: 23,
+                    //                               decoration: BoxDecoration(
+                    //                                 borderRadius:
+                    //                                     BorderRadius.circular(
+                    //                                         10),
+                    //                                 color: Colors.white,
+                    //                               ),
+                    //                               child: const Center(
+                    //                                 child: Text(
+                    //                                   'Upload',
+                    //                                   style: TextStyle(
+                    //                                     color: CustomTheme
+                    //                                         .primaryColor,
+                    //                                     fontSize: 12,
+                    //                                     fontWeight:
+                    //                                         FontWeight.bold,
+                    //                                   ),
+                    //                                 ),
+                    //                               ),
+                    //                             ),
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   );
+                    //                 },
+                    //               ))
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     Row(
                       children: [
                         Theme(
@@ -1117,74 +1098,56 @@ class _SignUpViewState extends State<SignUpView> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        if (_userNameController.text.isEmpty) {
-                          Utils.flushBarErrorMessage(
-                              "Please Username", context);
-                        } else if (_emailController.text.isEmpty) {
-                          Utils.flushBarErrorMessage(
-                              "Please enter Email", context);
-                        } //_emailController.text.isEmpty
-                        else if (!RegExp(
-                                r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
-                            .hasMatch(_emailController.text.trim())) {
-                          Utils.flushBarErrorMessage(
-                              "Please enter valid Email", context);
-                        } else if (_passwordController.text.isEmpty) {
-                          Utils.flushBarErrorMessage(
-                              "Please enter Password", context);
-                        } else if (_passwordController.text.trim() !=
-                            _confirmPasswordController.text.trim()) {
-                          Utils.flushBarErrorMessage(
-                              "Sorry! password did not match", context);
-                        } else if (_passwordController.text.length < 7) {
-                          Utils.flushBarErrorMessage(
-                              "Password must be atleast 8 character", context);
-                        } else if (_countryController.text.isEmpty) {
-                          Utils.flushBarErrorMessage(
-                              "Please enter country", context);
-                        } else if (_cityController.text.isEmpty) {
-                          Utils.flushBarErrorMessage(
-                              "Please enter city", context);
-                        } else if (_stateController.text.isEmpty) {
-                          Utils.flushBarErrorMessage(
-                              "Please enter state", context);
-                        } else if (_zipCodeController.text.isEmpty) {
-                          Utils.flushBarErrorMessage(
-                              "Please enter Zip Code of your area", context);
-                        } else if (_addressController.text.isEmpty) {
-                          Utils.flushBarErrorMessage(
-                              "Please enter address", context);
-                        } else if (_contactController.text.isEmpty) {
-                          Utils.flushBarErrorMessage(
-                              "Please enter contact", context);
-                        } else if (_emailController.text.isEmpty) {
-                          Utils.flushBarErrorMessage(
-                              "Please enter your profession", context);
-                        } else if (!isImagePicked) {
-                          Utils.flushBarErrorMessage(
-                              'Select media to upload for your profile',
-                              context);
+                        if (isChecked) {
+                          if (_userNameController.text.isEmpty) {
+                            Utils.flushBarErrorMessage(
+                                "Please Username", context);
+                          } else if (_emailController.text.isEmpty) {
+                            Utils.flushBarErrorMessage(
+                                "Please enter Email", context);
+                          } //_emailController.text.isEmpty
+                          else if (!RegExp(
+                                  r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                              .hasMatch(_emailController.text.trim())) {
+                            Utils.flushBarErrorMessage(
+                                "Please enter valid Email", context);
+                          } else if (_passwordController.text.isEmpty) {
+                            Utils.flushBarErrorMessage(
+                                "Please enter Password", context);
+                          } else if (_passwordController.text.trim() !=
+                              _confirmPasswordController.text.trim()) {
+                            Utils.flushBarErrorMessage(
+                                "Sorry! password did not match", context);
+                          } else if (_passwordController.text.length < 7) {
+                            Utils.flushBarErrorMessage(
+                                "Password must be atleast 8 character",
+                                context);
+                          } else {
+                            Map data = {
+                              "name": _userNameController.text.toString(),
+                              "email": _emailController.text.toString(),
+                              "password": _passwordController.text.toString(),
+                              "password_confirmation":
+                                  _passwordController.text.toString(),
+                              // "country":
+                              //     _countryController.text.trim().toString(),
+                              // "city": _cityController.text.trim().toString(),
+                              // "state": _stateController.text.trim().toString(),
+                              // "zipcode":
+                              //     _zipCodeController.text.trim().toString(),
+                              // "address":
+                              //     _addressController.text.trim().toString(),
+                              // "contact":
+                              //     _contactController.text.trim().toString(),
+                              // "profession":
+                              //     _professionController.text.trim().toString(),
+                            };
+                            authViewModel.signupApi(data, context);
+                          }
                         } else {
-                          Map data = {
-                            "name": _userNameController.text.toString(),
-                            "email": _emailController.text.toString(),
-                            "password": _passwordController.text.toString(),
-                            "password_confirmation":
-                                _contactController.text.toString(),
-                            "country":
-                                _countryController.text.trim().toString(),
-                            "city": _cityController.text.trim().toString(),
-                            "state": _stateController.text.trim().toString(),
-                            "zipcode":
-                                _zipCodeController.text.trim().toString(),
-                            "address":
-                                _addressController.text.trim().toString(),
-                            "contact":
-                                _contactController.text.trim().toString(),
-                            "profession":
-                                _professionController.text.trim().toString(),
-                          };
-                          authViewModel.signupApi(data, context);
+                          Utils.flushBarErrorMessage(
+                              "You must agree our Terms and Condition to proceed.",
+                              context);
                         }
                       },
                       child: Container(
@@ -1251,7 +1214,7 @@ class _SignUpViewState extends State<SignUpView> {
                               onTap: () {
                                 print('Facebook');
                               },
-                              child: Icon(
+                              child: const Icon(
                                 Icons.facebook_outlined,
                                 color: Colors.white,
                                 size: 50,

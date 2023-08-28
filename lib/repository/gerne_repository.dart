@@ -1,7 +1,6 @@
 import 'package:fotos_mobile/data/network/base_api_service.dart';
 import 'package:fotos_mobile/data/network/network_api_service.dart';
 import 'package:fotos_mobile/models/gernes_list_model.dart';
-import 'package:fotos_mobile/models/media_model.dart';
 import 'package:fotos_mobile/res/app_urls.dart';
 
 class GerneRepository {
@@ -11,7 +10,7 @@ class GerneRepository {
     try {
       // print('${AppUrl.gernesListUrl}');
       dynamic response =
-          await _apiService.getGetApiResponse('${AppUrl.gernesListUrl}');
+          await _apiService.getGetApiResponse(AppUrl.gernesListUrl);
       List<dynamic> gerneListData = response;
       // print(response);
       // return GernesListModel.fromJson(response);

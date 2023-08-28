@@ -65,29 +65,10 @@ class _LogInViewState extends State<LogInView> {
                     margin: EdgeInsets.fromLTRB(
                         126 * fem, 0 * fem, 125 * fem, 13 * fem),
                     width: double.infinity,
-
-                    child: Row(
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          // logorNj (265:186)
-                          margin: EdgeInsets.fromLTRB(
-                              0 * fem, 0.25 * fem, 10.89 * fem, 0 * fem),
-                          width: 25.11 * fem,
-                          height: 28.25 * fem,
-                          child: Image.asset(
-                            'assets/branding/images/logo.png',
-                          ),
-                        ),
-                        Text('Fotos',
-                            style: GoogleFonts.lobster().copyWith(
-                              fontSize: 40 * ffem,
-                              fontWeight: FontWeight.w400,
-                              height: 1.25 * ffem / fem,
-                              color: CustomTheme.whiteTextColor,
-                            )),
-                      ],
-                    ),
+                    child:
+                        SvgPicture.asset('assets/branding/images/logo_white.svg'
+                            // fit: BoxFit.contain,
+                            ),
                   ),
                   Container(
                     // yourmemoriesmarketplaceUuu (265:294)
@@ -283,6 +264,7 @@ class _LogInViewState extends State<LogInView> {
                           "email": _emailController.text.toString(),
                           "password": _passwordController.text.toString(),
                         };
+                        print(data);
                         authViewModel.loginApi(data, context);
                       }
                     },
@@ -305,7 +287,7 @@ class _LogInViewState extends State<LogInView> {
                         ),
                         child: Center(
                             child: loading
-                                ? CircularProgressIndicator(
+                                ? const CircularProgressIndicator(
                                     color: CustomTheme.primaryColor,
                                   )
                                 : Text('Login',
@@ -382,7 +364,7 @@ class _LogInViewState extends State<LogInView> {
                             onTap: () {
                               print('Facebook');
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.facebook_outlined,
                               color: Colors.white,
                               size: 50,

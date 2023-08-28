@@ -3,6 +3,7 @@ class AppException implements Exception {
   final _prefix;
 
   AppException([this._message, this._prefix]);
+  @override
   String toString() {
     return '$_prefix$_message';
   }
@@ -11,6 +12,21 @@ class AppException implements Exception {
 class FetchDataException extends AppException {
   FetchDataException([String? message])
       : super(message, 'Error during Communication');
+}
+
+// class UnprocessableEntityException implements Exception {
+//   final String message;
+
+//   UnprocessableEntityException(this.message);
+
+//   @override
+//   String toString() {
+//     return 'UnprocessableEntityException: $message';
+//   }
+// }
+class UnprocessableEntityException extends AppException {
+  UnprocessableEntityException([String? message])
+      : super(message, 'Invalid request!! ');
 }
 
 class BadRequestException extends AppException {

@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import '../../res/typo_theme_data.dart';
 
 class TermsAndConditionsPage extends StatelessWidget {
+  const TermsAndConditionsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: CustomTheme.primaryColor,
-        title: Text('Terms and Conditions'),
+        title: const Text('Terms and Conditions'),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

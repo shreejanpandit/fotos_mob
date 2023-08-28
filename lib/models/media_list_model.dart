@@ -1,19 +1,21 @@
-class MediaLists {
-  List<Data>? data;
-  Pagination? pagination;
+class MediaListModel {
+  List<MediaListData>? data;
+  Links? links;
+  Meta? meta;
+  String? message;
 
-  MediaLists({this.data, this.pagination});
+  MediaListModel({this.data, this.links, this.meta, this.message});
 
-  MediaLists.fromJson(Map<String, dynamic> json) {
+  MediaListModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <MediaListData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new MediaListData.fromJson(v));
       });
     }
-    pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
-        : null;
+    links = json['links'] != null ? new Links.fromJson(json['links']) : null;
+    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
+    message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
@@ -21,14 +23,18 @@ class MediaLists {
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    if (this.links != null) {
+      data['links'] = this.links!.toJson();
     }
+    if (this.meta != null) {
+      data['meta'] = this.meta!.toJson();
+    }
+    data['message'] = this.message;
     return data;
   }
 }
 
-class Data {
+class MediaListData {
   int? id;
   String? name;
   String? slug;
@@ -36,9 +42,10 @@ class Data {
   String? description;
   String? path;
 
-  Data({this.id, this.name, this.slug, this.type, this.description, this.path});
+  MediaListData(
+      {this.id, this.name, this.slug, this.type, this.description, this.path});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  MediaListData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     slug = json['slug'];
@@ -59,35 +66,68 @@ class Data {
   }
 }
 
-class Pagination {
-  int? total;
-  int? count;
-  int? perPage;
-  int? currentPage;
-  int? totalPages;
+class Links {
+  String? first;
+  String? last;
+  String? prev;
+  String? next;
 
-  Pagination(
-      {this.total,
-      this.count,
-      this.perPage,
-      this.currentPage,
-      this.totalPages});
+  Links({this.first, this.last, this.prev, this.next});
 
-  Pagination.fromJson(Map<String, dynamic> json) {
-    total = json['total'];
-    count = json['count'];
-    perPage = json['per_page'];
-    currentPage = json['current_page'];
-    totalPages = json['total_pages'];
+  Links.fromJson(Map<String, dynamic> json) {
+    first = json['first'];
+    last = json['last'];
+    prev = json['prev'];
+    next = json['next'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['total'] = this.total;
-    data['count'] = this.count;
-    data['per_page'] = this.perPage;
+    data['first'] = this.first;
+    data['last'] = this.last;
+    data['prev'] = this.prev;
+    data['next'] = this.next;
+    return data;
+  }
+}
+
+class Meta {
+  int? currentPage;
+  int? from;
+  int? lastPage;
+  String? path;
+  int? perPage;
+  int? to;
+  int? total;
+
+  Meta(
+      {this.currentPage,
+      this.from,
+      this.lastPage,
+      this.path,
+      this.perPage,
+      this.to,
+      this.total});
+
+  Meta.fromJson(Map<String, dynamic> json) {
+    currentPage = json['current_page'];
+    from = json['from'];
+    lastPage = json['last_page'];
+    path = json['path'];
+    perPage = json['per_page'];
+    to = json['to'];
+    total = json['total'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     data['current_page'] = this.currentPage;
-    data['total_pages'] = this.totalPages;
+    data['from'] = this.from;
+    data['last_page'] = this.lastPage;
+    data['path'] = this.path;
+    data['per_page'] = this.perPage;
+    data['to'] = this.to;
+    data['total'] = this.total;
     return data;
   }
 }
