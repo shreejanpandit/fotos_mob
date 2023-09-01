@@ -6,16 +6,21 @@ import 'package:fotos_mobile/res/app_urls.dart';
 class HomeRepository {
   final BaseApiService _apiService = NetworkApiService();
 
-  Future<MediaModel> fetchMediaApi(int page) async {
+  Future<List<MediaData>> fetchMediaApi(int page) async {
     // Future<dynamic> fetchMediaListApi() async {
     try {
       print(AppUrl.mediaUrl);
       dynamic response =
           await _apiService.getGetApiResponse('${AppUrl.mediaUrl}?page=$page');
       // dynamic response = await _apiService.getGetApiResponse(AppUrl.mediaUrl);
-      print(response);
-      return MediaModel.fromJson(response);
+      // print('home repo response upto here is : $response');
+      // return MediaData.fromJson(response);
       // return response.body;
+      List<MediaData> mediaList = (response['data'] as List)
+          .map((data) => MediaData.fromJson(data))
+          .toList();
+      print('media repo media data media map result is : ${mediaList}');
+      return mediaList;
     } catch (e) {
       rethrow;
     }

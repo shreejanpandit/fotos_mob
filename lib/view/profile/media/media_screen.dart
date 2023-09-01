@@ -55,6 +55,7 @@ class _MediaScreenState extends State<MediaScreen> {
   TextEditingController mediaDescriptionController = TextEditingController();
   Future<UserModel> getUserData() => UserViewModel().getUser();
   String? token = '';
+  FocusNode descriptionFocusNode = FocusNode();
 
   Future<bool> postFormData(
       {required String description,
@@ -265,6 +266,12 @@ class _MediaScreenState extends State<MediaScreen> {
   }
 
   void _showBottomSheetPOST(BuildContext context) {
+    descriptionFocusNode.addListener(() {
+      if (!descriptionFocusNode.hasFocus) {
+        // Focus lost, dismiss the keyboard
+        FocusScope.of(context).unfocus();
+      }
+    });
     showModalBottomSheet(
       context: context,
       isScrollControlled:
@@ -394,47 +401,51 @@ class _MediaScreenState extends State<MediaScreen> {
                         builder: (context, value, child) {
                           print(value.selectedCollection);
                           print(value.mediaListItems);
-                          return Container(
-                            width: 336,
-                            height: 45.25,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: const Color(0xFFF9F9F9),
-                              border: Border.all(
-                                color: const Color(0xFFCDECFF),
+                          if (value.userMediaList.data == null) {
+                            return CircularProgressIndicator.adaptive();
+                          } else {
+                            return Container(
+                              width: 336,
+                              height: 45.25,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: const Color(0xFFF9F9F9),
+                                border: Border.all(
+                                  color: const Color(0xFFCDECFF),
+                                ),
                               ),
-                            ),
-                            child: DropdownButton<String>(
-                              isExpanded: true,
-                              underline:
-                                  Container(), // Removes the default underline
-                              value: value.selectedCollection
-                                  .toString(), // Holds the currently selected collection ID
-                              onChanged: (newValue) {
-                                // print("object");
+                              child: DropdownButton<String>(
+                                isExpanded: true,
+                                underline:
+                                    Container(), // Removes the default underline
+                                value: value.selectedCollection
+                                    .toString(), // Holds the currently selected collection ID
+                                onChanged: (newValue) {
+                                  // print("object");
 
-                                value.setselectedCollection(newValue!);
-                                // print(value.selectedCollection);
-                              },
-                              // onChanged: (value) {},
-                              items: value.userMediaList.data!.map((item) {
-                                return DropdownMenuItem<String>(
-                                  value: item.id.toString(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 16),
-                                    child: Text(
-                                      item.name.toString(),
-                                      style: CustomTheme.base.copyWith(
-                                        color: CustomTheme.lightTextColor
-                                            .withOpacity(0.4),
-                                        fontWeight: FontWeight.w300,
+                                  value.setselectedCollection(newValue!);
+                                  // print(value.selectedCollection);
+                                },
+                                // onChanged: (value) {},
+                                items: value.userMediaList.data!.map((item) {
+                                  return DropdownMenuItem<String>(
+                                    value: item.id.toString(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 16),
+                                      child: Text(
+                                        item.name.toString(),
+                                        style: CustomTheme.base.copyWith(
+                                          color: CustomTheme.lightTextColor
+                                              .withOpacity(0.4),
+                                          fontWeight: FontWeight.w300,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          );
+                                  );
+                                }).toList(),
+                              ),
+                            );
+                          }
                         },
                       ),
                     ],
@@ -545,8 +556,10 @@ class _MediaScreenState extends State<MediaScreen> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 16, top: 3),
                           child: TextField(
+                            focusNode:
+                                descriptionFocusNode, // Attach the FocusNode here
                             controller: mediaDescriptionController,
-                            maxLines: null, // Allow multiple lines of text
+                            // maxLines: null,
                             decoration: InputDecoration(
                               hintText: 'Enter Media Description',
                               hintStyle: CustomTheme.base.copyWith(
@@ -888,6 +901,53 @@ class _MediaScreenState extends State<MediaScreen> {
                     ],
                   ),
                 ),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Padding(
+                //         padding: const EdgeInsets.only(bottom: 10),
+                //         child: Text(
+                //           'Media Description',
+                //           style: CustomTheme.base.copyWith(
+                //             fontSize: 17,
+                //             fontWeight: FontWeight.w200,
+                //           ),
+                //         ),
+                //       ),
+                //       Container(
+                //         alignment: Alignment.topLeft,
+                //         width: 336,
+                //         height: 124,
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(10),
+                //           color: const Color(0xFFF9F9F9),
+                //           border: Border.all(
+                //             color: const Color(0xFFCDECFF),
+                //           ),
+                //         ),
+                //         child: Padding(
+                //           padding: const EdgeInsets.only(left: 16, top: 3),
+                //           child: TextFormField(
+                //             // initialValue: mediaDescription,
+                //             controller: mediaDescriptionController,
+                //             maxLines: null, // Allow multiple lines of text
+                //             decoration: InputDecoration(
+                //               hintText: 'Enter Media Description',
+                //               hintStyle: CustomTheme.base.copyWith(
+                //                 color:
+                //                     CustomTheme.lightTextColor.withOpacity(0.4),
+                //                 fontWeight: FontWeight.w300,
+                //               ),
+                //               border: InputBorder.none,
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
                   child: Column(
@@ -916,10 +976,11 @@ class _MediaScreenState extends State<MediaScreen> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 16, top: 3),
-                          child: TextFormField(
-                            // initialValue: mediaDescription,
+                          child: TextField(
+                            focusNode:
+                                descriptionFocusNode, // Attach the FocusNode here
                             controller: mediaDescriptionController,
-                            maxLines: null, // Allow multiple lines of text
+                            // maxLines: null,
                             decoration: InputDecoration(
                               hintText: 'Enter Media Description',
                               hintStyle: CustomTheme.base.copyWith(
@@ -962,7 +1023,7 @@ class _MediaScreenState extends State<MediaScreen> {
 
                       if (res == true) {
                         Navigator.pop(context);
-                        Navigator.pushNamed(context, RoutesName.media);
+                        // Navigator.pushNamed(context, RoutesName.media);
                         Alert(
                             style: const AlertStyle(
                                 titleStyle: TextStyle(color: Colors.white),
@@ -1116,9 +1177,12 @@ class _MediaScreenState extends State<MediaScreen> {
                                                       .data![index]
                                                       .slug
                                                       .toString();
+                                                  final String mediaId = value
+                                                      .userMedia.data![index].id
+                                                      .toString();
                                                   await imageOpenViewModel
-                                                      .fetchImageOpenMedia(
-                                                          slug, context);
+                                                      .fetchImageOpenMedia(slug,
+                                                          context, mediaId);
 
                                                   print(
                                                       'media screen image open ${slug}');
@@ -1218,10 +1282,16 @@ class _MediaScreenState extends State<MediaScreen> {
                                                                 .data![index]
                                                                 .slug
                                                                 .toString();
+                                                        final String mediaId =
+                                                            value.userMedia
+                                                                .data![index].id
+                                                                .toString();
 
                                                         await imageOpenViewModel
                                                             .fetchImageOpenMedia(
-                                                                slug, context);
+                                                                slug,
+                                                                context,
+                                                                mediaId);
                                                         var userData =
                                                             imageOpenViewModel
                                                                 .data;

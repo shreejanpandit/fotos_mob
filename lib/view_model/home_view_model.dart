@@ -11,9 +11,9 @@ class HomeViewModel with ChangeNotifier {
 
   List<Map<String, dynamic>> imageList = []; // Updated type
   List<Map<String, dynamic>> newlyAddedImages = []; // Updated type
-  ApiResponse<MediaModel> media = ApiResponse.loading();
+  ApiResponse<List<MediaData>> media = ApiResponse.loading();
 
-  void setMedia(ApiResponse<MediaModel> response) {
+  void setMedia(ApiResponse<List<MediaData>> response) {
     media = response;
     notifyListeners();
   }
@@ -32,8 +32,8 @@ class HomeViewModel with ChangeNotifier {
   Future<void> fetchMedia() async {
     setMedia(ApiResponse.loading());
     _myRepo.fetchMediaApi(1).then((value) {
-      for (var i = 0; i < value.data!.length; i++) {
-        final mediaItem = value.data![i];
+      for (var i = 0; i < value!.length; i++) {
+        final mediaItem = value![i];
         imageList.add({
           'id': mediaItem.id.toString(),
           'imagePath': mediaItem.imagePath.toString(),
@@ -52,8 +52,8 @@ class HomeViewModel with ChangeNotifier {
 
   void loadMoreData(int newPage) async {
     _myRepo.fetchMediaApi(newPage).then((value) {
-      for (var i = 0; i < value.data!.length; i++) {
-        final mediaItem = value.data![i];
+      for (var i = 0; i < value.length; i++) {
+        final mediaItem = value[i];
         newlyAddedImages.add({
           'id': mediaItem.id.toString(),
           'imagePath': mediaItem.imagePath.toString(),

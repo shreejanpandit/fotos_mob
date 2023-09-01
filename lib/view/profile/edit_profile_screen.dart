@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -102,13 +101,13 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
         if (response.statusCode == 200) {
           // Success
           // print('Success');
-          img.clearPickedImage();
+          // img.clearPickedImage();
           dynamic responseBody = await response.stream.bytesToString();
 
           var jsonResponse = json.decode(responseBody);
-          // print('Response body: ${jsonResponse['data']}');
-          userViewModel.changeProfileImage(
-              jsonResponse['data'][0]['profile_photo_path']);
+          print('Response body: ${jsonResponse['data']['profile_photo_path']}');
+          userViewModel
+              .changeProfileImage(jsonResponse['data']['profile_photo_path']);
 
           // Notify listeners to update the UI
           // userViewModel.notifyListeners();

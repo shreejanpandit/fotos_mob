@@ -6,6 +6,7 @@ class ImageOpenViewModel with ChangeNotifier {
   bool loading = false;
   Map<String, dynamic> data = {};
   String? slugData;
+  String? mediaId;
   // Map<String, dynamic> get data => _data;
   // set data(Map<String, dynamic> newData) {
   //   _data = newData;
@@ -29,12 +30,16 @@ class ImageOpenViewModel with ChangeNotifier {
   //   }
   // }
 
-  Future<void> fetchImageOpenMedia(String slug, BuildContext context) async {
+  Future<void> fetchImageOpenMedia(
+      String slug, BuildContext context, String mediaid) async {
     loading = true;
+    mediaId = mediaid;
+    print(mediaid);
     ChangeNotifier();
 
     try {
       slugData = slug;
+
       ChangeNotifier();
       final value = await _myRepo.fetchMediasMedia(slug);
       // Update status to COMPLETED
@@ -42,7 +47,6 @@ class ImageOpenViewModel with ChangeNotifier {
         // print('value is null');
       } else {
         data = value;
-        // print(value);
         loading = false;
         notifyListeners();
       }

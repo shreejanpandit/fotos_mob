@@ -137,12 +137,15 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                           final String slug = value
                                               .favouriteMedia.data![index].slug
                                               .toString();
+                                          final String mediaId = value
+                                              .favouriteMedia.data![index].id
+                                              .toString();
                                           Provider.of<AppbarViewModel>(context,
                                                   listen: false)
                                               .showBody = true;
                                           await imageOpenViewModel
                                               .fetchImageOpenMedia(
-                                                  slug, context);
+                                                  slug, context, mediaId);
 
                                           if (!imageOpenViewModel.loading) {
                                             if (context.mounted) {

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
+import 'package:fotos_mobile/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
-
+import '../../models/user_models.dart';
+// import '../../models/image_open_model.dart';
 import '../../utils/routes/routes_name.dart';
-import '../../view_model/user_view_model.dart';
+import '../app_urls.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -27,7 +29,9 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _CustomAppBarState extends State<CustomAppBar> {
   String? token;
   bool isVisible = false;
-
+  String? profileImagePath;
+  String? imageUrl;
+  bool loaded = false;
   @override
   void initState() {
     super.initState();
@@ -35,6 +39,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       var userProvider = Provider.of<UserViewModel>(context, listen: false);
       userProvider.getUser().then((value) {
         setState(() {
+          loaded = true;
           token = value.data?.accessToken;
           print(token);
           isVisible = token != null;
@@ -71,47 +76,109 @@ class _CustomAppBarState extends State<CustomAppBar> {
             child: Padding(
               padding: const EdgeInsets.only(right: 5),
               child: SizedBox(
-                child: CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  child: InkWell(
-                    onTap: () =>
-                        Navigator.pushNamed(context, RoutesName.profile),
-                    child: Container(
-                      width: 33.97,
-                      height: 35,
-                      decoration: const ShapeDecoration(
-                        image: DecorationImage(
-                          image:
-                              AssetImage('assets/branding/images/avatar.png'),
-                          fit: BoxFit.fill,
+                child: Consumer<UserViewModel>(
+                    builder: (context, userViewModel, child) {
+                  User? user = userViewModel.currentUser!.data!.user;
+                  profileImagePath = user!.profile_photo_path ?? '.';
+                  print(profileImagePath);
+                  if (profileImagePath!.startsWith('http')) {
+                    imageUrl = profileImagePath;
+                  } else {
+                    imageUrl = '${AppUrl.baseImageStorageUrl}$profileImagePath';
+                  }
+                  if (!loaded) {
+                    return CircularProgressIndicator.adaptive();
+                  } else {
+                    return Row(children: [
+                      InkWell(
+                        onTap: () =>
+                            Navigator.pushNamed(context, RoutesName.profile),
+                        child: Container(
+                          height: 35,
+                          width: 35,
+                          decoration: const ShapeDecoration(
+                            shape: CircleBorder(),
+                          ),
+                          child: ClipOval(
+                            child: Image.network(
+                              imageUrl.toString(),
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'assets/branding/images/avatar.png',
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            ),
+                          ),
                         ),
-                        shape: OvalBorder(),
                       ),
-                    ),
-                  ),
-                  // child: appbarProvider.showBody
-                  // ? Container(
-                  //     width: 33.97,
-                  //     height: 35,
-                  //     decoration: const ShapeDecoration(
-                  //       image: DecorationImage(
-                  //         image: AssetImage(
-                  //             'assets/branding/images/avatar.png'),
-                  //         fit: BoxFit.fill,
-                  //       ),
-                  //       shape: OvalBorder(),
-                  //     ),
-                  //   )
-                  //     : Container(
-                  //         width: 33.97,
-                  //         height: 35,
-                  //         child: const Icon(
-                  //           Icons.home_outlined,
-                  //           color: CustomTheme.primaryColor,
-                  //           size: 30,
-                  //         ),
-                  //       ),
-                ),
+                    ]);
+                  }
+                }),
+
+                // CircleAvatar(
+                //   backgroundColor: Colors.transparent,
+                //   child: InkWell(
+                //     onTap: () =>
+                //         Navigator.pushNamed(context, RoutesName.profile),
+                //     child:
+                //     // Container(
+                //     //   width: 33.97,
+                //     //   height: 35,
+                //     //   decoration: const ShapeDecoration(
+                //     //     image: DecorationImage(
+                //     //       image:
+                //     //           AssetImage('assets/branding/images/avatar.png'),
+                //     //       fit: BoxFit.fill,
+                //     //     ),
+                //     //     shape: OvalBorder(),
+                //     //   ),
+                //     // ),
+                //     Container(
+                //                             height: 35,
+                //                             width: 35,
+                //                             decoration: const ShapeDecoration(
+                //                               shape: CircleBorder(),
+                //                             ),
+                //                             child: ClipOval(
+                //                               child: Image.network(
+                //                                 imageUrl.toString(),
+                //                                 fit: BoxFit.cover,
+                //                                 errorBuilder: (context, error,
+                //                                     stackTrace) {
+                //                                   return Image.asset(
+                //                                     'assets/branding/images/avatar.png',
+                //                                     fit: BoxFit.cover,
+                //                                   );
+                //                                 },
+                //                               ),
+                //                             ),
+                //                           ),
+                //   ),
+                //   // child: appbarProvider.showBody
+                //   // ? Container(
+                //   //     width: 33.97,
+                //   //     height: 35,
+                //   //     decoration: const ShapeDecoration(
+                //   //       image: DecorationImage(
+                //   //         image: AssetImage(
+                //   //             'assets/branding/images/avatar.png'),
+                //   //         fit: BoxFit.fill,
+                //   //       ),
+                //   //       shape: OvalBorder(),
+                //   //     ),
+                //   //   )
+                //   //     : Container(
+                //   //         width: 33.97,
+                //   //         height: 35,
+                //   //         child: const Icon(
+                //   //           Icons.home_outlined,
+                //   //           color: CustomTheme.primaryColor,
+                //   //           size: 30,
+                //   //         ),
+                //   //       ),
+                // ),
               ),
             ),
           ),

@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../models/user_models.dart';
 import '../../res/app_urls.dart';
+import '../../utils/routes/routes_name.dart';
 import '../../utils/utils.dart';
 import '../../view_model/image_picker_view_model.dart';
 import 'package:http/http.dart' as http;
@@ -36,6 +38,91 @@ class _CollectionScreenState extends State<CollectionScreen> {
       TextEditingController();
   Future<UserModel> getUserData() => UserViewModel().getUser();
   ValueNotifier<String> selectedValueNotifier = ValueNotifier<String>('photo');
+
+  Future<void> postCollectionFormData1(
+      {required String description,
+      required String collectionType,
+      required String title}) async {
+    try {
+      var userData = await getUserData();
+      var token = userData.data?.accessToken.toString();
+
+      var request = http.MultipartRequest(
+          'POST', Uri.parse('${AppUrl.baseUrl}auth/media-lists'));
+      // Set headers
+      request.headers['Authorization'] = 'Bearer $token';
+      request.headers['Content-Type'] = 'multipart/form-data';
+      request.headers['X-Requested-With'] = 'XMLHttpRequest';
+      // Add form fields
+
+      // var img = Provider.of<ImagePickerModel>(context, listen: false);
+
+      // Set headers
+      request.headers['Authorization'] =
+          'Bearer $token'; // Replace with your actual token
+      request.headers['Content-Type'] = 'multipart/form-data';
+
+      // Add form fields
+      request.fields['name'] = title;
+      request.fields['description'] = description;
+      request.fields['type'] = collectionType;
+
+      var image = Provider.of<ImagePickerModel>(context, listen: false)
+          .pickedImage!
+          .path;
+      // print(image);
+      // Add image file
+      var imageFile = File(image);
+      var stream = http.ByteStream(imageFile.openRead());
+      var length = await imageFile.length();
+
+      var multipartFile = http.MultipartFile(
+        'image',
+        stream,
+        length,
+        filename: imageFile.path.split('/').last,
+        contentType: MediaType('image',
+            'jpeg'), // Adjust the content type based on your image type
+      );
+
+      // Add the image file to the request
+      request.files.add(multipartFile);
+
+      // Send the request and retrieve the response
+      var response = await request.send().timeout(const Duration(seconds: 20));
+
+      if (response.statusCode == 200) {
+        // Success
+        // print('Success');
+        // img.clearPickedImage();
+        dynamic responseBody = await response.stream.bytesToString();
+
+        var jsonResponse = json.decode(responseBody);
+        print('Response body collection screen is: ${jsonResponse['data']}');
+        // userViewModel
+        //     .changeProfileImage(jsonResponse['data']['profile_photo_path']);
+
+        // Notify listeners to update the UI
+        // userViewModel.notifyListeners();
+
+        Navigator.pushNamed(context, RoutesName.collection);
+        Utils.flushBarSucessMessage('Collection created sucessfully', context);
+      } else if (response.statusCode == 422) {
+        // Unprocessable Entity
+        String responseBody = await response.stream.bytesToString();
+        var decodedResponse = json.decode(responseBody);
+        // print('Error: ${decodedResponse.toString()}');
+        Utils.flushBarErrorMessage(decodedResponse['message'], context);
+      } else {
+        // Other status codes
+        print('Error: ${response.statusCode}');
+      }
+    } catch (error) {
+      // Exception occurred, handle the error
+      print('Collection creation Failed. Exception: $error');
+      // Handle the exception here
+    }
+  }
 
   Future<bool> postCollectionFormData(
       {required String description,
@@ -398,28 +485,30 @@ class _CollectionScreenState extends State<CollectionScreen> {
 
                       if (res == true) {
                         Navigator.pop(context);
-                        Alert(
-                            style: const AlertStyle(
-                                titleStyle: TextStyle(color: Colors.white),
-                                backgroundColor: CustomTheme.lightGreenColor),
-                            context: context,
-                            closeFunction: () {
-                              Navigator.pop(context);
-                            },
-                            buttons: [],
-                            image: SvgPicture.asset(
-                              'assets/branding/home/tick.svg',
-                              height: 41,
-                              width: 41,
-                            ),
-                            title: 'Upload Sucessful !',
-                            closeIcon: InkWell(
-                              child: SvgPicture.asset(
-                                'assets/branding/home/close.svg',
-                                height: 20,
-                                width: 20,
-                              ),
-                            )).show();
+                        // Navigator.pushNamed(context, RoutesName.media);
+
+                        // Alert(
+                        //     style: const AlertStyle(
+                        //         titleStyle: TextStyle(color: Colors.white),
+                        //         backgroundColor: CustomTheme.lightGreenColor),
+                        //     context: context,
+                        //     closeFunction: () {
+                        //       Navigator.pop(context);
+                        //     },
+                        //     buttons: [],
+                        //     image: SvgPicture.asset(
+                        //       'assets/branding/home/tick.svg',
+                        //       height: 41,
+                        //       width: 41,
+                        //     ),
+                        //     title: 'Upload Sucessful !',
+                        //     closeIcon: InkWell(
+                        //       child: SvgPicture.asset(
+                        //         'assets/branding/home/close.svg',
+                        //         height: 20,
+                        //         width: 20,
+                        //       ),
+                        //     )).show();
                       }
                     }
                   },
@@ -539,6 +628,9 @@ class _CollectionScreenState extends State<CollectionScreen> {
                     },
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 15,
               ),
               const ShowMore(
                 text: 'Show More',

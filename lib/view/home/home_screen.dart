@@ -392,10 +392,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         .imageList[index]
                                                             ['slug']
                                                         .toString();
+                                                    final String mediaId = value
+                                                        .imageList[index]['id']
+                                                        .toString();
 
                                                     await imageOpenViewModel
                                                         .fetchImageOpenMedia(
-                                                            slug, context);
+                                                            slug,
+                                                            context,
+                                                            mediaId);
 
                                                     if (!imageOpenViewModel
                                                         .loading) {
@@ -543,10 +548,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           .newlyAddedImages[
                                                               newIndex]['slug']
                                                           .toString();
-
+                                                      final String mediaId =
+                                                          value
+                                                              .newlyAddedImages[
+                                                                  newIndex]
+                                                                  ['id']
+                                                              .toString();
                                                       await imageOpenViewModel
                                                           .fetchImageOpenMedia(
-                                                              slug, context);
+                                                              slug,
+                                                              context,
+                                                              mediaId);
                                                       // print(
                                                       //     "Printing from homescreen: ${imageOpenViewModel.data}");
                                                       if (!imageOpenViewModel

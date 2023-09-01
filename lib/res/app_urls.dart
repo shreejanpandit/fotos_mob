@@ -26,4 +26,7 @@ class AppUrl {
   static var registerUrl = '${baseUrl}register';
   static var user = '${baseUrl}users';
   static var profileImage = '${baseUrl}users/profile-photo';
+  static var recommended = '${baseUrl}collaborative/';
+  static var reviews = '${baseUrl}auth/reviews';
+  static var comments = '${baseUrl}comments';
 }

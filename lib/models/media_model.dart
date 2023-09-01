@@ -385,6 +385,156 @@
 //   }
 // }
 
+// class MediaModel {
+//   List<MediaData>? data;
+//   Links? links;
+//   Meta? meta;
+//   String? message;
+
+//   MediaModel({this.data, this.links, this.meta, this.message});
+
+//   MediaModel.fromJson(Map<String, dynamic> json) {
+//     if (json['data'] != null) {
+//       data = <MediaData>[];
+//       json['data'].forEach((v) {
+//         data!.add(new MediaData.fromJson(v));
+//       });
+//     }
+//     links = json['links'] != null ? new Links.fromJson(json['links']) : null;
+//     meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
+//     message = json['message'];
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     if (this.data != null) {
+//       data['data'] = this.data!.map((v) => v.toJson()).toList();
+//     }
+//     if (links != null) {
+//       data['links'] = links!.toJson();
+//     }
+//     if (meta != null) {
+//       data['meta'] = meta!.toJson();
+//     }
+//     data['message'] = message;
+//     return data;
+//   }
+// }
+
+// class MediaData {
+//   int? id;
+//   int? ratings;
+//   String? title;
+//   String? slug;
+//   String? description;
+//   String? imagePath;
+//   String? createdAt;
+//   bool? isFavourite;
+
+//   MediaData({
+//     this.id,
+//     this.ratings,
+//     this.title,
+//     this.slug,
+//     this.description,
+//     this.imagePath,
+//     this.createdAt,
+//     this.isFavourite,
+//   });
+
+//   MediaData.fromJson(Map<String, dynamic> json) {
+//     id = json['id'];
+//     ratings = json['rating'];
+//     title = json['title'];
+//     slug = json['slug'];
+//     description = json['description'];
+//     imagePath = json['image_path'];
+//     createdAt = json['created_at'];
+//     isFavourite = json['is_favourite'];
+//     // ratings = json['ratings'];
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['id'] = id;
+//     data['rating'] = ratings;
+//     data['title'] = title;
+//     data['slug'] = slug;
+//     data['description'] = description;
+//     data['image_path'] = imagePath;
+//     data['created_at'] = createdAt;
+//     data['is_favourite'] = isFavourite;
+//     // data['ratings'] = ratings;
+//     return data;
+//   }
+// }
+
+// class Links {
+//   String? first;
+//   String? last;
+//   String? prev;
+//   String? next;
+
+//   Links({this.first, this.last, this.prev, this.next});
+
+//   Links.fromJson(Map<String, dynamic> json) {
+//     first = json['first'];
+//     last = json['last'];
+//     prev = json['prev'];
+//     next = json['next'];
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['first'] = first;
+//     data['last'] = last;
+//     data['prev'] = prev;
+//     data['next'] = next;
+//     return data;
+//   }
+// }
+
+// class Meta {
+//   int? currentPage;
+//   int? from;
+//   int? lastPage;
+//   String? path;
+//   int? perPage;
+//   int? to;
+//   int? total;
+
+//   Meta(
+//       {this.currentPage,
+//       this.from,
+//       this.lastPage,
+//       this.path,
+//       this.perPage,
+//       this.to,
+//       this.total});
+
+//   Meta.fromJson(Map<String, dynamic> json) {
+//     currentPage = json['current_page'];
+//     from = json['from'];
+//     lastPage = json['last_page'];
+//     path = json['path'];
+//     perPage = json['per_page'];
+//     to = json['to'];
+//     total = json['total'];
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['current_page'] = currentPage;
+//     data['from'] = from;
+//     data['last_page'] = lastPage;
+//     data['path'] = path;
+//     data['per_page'] = perPage;
+//     data['to'] = to;
+//     data['total'] = total;
+//     return data;
+//   }
+// }
+
 class MediaModel {
   List<MediaData>? data;
   Links? links;
@@ -397,26 +547,26 @@ class MediaModel {
     if (json['data'] != null) {
       data = <MediaData>[];
       json['data'].forEach((v) {
-        data!.add(new MediaData.fromJson(v));
+        data!.add(MediaData.fromJson(v));
       });
     }
-    links = json['links'] != null ? new Links.fromJson(json['links']) : null;
-    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
+    links = json['links'] != null ? Links.fromJson(json['links']) : null;
+    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    if (this.links != null) {
-      data['links'] = this.links!.toJson();
+    if (links != null) {
+      data['links'] = links!.toJson();
     }
-    if (this.meta != null) {
-      data['meta'] = this.meta!.toJson();
+    if (meta != null) {
+      data['meta'] = meta!.toJson();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
@@ -429,6 +579,8 @@ class MediaData {
   String? imagePath;
   String? createdAt;
   bool? isFavourite;
+  String? rating;
+  int? download;
 
   MediaData(
       {this.id,
@@ -437,7 +589,9 @@ class MediaData {
       this.description,
       this.imagePath,
       this.createdAt,
-      this.isFavourite});
+      this.isFavourite,
+      this.rating,
+      this.download});
 
   MediaData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -447,17 +601,21 @@ class MediaData {
     imagePath = json['image_path'];
     createdAt = json['created_at'];
     isFavourite = json['is_favourite'];
+    download = json['download'];
+    rating = json['rating']?.toString(); // Convert to String
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['slug'] = this.slug;
-    data['description'] = this.description;
-    data['image_path'] = this.imagePath;
-    data['created_at'] = this.createdAt;
-    data['is_favourite'] = this.isFavourite;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['slug'] = slug;
+    data['description'] = description;
+    data['image_path'] = imagePath;
+    data['created_at'] = createdAt;
+    data['is_favourite'] = isFavourite;
+    data['rating'] = rating;
+    data['download'] = download;
     return data;
   }
 }
@@ -478,11 +636,11 @@ class Links {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['first'] = this.first;
-    data['last'] = this.last;
-    data['prev'] = this.prev;
-    data['next'] = this.next;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['first'] = first;
+    data['last'] = last;
+    data['prev'] = prev;
+    data['next'] = next;
     return data;
   }
 }
@@ -516,14 +674,14 @@ class Meta {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['current_page'] = this.currentPage;
-    data['from'] = this.from;
-    data['last_page'] = this.lastPage;
-    data['path'] = this.path;
-    data['per_page'] = this.perPage;
-    data['to'] = this.to;
-    data['total'] = this.total;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['current_page'] = currentPage;
+    data['from'] = from;
+    data['last_page'] = lastPage;
+    data['path'] = path;
+    data['per_page'] = perPage;
+    data['to'] = to;
+    data['total'] = total;
     return data;
   }
 }
