@@ -118,7 +118,7 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                   await imgOpenRepo.postReview(data);
                   Navigator.of(context).pop(); // Close the dialog
                   Utils.flushBarSucessMessage(
-                    'Thank you for rating ! You rated $rating',
+                    'Thank you for rating !',
                     context,
                   );
                 } catch (error) {
@@ -437,13 +437,13 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 77, top: 31, right: 65),
+                    padding: const EdgeInsets.only(
+                        left: 77, top: 31, right: 65, bottom: 15),
                     child: Center(
                         child: Text(
                       'Choose Subscription Plan',
                       style: CustomTheme.base
-                          .copyWith(fontSize: 22, fontWeight: FontWeight.w500),
+                          .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
                     )),
                   ),
                   Container(
@@ -473,10 +473,33 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                                 },
                               );
                             },
-                            child: ListTile(
-                              title: Text(
-                                  ' \$${val[index].amount.toString()}/month'),
-                              subtitle: Text('Billing Scheme: per unit'),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: CustomTheme
+                                    .primaryColor, // Gray background color
+                                borderRadius: BorderRadius.circular(
+                                    10.0), // Rounded corners
+                              ),
+                              child: ListTile(
+                                title: Text(
+                                  '\$${val[index].amount.toString()}/month',
+                                  style: TextStyle(
+                                      fontSize: 20.0, // Larger title text size
+                                      color: Colors.white, // White text color
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                subtitle: Text(
+                                  'Billing Scheme: per unit',
+                                  style: TextStyle(
+                                    color: Colors
+                                        .white, // Red subtitle text color (error)
+                                  ),
+                                ),
+                                trailing: Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colors.white, // White icon color
+                                ),
+                              ),
                             ),
                           ),
                         );
