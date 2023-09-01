@@ -652,67 +652,67 @@ class _CollectionScreenState extends State<CollectionScreen> {
               const ShowMore(
                 text: 'Show More',
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 14, bottom: 18),
-                child: Text(
-                  "Videos",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 19,
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              Column(
-                children: [
-                  Consumer<MediaViewModel>(
-                    builder: (context, value, child) {
-                      // print(
-                      //     'Hi media view consumer collection screen ${value.authMediaListItems}');
-                      final authMediaListItems = value.authMediaListItems;
-                      final itemCount = authMediaListItems.length;
-                      final rows = (itemCount / 2).ceil();
+              // const Padding(
+              //   padding: EdgeInsets.only(top: 14, bottom: 18),
+              //   child: Text(
+              //     "Videos",
+              //     textAlign: TextAlign.center,
+              //     style: TextStyle(
+              //       color: Colors.black,
+              //       fontSize: 19,
+              //       fontFamily: "Poppins",
+              //       fontWeight: FontWeight.w500,
+              //     ),
+              //   ),
+              // ),
+              // Column(
+              //   children: [
+              //     Consumer<MediaViewModel>(
+              //       builder: (context, value, child) {
+              //         // print(
+              //         //     'Hi media view consumer collection screen ${value.authMediaListItems}');
+              //         final authMediaListItems = value.authMediaListItems;
+              //         final itemCount = authMediaListItems.length;
+              //         final rows = (itemCount / 2).ceil();
 
-                      return GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: itemCount,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 10, mainAxisExtent: 80,
-                          crossAxisSpacing: 10,
-                          // childAspectRatio: 8 /
-                          //     8, // Adjust the aspect ratio to match desired height and width
-                        ),
-                        itemBuilder: (context, index) {
-                          String imagePath = value.authMediaListItems[index]
-                                  ['image_path']
-                              .toString();
-                          String imageUrl;
+              //         return GridView.builder(
+              //           shrinkWrap: true,
+              //           physics: const NeverScrollableScrollPhysics(),
+              //           itemCount: itemCount,
+              //           gridDelegate:
+              //               const SliverGridDelegateWithFixedCrossAxisCount(
+              //             crossAxisCount: 3,
+              //             mainAxisSpacing: 10, mainAxisExtent: 80,
+              //             crossAxisSpacing: 10,
+              //             // childAspectRatio: 8 /
+              //             //     8, // Adjust the aspect ratio to match desired height and width
+              //           ),
+              //           itemBuilder: (context, index) {
+              //             String imagePath = value.authMediaListItems[index]
+              //                     ['image_path']
+              //                 .toString();
+              //             String imageUrl;
 
-                          if (imagePath.startsWith('http')) {
-                            imageUrl = imagePath;
-                          } else {
-                            imageUrl =
-                                '${AppUrl.baseImageStorageUrl}$imagePath';
-                          }
+              //             if (imagePath.startsWith('http')) {
+              //               imageUrl = imagePath;
+              //             } else {
+              //               imageUrl =
+              //                   '${AppUrl.baseImageStorageUrl}$imagePath';
+              //             }
 
-                          return CardWithImageAndText(
-                            imagePath: imageUrl,
-                            text: authMediaListItems[index]['name'],
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
-              const ShowMore(
-                text: 'Show More',
-              ),
+              //             return CardWithImageAndText(
+              //               imagePath: imageUrl,
+              //               text: authMediaListItems[index]['name'],
+              //             );
+              //           },
+              //         );
+              //       },
+              //     ),
+              //   ],
+              // ),
+              // const ShowMore(
+              //   text: 'Show More',
+              // ),
             ],
           ),
         ),

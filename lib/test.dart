@@ -1,180 +1,136 @@
-import 'package:comment_box/comment/comment.dart';
+import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:fotos_mobile/repository/image_open_repository.dart';
-import 'package:fotos_mobile/res/app_urls.dart';
-import 'package:fotos_mobile/res/typo_theme_data.dart';
-import 'package:fotos_mobile/utils/utils.dart';
-
-final imgOpenRepo = ImageOpenRepository(); // Initialize imgOpenRepo
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 class Test extends StatefulWidget {
-  final Map<String, dynamic> data;
-
-  Test(this.data);
+  const Test({Key? key}) : super(key: key);
 
   @override
   _TestState createState() => _TestState();
 }
 
 class _TestState extends State<Test> {
-  final formKey = GlobalKey<FormState>();
-  final TextEditingController commentController = TextEditingController();
-  List<Map<String, dynamic>> filedata = []; // Initialize as an empty list
-
-  @override
-  void initState() {
-    super.initState();
-    // var comments = widget.data['data']['comments'][0]['commented_user']['name'];
-    // print(comments);
-    if (widget.data['data']['comments'].length == 0) {
-      filedata = [];
-    } else {
-      for (var i = widget.data['data']['comments'].length - 1; i >= 0; i--) {
-        String imagePath = widget.data['data']['comments'][i]['commented_user']
-                ['image_path']
-            .toString();
-        String imageUrl;
-
-        if (imagePath.startsWith('http')) {
-          imageUrl = imagePath;
-        } else {
-          imageUrl = '$imagePath';
-        }
-
-        print(
-            'comment done by ${widget.data['data']['comments'][i]['commented_user']['name']}');
-
-        var value = {
-          'name': widget.data['data']['comments'][i]['commented_user']['name'],
-          'pic': imageUrl,
-          'message': widget.data['data']['comments'][i]['comment'],
-          'date': widget.data['data']['comments'][i]['media']['created_at'],
-        };
-
-        filedata.add(value);
-      }
-    }
-
-    // for (var comment in comments) {
-    //   var commentedUserData = comment['commented_user'];
-    //   var value = {
-    //     'name': commentedUserData['name'],
-    //     'pic': commentedUserData['image_path'],
-    //     'message': comment['comment'],
-    //     'date': comment['created_at'],
-    //   };
-    //   filedata.add(value);
-    // }
-  }
-
-  Widget commentChild(data) {
-    return ListView(
-      children: [
-        for (var i = 0; i < data.length; i++)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
-            child: ListTile(
-              leading: GestureDetector(
-                onTap: () async {
-                  // Display the image in large form.
-                  print("Comment Clicked");
-                },
-                child: Container(
-                  height: 50.0,
-                  width: 50.0,
-                  decoration: new BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: new BorderRadius.all(Radius.circular(50))),
-                  child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: CommentBox.commentImageParser(
-                          imageURLorPath: data[i]['pic'] == null
-                              ? 'assets/branding/images/avatar.png'
-                              : '${AppUrl.baseImageStorageUrl}${data[i]['pic']}')),
-                  // onError: (exception, stackTrace) {
-                  //   // If loading the network image fails, use the default asset image.
-                  //   return AssetImage('assets/branding/images/avatar.png');
-                  // },
-                ),
-              ),
-              title: Text(
-                data[i]['name'] ?? '',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(data[i]['message'] ?? ''),
-              trailing:
-                  Text(data[i]['date'] ?? '', style: TextStyle(fontSize: 10)),
-            ),
-          )
-      ],
-    );
-  }
+  Map<String, dynamic>? paymentIntent;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Comment Section"),
-        backgroundColor: CustomTheme.secondaryColor,
+        title: const Text('Stripe Payment'),
       ),
-      body: Container(
-        child: CommentBox(
-          userImage: CommentBox.commentImageParser(
-              imageURLorPath: "assets/branding/images/avatar.png"),
-          child: commentChild(filedata),
-          labelText: 'Write a comment...',
-          errorText: 'Comment cannot be blank',
-          withBorder: false,
-          sendButtonMethod: () async {
-            if (formKey.currentState!.validate()) {
-              print(commentController.text);
-
-              Map data = {
-                "media_id": widget.data['data']['id'],
-                "comment": commentController.text.trim().toString()
-              };
-              print('comment : $data');
-              try {
-                dynamic response = await imgOpenRepo.postComment(data);
-                var commentedUserData = response['data']['commented_user'];
-                var comment = response['data']['comment'];
-
-                setState(() {
-                  var value = {
-                    'name': commentedUserData['name'],
-                    'pic': commentedUserData['image_path'],
-                    'message': comment,
-                    'date': '${DateTime.now()}',
-                  };
-                  filedata.insert(0, value);
-                });
-
-                Utils.flushBarSucessMessage(
-                  'Comment posted successfully',
-                  context,
-                );
-              } catch (error) {
-                print('Error posting comment message: $error');
-                // Handle the error or show a message to the user
-              }
-
-              commentController.clear();
-              FocusScope.of(context).unfocus();
-            } else {
-              print("Not validated");
-            }
-          },
-          formKey: formKey,
-          commentController: commentController,
-          backgroundColor: CustomTheme.primaryColor,
-          textColor: Colors.white,
-          sendWidget: Icon(Icons.send_sharp, size: 30, color: Colors.white),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              child: const Text('Make Payment'),
+              onPressed: () async {
+                await makePayment();
+              },
+            ),
+          ],
         ),
       ),
     );
   }
-}
 
-// void main() {
-//   runApp(MaterialApp(home: Test()));
-// }
+  Future<void> makePayment() async {
+    try {
+      paymentIntent = await createPaymentIntent('100', 'USD');
+
+      //STEP 2: Initialize Payment Sheet
+      await Stripe.instance
+          .initPaymentSheet(
+              paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret: paymentIntent![
+                      'client_secret'], //Gotten from payment intent
+                  // style: ThemeMode.dark,
+                  merchantDisplayName: 'Shreejan Pandit'))
+          .then((value) {});
+
+      //STEP 3: Display Payment sheet
+      displayPaymentSheet();
+    } catch (err) {
+      throw Exception(err);
+    }
+  }
+
+  displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet().then((value) {
+        print('aayo');
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: Colors.green,
+                        size: 100.0,
+                      ),
+                      SizedBox(height: 10.0),
+                      Text("Payment Successful!"),
+                    ],
+                  ),
+                ));
+
+        paymentIntent = null;
+      }).onError((error, stackTrace) {
+        throw Exception(error);
+      });
+    } on StripeException catch (e) {
+      print('Error is:---> $e');
+      AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: const [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                ),
+                Text("Payment Failed"),
+              ],
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      print('$e');
+    }
+  }
+
+  createPaymentIntent(String amount, String currency) async {
+    try {
+      //Request body
+      Map<String, dynamic> body = {
+        'amount': calculateAmount(amount),
+        'currency': currency,
+      };
+
+      //Make post request to Stripe
+      var response = await http.post(
+        Uri.parse('https://api.stripe.com/v1/payment_intents'),
+        headers: {
+          'Authorization': 'Bearer ${dotenv.env['STRIPE_SECRET']}',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: body,
+      );
+      return json.decode(response.body);
+    } catch (err) {
+      throw Exception(err.toString());
+    }
+  }
+
+  calculateAmount(String amount) {
+    final calculatedAmout = (int.parse(amount)) * 100;
+    return calculatedAmout.toString();
+  }
+}

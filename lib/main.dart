@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/utils/routes/routes.dart';
 import 'package:fotos_mobile/utils/routes/routes_name.dart';
@@ -15,12 +17,18 @@ import 'package:fotos_mobile/view_model/recommended_view_model.dart';
 import 'package:fotos_mobile/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
     systemNavigationBarColor: Colors.transparent,
     statusBarColor: Colors.transparent,
   ));
+  WidgetsFlutterBinding.ensureInitialized();
 
+  Stripe.publishableKey =
+      'pk_test_51NbIQ3CZE8nGUbt0pE0mUJjKhexRnS44pxqeU5bm2QyMKZNXYbjKnNxtwQFSt5v8k0spjjhzb506foF1ddJA10cW00vVLvPCMj';
+
+  await dotenv.load(fileName: "assets/.env");
+  await Stripe.instance.applySettings();
   runApp(const MyApp());
 }
 

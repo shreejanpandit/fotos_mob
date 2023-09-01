@@ -1,9 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:fotos_mobile/test.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:fotos_mobile/comment_Screen.dart';
 import 'package:fotos_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -11,14 +16,19 @@ import 'package:intl/intl.dart';
 import 'package:fotos_mobile/res/typo_theme_data.dart';
 import 'package:fotos_mobile/view_model/appbar_item_view_model.dart';
 import 'package:fotos_mobile/view_model/image_open_view_model.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
 import '../../data/response/status.dart';
+import '../../models/payment_intent_nodel.dart';
+import '../../models/subscription_model.dart';
 import '../../repository/image_open_repository.dart';
 import '../../res/app_urls.dart';
 import '../../res/components/appbar_widget.dart';
 import '../../res/components/drawer_widget.dart';
+import '../../res/components/profile_component/green_and_cancle_button.dart';
 import '../../utils/routes/routes_name.dart';
 import '../../view_model/favourite_view_model.dart';
 
@@ -160,6 +170,156 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
       return formattedDate;
     }
 
+    postPayment(String subscriptionPlanId, String payment_method) async {
+      Map data = {
+        "subscription_plan": subscriptionPlanId,
+        "payment_method": payment_method
+      };
+      try {
+        SharedPreferences sp = await SharedPreferences.getInstance();
+        final token = sp.getString('token');
+        http.Response response = await http.post(
+          Uri.parse('${AppUrl.baseUrl}checkouts'),
+          body: jsonEncode(data),
+          headers: {
+            "Content-type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "Accept": "application/json",
+            'Authorization': 'Bearer $token',
+          },
+        ).timeout(const Duration(seconds: 15));
+
+        if (response.statusCode == 200) {
+          print('${response.body}');
+          // var res = jsonDecode(response.body);
+          // Utils.flushBarSucessMessage(res['message'], context);
+        } else {
+          print('payment save error');
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+
+    getPaymentMethod(String intendedId, String subscriptionPlanId) async {
+      try {
+        print('->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $intendedId');
+        final response = await http.get(
+          Uri.parse('https://api.stripe.com/v1/setup_intents/$intendedId'),
+          headers: {
+            'Authorization': 'Bearer ${dotenv.env['STRIPE_SECRET']}',
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+        );
+        if (response.statusCode == 200) {
+          final decodedResp = jsonDecode(response.body);
+          if (kDebugMode) {
+            print(response.statusCode.toString());
+          }
+
+          print(decodedResp['payment_method']);
+          print(subscriptionPlanId);
+          //post api call
+          postPayment(subscriptionPlanId, decodedResp['payment_method']);
+        } else {
+          if (kDebugMode) {
+            print('-................${response.body.toString()}');
+          }
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+
+    List<SubscriptionData?> subscriptionData;
+    Future<List<SubscriptionData?>> getSubscriptionPlan() async {
+      SharedPreferences sp = await SharedPreferences.getInstance();
+      final token = sp.getString('token');
+      try {
+        final response = await http
+            .get(Uri.parse('${AppUrl.baseUrl}subscriptions/plan'), headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'Authorization': "Bearer $token",
+        });
+        if (response.statusCode == 200) {
+          final decodedResp = jsonDecode(response.body);
+          subscriptionData = SubscriptionModel.fromJson(decodedResp).data!;
+          print('........................$subscriptionData');
+          print('........................${response.body}');
+          return subscriptionData;
+        } else {
+          print('unsucessful');
+        }
+      } catch (e) {
+        print(e);
+      }
+      return [];
+    }
+
+    displayPaymentSheet(String intentId, String subscriptionPlanId) async {
+      try {
+        await Stripe.instance.presentPaymentSheet().then((value) async {
+          // await getPaymentMethod(intentId);
+          await getPaymentMethod(intentId, subscriptionPlanId);
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.check_circle,
+                          color: Colors.green,
+                          size: 100.0,
+                        ),
+                        // vSizedBox1,
+                        const Text("Payment Successful!"),
+                        // vSizedBox1,
+                        // AppButton(
+                        //     onPressed: () {
+                        //       Navigator.push(context, MaterialPageRoute(
+                        //         builder: (context) {
+                        //           return const MyNumberScreen();
+                        //         },
+                        //       ));
+                        //       // Navigator.of(context).pop();
+                        //     },
+                        //     buttonColor: AppColors.primaryColor,
+                        //     buttonText: 'View my Number',
+                        //     buttonTxtColor: Colors.white),
+                      ],
+                    ),
+                  ));
+        }).onError((error, stackTrace) {
+          print('err display payment --->$error');
+
+          throw Exception(error);
+        });
+      } on StripeException catch (e) {
+        print('Error is:---> $e');
+        const AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.cancel,
+                    color: Colors.red,
+                  ),
+                  Text("Payment Failed"),
+                ],
+              ),
+            ],
+          ),
+        );
+      } catch (e) {
+        if (kDebugMode) {
+          print('$e');
+        }
+      }
+    }
+
     List imageList = [
       "https://cdn.britannica.com/91/7991-050-7C23324E/roe-deer-velvet.jpg",
       "https://myrepublica.nagariknetwork.com/uploads/media/2018/September/sadpug.jpg",
@@ -172,30 +332,37 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
 
       try {
         // Download image
-        String url = '${AppUrl.baseUrl}downloads/$slug';
+        String url = '${AppUrl.baseUrl}downloads-daily/$slug';
+        print(url);
         final http.Response response = await http.post(Uri.parse(url));
+        print('download response is ${response.body}');
+        if (response.statusCode == 200) {
+          // Get temporary directory
+          final dir = await getTemporaryDirectory();
 
-        // Get temporary directory
-        final dir = await getTemporaryDirectory();
+          final timestamp = DateTime.now().millisecondsSinceEpoch;
+          final originalFileName = imageFileName;
+          final originalExtension = originalFileName.split('.').last;
+          final fileName = 'image_$timestamp.$originalExtension';
+          // Create an image name
 
-        final timestamp = DateTime.now().millisecondsSinceEpoch;
-        final originalFileName = imageFileName;
-        final originalExtension = originalFileName.split('.').last;
-        final fileName = 'image_$timestamp.$originalExtension';
-        // Create an image name
+          var filename = '${dir.path}/$fileName';
+          print(dir.path);
+          // Save to filesystem
+          final file = File(filename);
+          await file.writeAsBytes(response.bodyBytes);
 
-        var filename = '${dir.path}/$fileName';
-        print(dir.path);
-        // Save to filesystem
-        final file = File(filename);
-        await file.writeAsBytes(response.bodyBytes);
+          // Ask the user to save it
+          final params = SaveFileDialogParams(sourceFilePath: file.path);
+          final finalPath = await FlutterFileDialog.saveFile(params: params);
 
-        // Ask the user to save it
-        final params = SaveFileDialogParams(sourceFilePath: file.path);
-        final finalPath = await FlutterFileDialog.saveFile(params: params);
-
-        if (finalPath != null) {
-          message = 'Image saved to disk';
+          if (finalPath != null) {
+            message = 'Image saved to disk';
+          }
+        } else if (response.statusCode == 402) {
+          print('${response.body}');
+        } else {
+          print('err');
         }
       } catch (e) {
         message = 'An error occurred while saving the image';
@@ -204,6 +371,202 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
       if (message != null) {
         Utils.flushBarErrorMessage(message, context);
       }
+    }
+
+    Future<void> makePayment(String setupIntendId, String clientSecretKey,
+        String subscriptionPlanId) async {
+      try {
+        await Stripe.instance
+            .initPaymentSheet(
+                paymentSheetParameters: SetupPaymentSheetParameters(
+                    setupIntentClientSecret: clientSecretKey,
+                    style: ThemeMode.dark,
+                    merchantDisplayName: 'Shreejan Pandit'))
+            .then((value) {
+          print(value);
+        });
+        displayPaymentSheet(setupIntendId, subscriptionPlanId);
+        //STEP 3: Display Payment sheet
+      } catch (err) {
+        print('err make payment---> $err');
+        throw Exception(err);
+      }
+    }
+
+    Data? paymentData;
+    Future<Data?> getpaymentIntendentData() async {
+      SharedPreferences sp = await SharedPreferences.getInstance();
+      final token = sp.getString('token');
+      try {
+        final response = await http.get(
+            Uri.parse('http://192.168.18.4:8000/api/v1/checkouts/intent'),
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+              'Authorization': "Bearer $token",
+            });
+        if (response.statusCode == 200) {
+          final decodedResp = jsonDecode(response.body);
+          paymentData = PaymentIntentModel.fromJson(decodedResp).data;
+          return paymentData;
+        } else {
+          print('unsucessful');
+        }
+      } catch (e) {
+        print(e);
+      }
+      return null;
+    }
+
+    void _showBottomSheetUpdate(dynamic val, int len) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled:
+            true, // Make the bottom sheet take 3/4th of the screen height
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(35),
+            topRight: Radius.circular(35),
+          ),
+        ),
+        builder: (BuildContext context) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height *
+                0.5, // Adjust the height to take 3/4th of the screen
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 77, top: 31, right: 65),
+                    child: Center(
+                        child: Text(
+                      'Choose Subscription Plan',
+                      style: CustomTheme.base
+                          .copyWith(fontSize: 22, fontWeight: FontWeight.w500),
+                    )),
+                  ),
+                  Container(
+                    height: 500,
+                    child: ListView.builder(
+                      itemCount: val.length,
+                      itemBuilder: (context, index) {
+                        String subscriptionPlanId = val[index].id.toString();
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                              getpaymentIntendentData().then(
+                                (value) async {
+                                  String getSetupIntentId =
+                                      value!.setupIntentId.toString();
+                                  print(getSetupIntentId);
+                                  String getClientSecretKey =
+                                      value.clientSecret.toString();
+
+                                  print(getClientSecretKey);
+                                  print(
+                                      '................$subscriptionPlanId..................');
+                                  await makePayment(getSetupIntentId,
+                                      getClientSecretKey, subscriptionPlanId);
+                                },
+                              );
+                            },
+                            child: ListTile(
+                              title: Text(
+                                  ' \$${val[index].amount.toString()}/month'),
+                              subtitle: Text('Billing Scheme: per unit'),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
+    // displayPaymentSheet() async {
+    //   try {
+    //     await Stripe.instance.presentPaymentSheet().then((value) async {
+    //       // print('aayo');
+    //       // await getPaymentMethod
+    //       showDialog(
+    //           context: context,
+    //           builder: (_) => AlertDialog(
+    //                 content: Column(
+    //                   mainAxisSize: MainAxisSize.min,
+    //                   children: [
+    //                     Icon(
+    //                       Icons.check_circle,
+    //                       color: Colors.green,
+    //                       size: 100.0,
+    //                     ),
+    //                     SizedBox(height: 10.0),
+    //                     Text("Payment Successful!"),
+    //                   ],
+    //                 ),
+    //               ));
+
+    //       paymentIntent = null;
+    //     }).onError((error, stackTrace) {
+    //       throw Exception(error);
+    //     });
+    //   } on StripeException catch (e) {
+    //     print('Error is:---> $e');
+    //     AlertDialog(
+    //       content: Column(
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: [
+    //           Row(
+    //             children: const [
+    //               Icon(
+    //                 Icons.cancel,
+    //                 color: Colors.red,
+    //               ),
+    //               Text("Payment Failed"),
+    //             ],
+    //           ),
+    //         ],
+    //       ),
+    //     );
+    //   } catch (e) {
+    //     print('$e');
+    //   }
+    // }
+
+    // createPaymentIntent(String amount, String currency) async {
+    //   try {
+    //     //Request body
+    //     Map<String, dynamic> body = {
+    //       'amount': calculateAmount(amount),
+    //       'currency': currency,
+    //     };
+
+    //     //Make post request to Stripe
+    //     var response = await http.post(
+    //       Uri.parse('https://api.stripe.com/v1/payment_intents'),
+    //       headers: {
+    //         'Authorization': 'Bearer ${dotenv.env['STRIPE_SECRET']}',
+    //         'Content-Type': 'application/x-www-form-urlencoded'
+    //       },
+    //       body: body,
+    //     );
+    //     print(json.decode(response.body));
+    //     return json.decode(response.body);
+    //   } catch (err) {
+    //     throw Exception(err.toString());
+    //   }
+    // }
+
+    calculateAmount(String amount) {
+      final calculatedAmout = (double.parse(amount)) * 100;
+      return '${calculatedAmout.toInt()}';
     }
 
     var imageOpenViewModel = Provider.of<ImageOpenViewModel>(context);
@@ -319,7 +682,8 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        Test(value.data),
+                                                        CommentScreen(
+                                                            value.data),
                                                   ));
                                             },
                                             icon: const Icon(
@@ -392,9 +756,39 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                                                 var data = provider.data;
                                                 print(data);
                                                 _saveImage(
-                                                    context,
-                                                    data['data']['slug'],
-                                                    data['data']['image_path']);
+                                                        context,
+                                                        data['data']['slug'],
+                                                        data['data']
+                                                            ['image_path'])
+                                                    .then((value) {
+                                                  print(
+                                                      '----------------------------------------------------');
+                                                  getSubscriptionPlan()
+                                                      .then((value) {
+                                                    print(value.length);
+                                                    _showBottomSheetUpdate(
+                                                        value, value.length);
+                                                  });
+
+                                                  // getpaymentIntendentData()
+                                                  //     .then(
+                                                  //   (value) async {
+                                                  //     String getSetupIntentId =
+                                                  //         value!.setupIntentId
+                                                  //             .toString();
+                                                  //     print(getSetupIntentId);
+                                                  //     String
+                                                  //         getClientSecretKey =
+                                                  //         value.clientSecret
+                                                  //             .toString();
+                                                  //     print(getClientSecretKey);
+                                                  //     await makePayment(
+                                                  //         getSetupIntentId,
+                                                  //         getClientSecretKey);
+                                                  //   },
+                                                  // );
+                                                });
+
                                                 provider.fetchImageOpenMedia(
                                                     data['data']['slug'],
                                                     context,
@@ -642,7 +1036,7 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                                                       .isFavourite ??
                                                   false;
 
-                                              return Card(
+                                              return Container(
                                                 child: Stack(
                                                   alignment: Alignment.topRight,
                                                   children: [

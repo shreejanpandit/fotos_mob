@@ -294,7 +294,7 @@ class _MediaScreenState extends State<MediaScreen> {
       builder: (BuildContext context) {
         return SizedBox(
           height: MediaQuery.of(context).size.height *
-              0.75, // Adjust the height to take 3/4th of the screen
+              0.9, // Adjust the height to take 3/4th of the screen
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -669,7 +669,7 @@ class _MediaScreenState extends State<MediaScreen> {
       builder: (BuildContext context) {
         return SizedBox(
           height: MediaQuery.of(context).size.height *
-              0.75, // Adjust the height to take 3/4th of the screen
+              0.9, // Adjust the height to take 3/4th of the screen
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1121,7 +1121,7 @@ class _MediaScreenState extends State<MediaScreen> {
           ],
         ),
         body: SizedBox(
-          height: MediaQuery.of(context).size.height,
+          height: MediaQuery.of(context).size.height * 1.4,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1451,91 +1451,91 @@ class _MediaScreenState extends State<MediaScreen> {
                     )
                   ],
                 ),
-                SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(top: 14, bottom: 14, left: 24),
-                        child: Text(
-                          "Videos",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 19,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: SizedBox(
-                          height: 226,
-                          child: CustomScrollView(
-                            slivers: [
-                              SliverPadding(
-                                padding: const EdgeInsets.all(5),
-                                sliver: SliverMasonryGrid(
-                                  delegate: SliverChildBuilderDelegate(
-                                    (context, index) => Card(
-                                      child: Stack(
-                                        alignment: Alignment.center,
-                                        children: [
-                                          Image.asset(
-                                            imageList[index],
-                                          ),
-                                          const Positioned(
-                                            top: 0,
-                                            right: 0,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                Icon(
-                                                  Icons.favorite_outline,
-                                                  color: Colors.white,
-                                                ),
-                                                Icon(
-                                                  Icons.bookmark_add_outlined,
-                                                  color: Colors.white,
-                                                ),
-                                                Icon(
-                                                  Icons.share_outlined,
-                                                  color: Colors.white,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          const Icon(
-                                            Icons.play_circle_fill_outlined,
-                                            size: 40,
-                                            color: Colors.white,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    childCount: 1,
-                                  ),
-                                  gridDelegate:
-                                      const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 1,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: ShowMore(
-                          text: 'Show More',
-                        ),
-                      )
-                    ],
-                  ),
-                )
+                // SingleChildScrollView(
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       const Padding(
+                //         padding: EdgeInsets.only(top: 14, bottom: 14, left: 24),
+                //         child: Text(
+                //           "Videos",
+                //           textAlign: TextAlign.center,
+                //           style: TextStyle(
+                //             color: Colors.black,
+                //             fontSize: 19,
+                //             fontFamily: "Poppins",
+                //             fontWeight: FontWeight.w500,
+                //           ),
+                //         ),
+                //       ),
+                //       Padding(
+                //         padding: const EdgeInsets.only(bottom: 20),
+                //         child: SizedBox(
+                //           height: 226,
+                //           child: CustomScrollView(
+                //             slivers: [
+                //               SliverPadding(
+                //                 padding: const EdgeInsets.all(5),
+                //                 sliver: SliverMasonryGrid(
+                //                   delegate: SliverChildBuilderDelegate(
+                //                     (context, index) => Card(
+                //                       child: Stack(
+                //                         alignment: Alignment.center,
+                //                         children: [
+                //                           Image.asset(
+                //                             imageList[index],
+                //                           ),
+                //                           const Positioned(
+                //                             top: 0,
+                //                             right: 0,
+                //                             child: Row(
+                //                               mainAxisAlignment:
+                //                                   MainAxisAlignment.end,
+                //                               children: [
+                //                                 Icon(
+                //                                   Icons.favorite_outline,
+                //                                   color: Colors.white,
+                //                                 ),
+                //                                 Icon(
+                //                                   Icons.bookmark_add_outlined,
+                //                                   color: Colors.white,
+                //                                 ),
+                //                                 Icon(
+                //                                   Icons.share_outlined,
+                //                                   color: Colors.white,
+                //                                 ),
+                //                               ],
+                //                             ),
+                //                           ),
+                //                           const Icon(
+                //                             Icons.play_circle_fill_outlined,
+                //                             size: 40,
+                //                             color: Colors.white,
+                //                           ),
+                //                         ],
+                //                       ),
+                //                     ),
+                //                     childCount: 1,
+                //                   ),
+                //                   gridDelegate:
+                //                       const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                //                     crossAxisCount: 1,
+                //                   ),
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         ),
+                //       ),
+                //       const Padding(
+                //         padding: EdgeInsets.only(bottom: 10),
+                //         child: ShowMore(
+                //           text: 'Show More',
+                //         ),
+                //       )
+                //     ],
+                //   ),
+                // )
               ],
             ),
           ),

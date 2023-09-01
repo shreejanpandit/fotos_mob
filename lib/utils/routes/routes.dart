@@ -10,6 +10,7 @@ import 'package:fotos_mobile/view/profile/profile_screen.dart';
 import 'package:fotos_mobile/view/splash_view.dart';
 import 'package:fotos_mobile/view/drawer_items/terms_and_condition_view.dart';
 
+import '../../comment_Screen.dart';
 import '../../test.dart';
 import '../../view/home/image_open_screen.dart';
 import '../../view/home/search_result_screen.dart';
@@ -108,8 +109,8 @@ class Routes {
         return MaterialPageRoute(
             builder: ((BuildContext context) => const SearchResultPage()));
 
-      // case RoutesName.test:
-      //   return MaterialPageRoute(builder: ((BuildContext context) => Test()));
+      case RoutesName.test:
+        return MaterialPageRoute(builder: ((BuildContext context) => Test()));
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(
