@@ -36,10 +36,11 @@ class _CollectionScreenState extends State<CollectionScreen> {
   TextEditingController collectionNameController = TextEditingController();
   TextEditingController collectionDescriptionController =
       TextEditingController();
+  FocusNode descriptionFocusNode = FocusNode();
   Future<UserModel> getUserData() => UserViewModel().getUser();
   ValueNotifier<String> selectedValueNotifier = ValueNotifier<String>('photo');
 
-  Future<void> postCollectionFormData1(
+  Future<void> postCollectionFormData(
       {required String description,
       required String collectionType,
       required String title}) async {
@@ -91,7 +92,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
       // Send the request and retrieve the response
       var response = await request.send().timeout(const Duration(seconds: 20));
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         // Success
         // print('Success');
         // img.clearPickedImage();
@@ -104,8 +105,9 @@ class _CollectionScreenState extends State<CollectionScreen> {
 
         // Notify listeners to update the UI
         // userViewModel.notifyListeners();
+        Navigator.pop(context);
 
-        Navigator.pushNamed(context, RoutesName.collection);
+        Navigator.pushNamed(context, RoutesName.media);
         Utils.flushBarSucessMessage('Collection created sucessfully', context);
       } else if (response.statusCode == 422) {
         // Unprocessable Entity
@@ -124,7 +126,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
     }
   }
 
-  Future<bool> postCollectionFormData(
+  Future<bool> postCollectionFormData1(
       {required String description,
       required String collectionType,
       required String title}) async {
@@ -201,6 +203,12 @@ class _CollectionScreenState extends State<CollectionScreen> {
   }
 
   void _showBottomSheet(BuildContext context) {
+    descriptionFocusNode.addListener(() {
+      if (!descriptionFocusNode.hasFocus) {
+        // Focus lost, dismiss the keyboard
+        FocusScope.of(context).unfocus();
+      }
+    });
     showModalBottomSheet(
       context: context,
       isScrollControlled:
@@ -212,242 +220,143 @@ class _CollectionScreenState extends State<CollectionScreen> {
         ),
       ),
       builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height *
-              0.75, // Adjust the height to take 3/4th of the screen
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 77, top: 31, right: 65),
-                  child: Center(
-                      child: Text(
-                    'Create your Collection',
-                    style: CustomTheme.base
-                        .copyWith(fontSize: 22, fontWeight: FontWeight.w500),
-                  )),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(28, 31, 27, 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 10),
+        return SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height *
+                0.9, // Adjust the height to take 3/4th of the screen
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 77, top: 31, right: 65),
+                    child: Center(
                         child: Text(
-                          'Choose Collection Cover',
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w200,
+                      'Create your Collection',
+                      style: CustomTheme.base
+                          .copyWith(fontSize: 22, fontWeight: FontWeight.w500),
+                    )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(28, 31, 27, 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            'Choose Collection Cover',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w200,
+                            ),
                           ),
                         ),
-                      ),
-                      Consumer<ImagePickerModel>(
-                        builder: (context, _imagePickerModel, child) {
-                          isImagePicked = _imagePickerModel.pickedImage != null
-                              ? true
-                              : false;
-                          return Container(
-                            width: 336,
-                            height: 45.25,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: const Color(0xFFF9F9F9),
-                              border: Border.all(
-                                color: const Color(0xFFCDECFF),
+                        Consumer<ImagePickerModel>(
+                          builder: (context, _imagePickerModel, child) {
+                            isImagePicked =
+                                _imagePickerModel.pickedImage != null
+                                    ? true
+                                    : false;
+                            return Container(
+                              width: 336,
+                              height: 45.25,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: const Color(0xFFF9F9F9),
+                                border: Border.all(
+                                  color: const Color(0xFFCDECFF),
+                                ),
                               ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: Container(
-                                    width: 200,
-                                    child: Text(
-                                      overflow: TextOverflow.ellipsis,
-                                      // filePath != null ? filePath! :
-                                      _imagePickerModel.pickedImage != null
-                                          ? _imagePickerModel.pickedImage!.path
-                                          : 'Select File',
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w300,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 16),
+                                    child: Container(
+                                      width: 200,
+                                      child: Text(
+                                        overflow: TextOverflow.ellipsis,
+                                        // filePath != null ? filePath! :
+                                        _imagePickerModel.pickedImage != null
+                                            ? _imagePickerModel
+                                                .pickedImage!.path
+                                            : 'Select File',
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w300,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 3),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await _imagePickerModel
-                                          .pickImage(ImageSource.gallery);
-                                      // .pickImage(ImageSource.gallery);
-                                    },
-                                    child: Container(
-                                      width: 86,
-                                      height: 23,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.blue,
-                                      ),
-                                      child: const Center(
-                                        child: Text(
-                                          'Upload',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 3),
+                                    child: InkWell(
+                                      onTap: () async {
+                                        await _imagePickerModel
+                                            .pickImage(ImageSource.gallery);
+                                        // .pickImage(ImageSource.gallery);
+                                      },
+                                      child: Container(
+                                        width: 86,
+                                        height: 23,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: Colors.blue,
+                                        ),
+                                        child: const Center(
+                                          child: Text(
+                                            'Upload',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Text(
-                          'Collection Name',
-                          style: CustomTheme.base.copyWith(
-                              fontSize: 17, fontWeight: FontWeight.w200),
-                        ),
-                      ),
-                      Container(
-                        width: 336,
-                        height: 45.25,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: const Color(0xFFF9F9F9),
-                          border: Border.all(
-                            color: const Color(0xFFCDECFF),
-                          ),
-                        ),
-                        child: TextFormField(
-                          controller: collectionNameController,
-                          decoration: InputDecoration(
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 16),
-                            hintText: 'Enter Collection Name',
-                            hintStyle: CustomTheme.base.copyWith(
-                              color:
-                                  CustomTheme.lightTextColor.withOpacity(0.4),
-                              fontWeight: FontWeight.w300,
-                            ),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: Text('Collection Type'),
-                      ),
-                      Container(
-                        width: 336,
-                        height: 45.25,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: const Color(0xFFF9F9F9),
-                          border: Border.all(
-                            color: const Color(0xFFCDECFF),
-                          ),
-                        ),
-                        child: ValueListenableBuilder(
-                          valueListenable: selectedValueNotifier,
-                          builder: (BuildContext context, String selectedValue,
-                              Widget? child) {
-                            return DropdownButton<String>(
-                              isExpanded: true,
-                              underline:
-                                  Container(), // Removes the default underline
-                              value:
-                                  selectedValue, // Holds the currently selected collection ID
-                              onChanged: (newValue) {
-                                selectedValueNotifier.value = newValue!;
-                              },
-                              items: [
-                                'photo',
-                                'video',
-                                'art',
-                                'illustration',
-                              ].map((item) {
-                                return DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 16),
-                                    child: Text(
-                                      item,
-                                      style: CustomTheme.base.copyWith(
-                                        color: CustomTheme.lightTextColor
-                                            .withOpacity(0.4),
-                                        fontWeight: FontWeight.w300,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
+                                ],
+                              ),
                             );
                           },
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Text(
-                          'Collection Description',
-                          style: CustomTheme.base.copyWith(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w200,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            'Collection Name',
+                            style: CustomTheme.base.copyWith(
+                                fontSize: 17, fontWeight: FontWeight.w200),
                           ),
                         ),
-                      ),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        width: 336,
-                        height: 124,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: const Color(0xFFF9F9F9),
-                          border: Border.all(
-                            color: const Color(0xFFCDECFF),
+                        Container(
+                          width: 336,
+                          height: 45.25,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: const Color(0xFFF9F9F9),
+                            border: Border.all(
+                              color: const Color(0xFFCDECFF),
+                            ),
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 16, top: 3),
-                          child: TextField(
-                            controller: collectionDescriptionController,
-                            maxLines: null, // Allow multiple lines of text
+                          child: TextFormField(
+                            controller: collectionNameController,
                             decoration: InputDecoration(
-                              hintText: 'Enter Description',
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              hintText: 'Enter Collection Name',
                               hintStyle: CustomTheme.base.copyWith(
                                 color:
                                     CustomTheme.lightTextColor.withOpacity(0.4),
@@ -457,63 +366,171 @@ class _CollectionScreenState extends State<CollectionScreen> {
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                GreenAndCancleButton(
-                  greenButtonText: 'Submit',
-                  onGreenButton: () async {
-                    String title = collectionNameController.text;
-                    String description = collectionDescriptionController.text;
-                    String collectionType =
-                        selectedValueNotifier.value.toString();
-                    if (title == '' && title.isEmpty) {
-                      Utils.flushBarErrorMessage(
-                          'Collectoin name can\'t be empty', context);
-                    } else if (description == '' && description.isEmpty) {
-                      Utils.flushBarErrorMessage(
-                          'Description can\'t be empty', context);
-                    } else if (!isImagePicked) {
-                      Utils.flushBarErrorMessage(
-                          'Select media to upload', context);
-                    } else {
-                      bool res = await postCollectionFormData(
-                          title: title.trim(),
-                          description: description.trim(),
-                          collectionType: collectionType);
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Text('Collection Type'),
+                        ),
+                        Container(
+                          width: 336,
+                          height: 45.25,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: const Color(0xFFF9F9F9),
+                            border: Border.all(
+                              color: const Color(0xFFCDECFF),
+                            ),
+                          ),
+                          child: ValueListenableBuilder(
+                            valueListenable: selectedValueNotifier,
+                            builder: (BuildContext context,
+                                String selectedValue, Widget? child) {
+                              return DropdownButton<String>(
+                                isExpanded: true,
+                                underline:
+                                    Container(), // Removes the default underline
+                                value:
+                                    selectedValue, // Holds the currently selected collection ID
+                                onChanged: (newValue) {
+                                  selectedValueNotifier.value = newValue!;
+                                },
+                                items: [
+                                  'photo',
+                                  'video',
+                                  'art',
+                                  'illustration',
+                                ].map((item) {
+                                  return DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 16),
+                                      child: Text(
+                                        item,
+                                        style: CustomTheme.base.copyWith(
+                                          color: CustomTheme.lightTextColor
+                                              .withOpacity(0.4),
+                                          fontWeight: FontWeight.w300,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              );
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(28, 0, 27, 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            'Collection Description',
+                            style: CustomTheme.base.copyWith(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w200,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          width: 336,
+                          height: 124,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: const Color(0xFFF9F9F9),
+                            border: Border.all(
+                              color: const Color(0xFFCDECFF),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 16, top: 3),
+                            child: TextField(
+                              focusNode: descriptionFocusNode,
+                              controller: collectionDescriptionController,
+                              // maxLines: null, // Allow multiple lines of text
+                              decoration: InputDecoration(
+                                hintText: 'Enter Description',
+                                hintStyle: CustomTheme.base.copyWith(
+                                  color: CustomTheme.lightTextColor
+                                      .withOpacity(0.4),
+                                  fontWeight: FontWeight.w300,
+                                ),
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GreenAndCancleButton(
+                    greenButtonText: 'Submit',
+                    onGreenButton: () async {
+                      String title = collectionNameController.text;
+                      String description = collectionDescriptionController.text;
+                      String collectionType =
+                          selectedValueNotifier.value.toString();
+                      if (title == '' && title.isEmpty) {
+                        Utils.flushBarErrorMessage(
+                            'Collectoin name can\'t be empty', context);
+                      } else if (description == '' && description.isEmpty) {
+                        Utils.flushBarErrorMessage(
+                            'Description can\'t be empty', context);
+                      } else if (!isImagePicked) {
+                        Utils.flushBarErrorMessage(
+                            'Select media to upload', context);
+                      } else {
+                        // bool res =
+                        await postCollectionFormData(
+                            title: title.trim(),
+                            description: description.trim(),
+                            collectionType: collectionType);
 
-                      if (res == true) {
-                        Navigator.pop(context);
-                        // Navigator.pushNamed(context, RoutesName.media);
+                        // if (res == true) {
+                        //   Navigator.pop(context);
+                        //   // Navigator.pushNamed(context, RoutesName.media);
 
-                        // Alert(
-                        //     style: const AlertStyle(
-                        //         titleStyle: TextStyle(color: Colors.white),
-                        //         backgroundColor: CustomTheme.lightGreenColor),
-                        //     context: context,
-                        //     closeFunction: () {
-                        //       Navigator.pop(context);
-                        //     },
-                        //     buttons: [],
-                        //     image: SvgPicture.asset(
-                        //       'assets/branding/home/tick.svg',
-                        //       height: 41,
-                        //       width: 41,
-                        //     ),
-                        //     title: 'Upload Sucessful !',
-                        //     closeIcon: InkWell(
-                        //       child: SvgPicture.asset(
-                        //         'assets/branding/home/close.svg',
-                        //         height: 20,
-                        //         width: 20,
-                        //       ),
-                        //     )).show();
+                        //   // Alert(
+                        //   //     style: const AlertStyle(
+                        //   //         titleStyle: TextStyle(color: Colors.white),
+                        //   //         backgroundColor: CustomTheme.lightGreenColor),
+                        //   //     context: context,
+                        //   //     closeFunction: () {
+                        //   //       Navigator.pop(context);
+                        //   //     },
+                        //   //     buttons: [],
+                        //   //     image: SvgPicture.asset(
+                        //   //       'assets/branding/home/tick.svg',
+                        //   //       height: 41,
+                        //   //       width: 41,
+                        //   //     ),
+                        //   //     title: 'Upload Sucessful !',
+                        //   //     closeIcon: InkWell(
+                        //   //       child: SvgPicture.asset(
+                        //   //         'assets/branding/home/close.svg',
+                        //   //         height: 20,
+                        //   //         width: 20,
+                        //   //       ),
+                        //   //     )).show();
+                        // }
                       }
-                    }
-                  },
-                ),
-              ],
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         );

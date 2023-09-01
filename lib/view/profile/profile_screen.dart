@@ -279,7 +279,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ButtonWithColorIconAndText(
                                   onTap: () {
                                     // Inside a widget's build method or an onPressed callback
-                                    _showBottomSheet(context);
+                                    // _showBottomSheet(context);
+                                    Navigator.pushNamed(
+                                        context, RoutesName.media,
+                                        arguments: {'fromUpload': true});
                                   },
                                   textColor: Colors.white,
                                   backgroundColor: CustomTheme.yellowColor,

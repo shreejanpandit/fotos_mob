@@ -239,6 +239,7 @@ class _MediaScreenState extends State<MediaScreen> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
+      print('widget key media screen is ${widget.key}');
       var userProvider = Provider.of<UserViewModel>(context, listen: false);
       userProvider.getUser().then((value) {
         setState(() {
@@ -250,6 +251,14 @@ class _MediaScreenState extends State<MediaScreen> {
                   .fetchUserMedia(userId!);
               Provider.of<MediaViewModel>(context, listen: false)
                   .fetchUserMediaList();
+              final arguments = ModalRoute.of(context)?.settings.arguments
+                  as Map<String, dynamic>?;
+
+              if (arguments != null &&
+                  arguments.containsKey('fromUpload') &&
+                  arguments['fromUpload']) {
+                _showBottomSheetPOST(context);
+              }
             });
           }
         });

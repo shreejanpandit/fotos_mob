@@ -72,7 +72,8 @@ class Routes {
             builder: ((BuildContext context) => const MessagesScreen()));
       case RoutesName.media:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => const MediaScreen()));
+            builder: ((BuildContext context) => const MediaScreen()),
+            settings: settings);
       case RoutesName.collection:
         return MaterialPageRoute(
             builder: ((BuildContext context) => const CollectionScreen()));
