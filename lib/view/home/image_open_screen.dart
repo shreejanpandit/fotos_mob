@@ -326,7 +326,7 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
       "https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2018/04/24144817/American-Staffordshire-Terrier-lying-outdoors-next-to-a-kitten-that-is-playing-with-the-dogs-nose.jpg",
     ];
 
-    Future<void> _saveImage(BuildContext context, slug, imageFileName) async {
+    Future<bool> _saveImage(BuildContext context, slug, imageFileName) async {
       String? message;
       // final scaffoldMessenger = ScaffoldMessenger.of(context);
 
@@ -358,19 +358,25 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
 
           if (finalPath != null) {
             message = 'Image saved to disk';
+            Utils.flushBarErrorMessage(message, context);
           }
+          return false;
         } else if (response.statusCode == 402) {
           print('${response.body}');
+
+          return true;
         } else {
           print('err');
         }
       } catch (e) {
         message = 'An error occurred while saving the image';
-      }
-
-      if (message != null) {
         Utils.flushBarErrorMessage(message, context);
       }
+
+      // if (message != null) {
+      //   Utils.flushBarErrorMessage(message, context);
+      // }
+      return false;
     }
 
     Future<void> makePayment(String setupIntendId, String clientSecretKey,
@@ -778,39 +784,21 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                                                     listen: false);
                                                 var data = provider.data;
                                                 print(data);
-                                                _saveImage(
-                                                        context,
-                                                        data['data']['slug'],
-                                                        data['data']
-                                                            ['image_path'])
-                                                    .then((value) {
+                                                bool res = await _saveImage(
+                                                    context,
+                                                    data['data']['slug'],
+                                                    data['data']['image_path']);
+                                                if (res) {
                                                   print(
                                                       '----------------------------------------------------');
-                                                  getSubscriptionPlan()
-                                                      .then((value) {
-                                                    print(value.length);
-                                                    _showBottomSheetUpdate(
-                                                        value, value.length);
-                                                  });
-
-                                                  // getpaymentIntendentData()
-                                                  //     .then(
-                                                  //   (value) async {
-                                                  //     String getSetupIntentId =
-                                                  //         value!.setupIntentId
-                                                  //             .toString();
-                                                  //     print(getSetupIntentId);
-                                                  //     String
-                                                  //         getClientSecretKey =
-                                                  //         value.clientSecret
-                                                  //             .toString();
-                                                  //     print(getClientSecretKey);
-                                                  //     await makePayment(
-                                                  //         getSetupIntentId,
-                                                  //         getClientSecretKey);
-                                                  //   },
-                                                  // );
-                                                });
+                                                  getSubscriptionPlan().then(
+                                                    (value) {
+                                                      print(value.length);
+                                                      _showBottomSheetUpdate(
+                                                          value, value.length);
+                                                    },
+                                                  );
+                                                }
 
                                                 provider.fetchImageOpenMedia(
                                                     data['data']['slug'],
