@@ -300,12 +300,12 @@ class _LogInViewState extends State<LogInView> {
                                     ) // Center(
                                     ))),
                   ),
-                  Text(
-                    'OR',
-                    style: CustomTheme.base.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: CustomTheme.whiteTextColor),
-                  ),
+                  // Text(
+                  //   'OR',
+                  //   style: CustomTheme.base.copyWith(
+                  //       fontWeight: FontWeight.bold,
+                  //       color: CustomTheme.whiteTextColor),
+                  // ),
                   // GestureDetector(
                   //   onTap: () {
                   //     print('Login with google');
@@ -339,39 +339,39 @@ class _LogInViewState extends State<LogInView> {
                   //               ),
                   //       )),
                   // ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(
-                        45 * fem, 10 * fem, 39 * fem, 0 * fem),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        InkWell(
-                            onTap: () {
-                              print('Google');
-                            },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.white,
+                  // Container(
+                  //   margin: EdgeInsets.fromLTRB(
+                  //       45 * fem, 10 * fem, 39 * fem, 0 * fem),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //     children: [
+                  //       InkWell(
+                  //           onTap: () {
+                  //             print('Google');
+                  //           },
+                  //           child: Container(
+                  //               decoration: BoxDecoration(
+                  //                 color: Colors.white,
+                  //                 shape: BoxShape.circle,
+                  //                 border: Border.all(
+                  //                   color: Colors.white,
 
-                                    width: 5, // Adjust the width of the border
-                                  ),
-                                ),
-                                child: Image.asset('assets/icons/gg.png'))),
-                        InkWell(
-                            onTap: () {
-                              print('Facebook');
-                            },
-                            child: const Icon(
-                              Icons.facebook_outlined,
-                              color: Colors.white,
-                              size: 50,
-                            )),
-                      ],
-                    ),
-                  )
+                  //                   width: 5, // Adjust the width of the border
+                  //                 ),
+                  //               ),
+                  //               child: Image.asset('assets/icons/gg.png'))),
+                  //       InkWell(
+                  //           onTap: () {
+                  //             print('Facebook');
+                  //           },
+                  //           child: const Icon(
+                  //             Icons.facebook_outlined,
+                  //             color: Colors.white,
+                  //             size: 50,
+                  //           )),
+                  //     ],
+                  //   ),
+                  // )
                 ],
               ),
               Positioned(

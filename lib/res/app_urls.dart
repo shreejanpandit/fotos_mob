@@ -6,14 +6,17 @@ class AppUrl {
 
   // static var baseUrl = 'http://127.0.0.1:8000/api/v1/';
   // static var baseUrl = 'http://10.0.2.2:8000/api/v1/';
-  static var baseUrl = 'http://192.168.18.4:8000/api/v1/';
+  // static var baseUrl = 'http://192.168.18.4:8000/api/v1/';
+  static var baseUrl = 'https://7a73-36-252-66-52.ngrok-free.app/api/v1/';
   // static var baseUrl = 'http://192.168.0.139:8000/api/v1/';
   // static var moviesBaseUrl =
   //     'https://dea91516-1da3-444b-ad94-c6d0c4dfab81.mock.pstmn.io/';
   // static var moviesListUrl = moviesBaseUrl + 'movies_list';
   static var loginUrl = '${baseUrl}login';
   static var mediaUrl = '${baseUrl}medias';
-  static var baseImageStorageUrl = 'http://192.168.18.4:8000/storage/';
+  static var baseImageStorageUrl =
+      'https://7a73-36-252-66-52.ngrok-free.app/storage/';
+  // static var baseImageStorageUrl = 'http://192.168.18.4:8000/storage/';
   static var mediasMediaUrl = '${baseUrl}medias/';
   static var mediasMediaListUrl = '${baseUrl}media-lists/user/';
   static var userMedia = '${baseUrl}medias/user/';

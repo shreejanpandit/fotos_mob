@@ -332,9 +332,15 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
 
       try {
         // Download image
-        String url = '${AppUrl.baseUrl}downloads-daily/$slug';
+        SharedPreferences sp = await SharedPreferences.getInstance();
+        final token = sp.getString('token');
+        String url = '${AppUrl.baseUrl}downloads/$slug';
         print(url);
-        final http.Response response = await http.post(Uri.parse(url));
+        final http.Response response =
+            await http.post(Uri.parse(url), headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'Authorization': "Bearer $token",
+        });
         print('download response is ${response.body}');
         if (response.statusCode == 200) {
           // Get temporary directory
@@ -358,7 +364,7 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
 
           if (finalPath != null) {
             message = 'Image saved to disk';
-            Utils.flushBarErrorMessage(message, context);
+            Utils.flushBarSucessMessage(message, context);
           }
           return false;
         } else if (response.statusCode == 402) {
@@ -403,6 +409,7 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
     Future<Data?> getpaymentIntendentData() async {
       SharedPreferences sp = await SharedPreferences.getInstance();
       final token = sp.getString('token');
+
       try {
         final response = await http.get(
             Uri.parse('http://192.168.18.4:8000/api/v1/checkouts/intent'),
@@ -488,19 +495,19 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                               ),
                               child: ListTile(
                                 title: Text(
-                                  '\$${val[index].amount.toString()}/month',
+                                  '\$${val[index].amount / 100}/month',
                                   style: TextStyle(
                                       fontSize: 20.0, // Larger title text size
                                       color: Colors.white, // White text color
                                       fontWeight: FontWeight.w600),
                                 ),
-                                subtitle: Text(
-                                  'Billing Scheme: per unit',
-                                  style: TextStyle(
-                                    color: Colors
-                                        .white, // Red subtitle text color (error)
-                                  ),
-                                ),
+                                // subtitle: Text(
+                                //   'Billing Scheme: per unit',
+                                //   style: TextStyle(
+                                //     color: Colors
+                                //         .white, // Red subtitle text color (error)
+                                //   ),
+                                // ),
                                 trailing: Icon(
                                   Icons.arrow_forward_ios,
                                   color: Colors.white, // White icon color
@@ -778,33 +785,47 @@ class _ImageOpenScreenState extends State<ImageOpenScreen> {
                                               )),
                                           IconButton(
                                               onPressed: () async {
-                                                final provider = Provider.of<
-                                                        ImageOpenViewModel>(
+                                                SharedPreferences sp =
+                                                    await SharedPreferences
+                                                        .getInstance();
+                                                final token =
+                                                    sp.getString('token');
+                                                if (token == null) {
+                                                  Utils.flushBarErrorMessage(
+                                                    'Login First to download image',
                                                     context,
-                                                    listen: false);
-                                                var data = provider.data;
-                                                print(data);
-                                                bool res = await _saveImage(
-                                                    context,
-                                                    data['data']['slug'],
-                                                    data['data']['image_path']);
-                                                if (res) {
-                                                  print(
-                                                      '----------------------------------------------------');
-                                                  getSubscriptionPlan().then(
-                                                    (value) {
-                                                      print(value.length);
-                                                      _showBottomSheetUpdate(
-                                                          value, value.length);
-                                                    },
                                                   );
-                                                }
+                                                } else {
+                                                  final provider = Provider.of<
+                                                          ImageOpenViewModel>(
+                                                      context,
+                                                      listen: false);
+                                                  var data = provider.data;
+                                                  print(data);
+                                                  bool res = await _saveImage(
+                                                      context,
+                                                      data['data']['slug'],
+                                                      data['data']
+                                                          ['image_path']);
+                                                  if (res) {
+                                                    print(
+                                                        '----------------------------------------------------');
+                                                    getSubscriptionPlan().then(
+                                                      (value) {
+                                                        print(value.length);
+                                                        _showBottomSheetUpdate(
+                                                            value,
+                                                            value.length);
+                                                      },
+                                                    );
+                                                  }
 
-                                                provider.fetchImageOpenMedia(
-                                                    data['data']['slug'],
-                                                    context,
-                                                    data['data']['id']
-                                                        .toString());
+                                                  provider.fetchImageOpenMedia(
+                                                      data['data']['slug'],
+                                                      context,
+                                                      data['data']['id']
+                                                          .toString());
+                                                }
                                               },
                                               icon: const Icon(
                                                 Icons.file_download_outlined,

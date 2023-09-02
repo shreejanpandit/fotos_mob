@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fotos_mobile/res/components/home_component/button_with_color_icon_and_text.dart';
@@ -10,8 +12,11 @@ import 'package:fotos_mobile/view_model/user_view_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 import '../../data/response/status.dart';
+import '../../models/payment_history_model.dart';
 import '../../models/user_models.dart';
 import '../../res/app_urls.dart';
 import '../../res/components/appbar_widget.dart';
@@ -294,7 +299,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   width: 15,
                                 ),
                                 ButtonWithColorIconAndText(
-                                  onTap: () {
+                                  onTap: () async {
                                     Navigator.pushNamed(
                                         context, RoutesName.payment);
                                   },
@@ -377,13 +382,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 );
                               },
                             ),
-                            const ContainerWithIconTextAndLeading(
-                              bgColor: CustomTheme.lightGreenColor,
-                              imagePath: 'assets/branding/home/statistic.svg',
-                              text: 'Statistics',
-                              // containerColor: CustomTheme.primaryColor,
-                              // containerText: '100+',
-                            ),
+                            // const ContainerWithIconTextAndLeading(
+                            //   bgColor: CustomTheme.lightGreenColor,
+                            //   imagePath: 'assets/branding/home/statistic.svg',
+                            //   text: 'Statistics',
+                            //   // containerColor: CustomTheme.primaryColor,
+                            //   // containerText: '100+',
+                            // ),
                             InkWell(
                               onTap: () {
                                 Navigator.pushNamed(
@@ -416,7 +421,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     fontWeight: FontWeight.w300),
                               ),
                             ),
-                            const ContainerWithIconTextAndLeading(
+                            ContainerWithIconTextAndLeading(
+                              ontap: () {
+                                Navigator.pushNamed(
+                                    context, RoutesName.privacy);
+                              },
                               bgColor: CustomTheme.faintGreenColor,
                               imagePath: 'assets/branding/home/privacy.svg',
                               text: 'Privacy',

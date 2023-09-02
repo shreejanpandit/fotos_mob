@@ -107,7 +107,8 @@ class Routes {
             builder: ((BuildContext context) => const ImageOpenScreen()));
       case RoutesName.search_result:
         return MaterialPageRoute(
-            builder: ((BuildContext context) => const SearchResultPage()));
+            builder: ((BuildContext context) => const SearchResultPage()),
+            settings: settings);
 
       case RoutesName.test:
         return MaterialPageRoute(builder: ((BuildContext context) => Test()));

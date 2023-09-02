@@ -226,7 +226,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             Navigator.pushNamed(
                                                                 context,
                                                                 RoutesName
-                                                                    .search_result);
+                                                                    .search_result,
+                                                                arguments: {
+                                                                  'searchText':
+                                                                      searchController
+                                                                          .text
+                                                                });
                                                           }
                                                         },
                                                         child: Container(
@@ -504,17 +509,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     );
                                                                   },
                                                                 ),
-                                                                const Icon(
-                                                                  Icons
-                                                                      .bookmark_add_outlined,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                                const Icon(
-                                                                  Icons.share,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
+                                                                // const Icon(
+                                                                //   Icons
+                                                                //       .bookmark_add_outlined,
+                                                                //   color: Colors
+                                                                //       .white,
+                                                                // ),
+                                                                // const Icon(
+                                                                //   Icons.share,
+                                                                //   color: Colors
+                                                                //       .white,
+                                                                // ),
                                                               ],
                                                             ),
                                                           ),
@@ -670,17 +675,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       );
                                                                     },
                                                                   ),
-                                                                  Icon(
-                                                                    Icons
-                                                                        .bookmark_add_outlined,
-                                                                    color: Colors
-                                                                        .white,
-                                                                  ),
-                                                                  Icon(
-                                                                    Icons.share,
-                                                                    color: Colors
-                                                                        .white,
-                                                                  ),
+                                                                  // Icon(
+                                                                  //   Icons
+                                                                  //       .bookmark_add_outlined,
+                                                                  //   color: Colors
+                                                                  //       .white,
+                                                                  // ),
+                                                                  // Icon(
+                                                                  //   Icons.share,
+                                                                  //   color: Colors
+                                                                  //       .white,
+                                                                  // ),
                                                                 ],
                                                               ),
                                                             ),
