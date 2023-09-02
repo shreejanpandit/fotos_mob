@@ -61,127 +61,128 @@ class _CustomAppBarState extends State<CustomAppBar> {
       ),
       actions: [
         if (token != null && token!.length > 4)
-          IconButton(
-            icon: const Icon(
-              Icons.notifications_none,
-              color: CustomTheme.primaryColor,
-            ),
-            onPressed: () {
-              print("notification");
-            },
-          ),
-        if (token != null && token!.length > 4)
-          InkWell(
-            onTap: appbarProvider.toggleBody,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: SizedBox(
-                child: Consumer<UserViewModel>(
-                    builder: (context, userViewModel, child) {
-                  User? user = userViewModel.currentUser!.data!.user;
-                  profileImagePath = user!.profile_photo_path ?? '.';
-                  print(profileImagePath);
-                  if (profileImagePath!.startsWith('http')) {
-                    imageUrl = profileImagePath;
-                  } else {
-                    imageUrl = '${AppUrl.baseImageStorageUrl}$profileImagePath';
-                  }
-                  if (!loaded) {
-                    return CircularProgressIndicator.adaptive();
-                  } else {
-                    return Row(children: [
-                      InkWell(
-                        onTap: () =>
-                            Navigator.pushNamed(context, RoutesName.profile),
-                        child: Container(
-                          height: 35,
-                          width: 35,
-                          decoration: const ShapeDecoration(
-                            shape: CircleBorder(),
-                          ),
-                          child: ClipOval(
-                            child: Image.network(
-                              imageUrl.toString(),
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  'assets/branding/images/avatar.png',
-                                  fit: BoxFit.cover,
-                                );
-                              },
+          // IconButton(
+          //   icon: const Icon(
+          //     Icons.notifications_none,
+          //     color: CustomTheme.primaryColor,
+          //   ),
+          //   onPressed: () {
+          //     print("notification");
+          //   },
+          // ),
+          if (token != null && token!.length > 4)
+            InkWell(
+              onTap: appbarProvider.toggleBody,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: SizedBox(
+                  child: Consumer<UserViewModel>(
+                      builder: (context, userViewModel, child) {
+                    User? user = userViewModel.currentUser!.data!.user;
+                    profileImagePath = user!.profile_photo_path ?? '.';
+                    print(profileImagePath);
+                    if (profileImagePath!.startsWith('http')) {
+                      imageUrl = profileImagePath;
+                    } else {
+                      imageUrl =
+                          '${AppUrl.baseImageStorageUrl}$profileImagePath';
+                    }
+                    if (!loaded) {
+                      return CircularProgressIndicator.adaptive();
+                    } else {
+                      return Row(children: [
+                        InkWell(
+                          onTap: () =>
+                              Navigator.pushNamed(context, RoutesName.profile),
+                          child: Container(
+                            height: 35,
+                            width: 35,
+                            decoration: const ShapeDecoration(
+                              shape: CircleBorder(),
+                            ),
+                            child: ClipOval(
+                              child: Image.network(
+                                imageUrl.toString(),
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    'assets/branding/images/avatar.png',
+                                    fit: BoxFit.cover,
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ]);
-                  }
-                }),
+                      ]);
+                    }
+                  }),
 
-                // CircleAvatar(
-                //   backgroundColor: Colors.transparent,
-                //   child: InkWell(
-                //     onTap: () =>
-                //         Navigator.pushNamed(context, RoutesName.profile),
-                //     child:
-                //     // Container(
-                //     //   width: 33.97,
-                //     //   height: 35,
-                //     //   decoration: const ShapeDecoration(
-                //     //     image: DecorationImage(
-                //     //       image:
-                //     //           AssetImage('assets/branding/images/avatar.png'),
-                //     //       fit: BoxFit.fill,
-                //     //     ),
-                //     //     shape: OvalBorder(),
-                //     //   ),
-                //     // ),
-                //     Container(
-                //                             height: 35,
-                //                             width: 35,
-                //                             decoration: const ShapeDecoration(
-                //                               shape: CircleBorder(),
-                //                             ),
-                //                             child: ClipOval(
-                //                               child: Image.network(
-                //                                 imageUrl.toString(),
-                //                                 fit: BoxFit.cover,
-                //                                 errorBuilder: (context, error,
-                //                                     stackTrace) {
-                //                                   return Image.asset(
-                //                                     'assets/branding/images/avatar.png',
-                //                                     fit: BoxFit.cover,
-                //                                   );
-                //                                 },
-                //                               ),
-                //                             ),
-                //                           ),
-                //   ),
-                //   // child: appbarProvider.showBody
-                //   // ? Container(
-                //   //     width: 33.97,
-                //   //     height: 35,
-                //   //     decoration: const ShapeDecoration(
-                //   //       image: DecorationImage(
-                //   //         image: AssetImage(
-                //   //             'assets/branding/images/avatar.png'),
-                //   //         fit: BoxFit.fill,
-                //   //       ),
-                //   //       shape: OvalBorder(),
-                //   //     ),
-                //   //   )
-                //   //     : Container(
-                //   //         width: 33.97,
-                //   //         height: 35,
-                //   //         child: const Icon(
-                //   //           Icons.home_outlined,
-                //   //           color: CustomTheme.primaryColor,
-                //   //           size: 30,
-                //   //         ),
-                //   //       ),
-                // ),
+                  // CircleAvatar(
+                  //   backgroundColor: Colors.transparent,
+                  //   child: InkWell(
+                  //     onTap: () =>
+                  //         Navigator.pushNamed(context, RoutesName.profile),
+                  //     child:
+                  //     // Container(
+                  //     //   width: 33.97,
+                  //     //   height: 35,
+                  //     //   decoration: const ShapeDecoration(
+                  //     //     image: DecorationImage(
+                  //     //       image:
+                  //     //           AssetImage('assets/branding/images/avatar.png'),
+                  //     //       fit: BoxFit.fill,
+                  //     //     ),
+                  //     //     shape: OvalBorder(),
+                  //     //   ),
+                  //     // ),
+                  //     Container(
+                  //                             height: 35,
+                  //                             width: 35,
+                  //                             decoration: const ShapeDecoration(
+                  //                               shape: CircleBorder(),
+                  //                             ),
+                  //                             child: ClipOval(
+                  //                               child: Image.network(
+                  //                                 imageUrl.toString(),
+                  //                                 fit: BoxFit.cover,
+                  //                                 errorBuilder: (context, error,
+                  //                                     stackTrace) {
+                  //                                   return Image.asset(
+                  //                                     'assets/branding/images/avatar.png',
+                  //                                     fit: BoxFit.cover,
+                  //                                   );
+                  //                                 },
+                  //                               ),
+                  //                             ),
+                  //                           ),
+                  //   ),
+                  //   // child: appbarProvider.showBody
+                  //   // ? Container(
+                  //   //     width: 33.97,
+                  //   //     height: 35,
+                  //   //     decoration: const ShapeDecoration(
+                  //   //       image: DecorationImage(
+                  //   //         image: AssetImage(
+                  //   //             'assets/branding/images/avatar.png'),
+                  //   //         fit: BoxFit.fill,
+                  //   //       ),
+                  //   //       shape: OvalBorder(),
+                  //   //     ),
+                  //   //   )
+                  //   //     : Container(
+                  //   //         width: 33.97,
+                  //   //         height: 35,
+                  //   //         child: const Icon(
+                  //   //           Icons.home_outlined,
+                  //   //           color: CustomTheme.primaryColor,
+                  //   //           size: 30,
+                  //   //         ),
+                  //   //       ),
+                  // ),
+                ),
               ),
             ),
-          ),
         ValueListenableBuilder(
           valueListenable: drawer,
           builder: (context, value, child) {

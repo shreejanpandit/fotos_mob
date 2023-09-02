@@ -274,7 +274,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              // mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 ButtonWithColorIconAndText(
                                   onTap: () {
@@ -290,6 +290,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   text: 'upload',
                                   wid: 113,
                                 ),
+                                SizedBox(
+                                  width: 15,
+                                ),
                                 ButtonWithColorIconAndText(
                                   onTap: () {
                                     Navigator.pushNamed(
@@ -301,17 +304,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   text: 'Payments',
                                   wid: 113,
                                 ),
-                                ButtonWithColorIconAndText(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, RoutesName.message);
-                                  },
-                                  textColor: Colors.white,
-                                  backgroundColor: CustomTheme.primaryColor,
-                                  image: 'assets/branding/home/messages.svg',
-                                  text: 'Messages',
-                                  wid: 113,
-                                )
+                                // ButtonWithColorIconAndText(
+                                //   onTap: () {
+                                //     Navigator.pushNamed(
+                                //         context, RoutesName.message);
+                                //   },
+                                //   textColor: Colors.white,
+                                //   backgroundColor: CustomTheme.primaryColor,
+                                //   image: 'assets/branding/home/messages.svg',
+                                //   text: 'Messages',
+                                //   wid: 113,
+                                // )
                               ],
                             )
                           ],
@@ -418,11 +421,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               imagePath: 'assets/branding/home/privacy.svg',
                               text: 'Privacy',
                             ),
-                            const ContainerWithIconTextAndLeading(
-                              bgColor: CustomTheme.primaryColor,
-                              imagePath: 'assets/branding/home/switch.svg',
-                              text: 'Switch Account',
-                            ),
+                            // const ContainerWithIconTextAndLeading(
+                            //   bgColor: CustomTheme.primaryColor,
+                            //   imagePath: 'assets/branding/home/switch.svg',
+                            //   text: 'Switch Account',
+                            // ),
                             ContainerWithIconTextAndLeading(
                               ontap: () {
                                 userPreference.removeUser();
